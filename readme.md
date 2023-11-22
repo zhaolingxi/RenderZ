@@ -12,8 +12,12 @@
 
 
 
-# 预期使用的三方库
+# 三方库
 
 
 
 # 开源协议：
+
+
+# 特别鸣谢：
+ui icon:dell3                    url：https://openai.com/dall-e-3
