@@ -1,0 +1,63 @@
+﻿# Qt编译配置(需要修改这里的Qt安装路径)
+macro(config_qt_compile _platform_name)
+        if(DEFINED ENV{QTDIR})
+            set(QT_LIBRARY_DIR $ENV{QTDIR})
+            set(QT_LIBRARY_PLATFORM_DIR "${QT_LIBRARY_DIR}/plugins/platforms")
+        else()
+            if(${_platform_name} STREQUAL "WIN32")
+                set(QT_LIBRARY_DIR "C:/Qt/Qt5.14.2/5.14.2/msvc2017")
+                set(QT_LIBRARY_PLATFORM_DIR "C:/Qt/Qt5.14.2/5.14.2/msvc2017/plugins/platforms")
+            elseif (${_platform_name} STREQUAL "WIN64")
+                set(QT_LIBRARY_DIR "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64")
+                set(QT_LIBRARY_PLATFORM_DIR "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/plugins/platforms")
+            elseif (${_platform_name} STREQUAL "LINUX64")
+                set(QT_LIBRARY_DIR "/opt/Qt5.14.2/5.14.2/gcc_64")
+                set(QT_LIBRARY_PLATFORM_DIR "/opt/Qt5.14.2/5.14.2/gcc_64/plugins/platforms")
+            elseif (${_platform_name} STREQUAL "LINUX32")
+                set(QT_LIBRARY_DIR "/opt/Qt5.14.2/5.14.2/gcc")
+                set(QT_LIBRARY_PLATFORM_DIR "/opt/Qt5.14.2/5.14.2/gcc/plugins/platforms")
+            else()
+            endif()
+        endif()
+        # 设置Qt的编译依赖库路径
+        set(CMAKE_PREFIX_PATH ${QT_LIBRARY_DIR})
+        set(ENV{QT_QPA_PLATFORM_PLUGIN_PATH} ${QT_LIBRARY_PLATFORM_DIR})
+        message("Info: Qt Config: Compiling Qt for ${_platform_name}, qtpath: ${CMAKE_PREFIX_PATH}")
+        # Qt基础依赖库
+        find_package(Qt5 COMPONENTS REQUIRED Widgets Core Gui WebEngineWidgets WebSockets OpenGL PrintSupport)
+        # Qt资源文件RCC、MOC、UIC配置
+        set(CMAKE_AUTOUIC ON)
+        set(CMAKE_AUTOMOC ON)
+        set(CMAKE_AUTORCC ON)
+        # 翻译文件工具路径
+        if (MSVC)
+            set(QT_LUPDATE_TOOL_PATH "${QT_LIBRARY_DIR}/bin/lupdate.exe")
+            set(QT_LRELEASE_TOOL_PATH "${QT_LIBRARY_DIR}/bin/lrelease.exe")
+        elseif(GNUC)
+            set(QT_LUPDATE_TOOL_PATH "${QT_LIBRARY_DIR}/bin/lupdate")
+            set(QT_LRELEASE_TOOL_PATH "${QT_LIBRARY_DIR}/bin/lrelease")
+        endif()
+endmacro(config_qt_compile)
+
+# 更新项目的ts文件
+macro(update_qtpro_ts _pro_ts_path _source_files)
+	# 将输入的字符串转换成list
+	string(REPLACE ";" "\n" formatted_string "${_source_files}")
+	string(REGEX REPLACE "\n" ";" TS_SOURCE_FILES "${formatted_string}")
+	# 输出包含的翻译文件
+	message("-----------ts file list------------------")
+	foreach(srcfile_path ${TS_SOURCE_FILES})
+		message("${srcfile_path}")
+	endforeach()
+	message("-----------------------------------------")
+	execute_process(COMMAND "${QT_LUPDATE_TOOL_PATH}" ${TS_SOURCE_FILES} "-ts" "${_pro_ts_path}"
+		RESULT_VARIABLE CMD_ERROR)
+	message("--update_qtpro_ts CMD_ERROR:" ${CMD_ERROR})
+endmacro(update_qtpro_ts)
+
+# 更新项目的qm文件
+macro(update_qtpro_qm _pro_ts_path _pro_qm_path)
+	execute_process(COMMAND "${QT_LRELEASE_TOOL_PATH}" "-qm" "${_pro_qm_path}" "${_pro_ts_path}"
+		RESULT_VARIABLE CMD_ERROR)
+	message("--update_qtpro_qm CMD_ERROR:" ${CMD_ERROR})
+endmacro(update_qtpro_qm)

@@ -2,8 +2,25 @@
 .vscode/
 bin/
 out/
-build/
 cmake-build-*/
+backup/
 CMakeSettings.json
 
+/pages/resources/language/*/*.qm
+build
+/*/build
+/*/*/build
+/*/bin/*-debug
+/*/bin/*-release
+/*/*/bin/*-debug
+/*/*/bin/*-release
+
+/triLibrary/*/build
+/triLibrary/prebuild/*/*/*
+/triLibrary/out
+/triLibrary/*/out
+
+CMakeLists.txt.user
+build
+bin
 
