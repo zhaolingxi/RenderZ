@@ -5,9 +5,9 @@
 cmake_minimum_required (VERSION 3.8)
 project(zutils)
 
-#include_directories(include include/encode include/json include/file)
+include_directories(include include/encode include/json include/file)
 if(MSVC)
-	add_definitions(-D _AAUTILS_EXPORTS)
+	add_definitions(-D _ZUTILS_EXPORTS)
 endif()
 
 # 项目头文件

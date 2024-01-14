@@ -10,7 +10,7 @@ include_directories(../zutils  ../zutils/include)
 include_directories(include src)
 
 if(MSVC)
-	add_definitions(-D_AACORE_EXPORTS)
+	add_definitions(-D_ZCORE_EXPORTS)
 endif()
 
 # 项目头文件
