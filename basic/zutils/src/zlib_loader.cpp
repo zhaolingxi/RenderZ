@@ -18,35 +18,66 @@ ZLibLoader::~ZLibLoader()
 
 bool ZLibLoader::load()
 {
-	return false;
+	modHandler_ = ZLibLoader::loadLib(libFilePath_.c_str());
+	if (modHandler_ == nullptr) {
+		return false;
+	}
+	return true;
 }
 
 bool ZLibLoader::isLoaded()
 {
-	return false;
+	return (modHandler_ != nullptr);
 }
 
 ZLibLoader::ProcAddress ZLibLoader::resolve(const char* procName)
 {
-	return ProcAddress();
+	return ZLibLoader::getProcAddress(modHandler_, procName);
 }
 
 void ZLibLoader::unload()
 {
+	if (modHandler_ != nullptr) {
+		ZLibLoader::freeLib(modHandler_);
+		modHandler_ = nullptr;
+	}
 }
 
 ZLibLoader::ModHandler ZLibLoader::loadLib(const char* libFilePath)
 {
-
+	//if (!ZFileUtils::isFileExit(libFilePath)) {
+	//	LOGFMTE("ZLibLoader::loadLib() file: %s not existed!!!", libFilePath);
+	//	return nullptr;
+	//}
+	ModHandler hDll = nullptr;
+#ifdef _MSVC
+	hDll = ::LoadLibraryA(libFilePath);
+	if (hDll == nullptr) {
+		DWORD err = GetLastError();
+		//ZLOGFMTE("ZLibLoader::loadLib() Load: %s failed, err=%lu", libFilePath, err);
+	}
+#else
+	hDll = dlopen(libFilePath, RTLD_NOW | RTLD_GLOBAL);
+	if (hDll == nullptr) {
+		//ZLOGFMTE("ZLibLoader::loadLib() Load: %s failed, err: %s", libFilePath, dlerror());
+	}
+#endif
+	return hDll;
 }
 
 ZLibLoader::ProcAddress ZLibLoader::getProcAddress(ModHandler modHandler, const char* procName)
 {
+	return nullptr;
 }
 
 
 void ZLibLoader::freeLib(ModHandler modHandler) 
 {
+#ifdef _MSVC
+	::FreeLibrary(modHandler);
+#else
+	dlclose(modHandler);
+#endif
 }
 
 ZUTILS_NS_END

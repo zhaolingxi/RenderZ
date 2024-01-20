@@ -3,10 +3,6 @@
 #include <vector>
 #include <cstdint>
 /**********************************************************************
- *@file  logic_module_chain.h
- *@date  2023/07/04 16 : 35
- *@author shanwenbin
- *@brief 业务模块插件实体
  ***********************************************************************/
 ZCORE_NS_BEGIN
 class ZCORE_API LogicModuleChain

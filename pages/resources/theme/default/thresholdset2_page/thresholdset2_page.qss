@@ -1,0 +1,449 @@
+
+QWidget#Thresholdset2View,
+QWidget#Thresholdset2View[state="thresholdsetWidgt"] {
+    min-width: 864px;
+    min-height: 600px;
+    max-width: 864px;
+    max-height: 600px;
+    background: #F0F2F5;  
+    border-radius: 8px;
+}
+
+QWidget#Thresholdset2View[state="singlethresholdsetWidgt"] {
+    min-width: 600px;
+    min-height: 600px;
+    max-width: 600px;
+    max-height: 600px;
+    background: #F0F2F5;  
+    border-radius: 8px;
+}
+
+QWidget#Thresholdset2View[state="messagethresholdsetWidgt"] {
+    min-width: 720px;
+    min-height: 600px;
+    max-width: 720px;
+    max-height: 600px;
+    background: #FFFFFF;  
+    border-radius: 8px;
+}
+
+
+
+
+QWidget#multiTitleWidget {
+min-width: 864px;
+min-height: 48px;
+max-width: 864px;
+max-height: 48px;
+background: #222E52;
+border-radius: 8px 8px 0px 0px;
+}
+
+QWidget#singleTitleWidget {
+    min-width: 600px;
+    min-height: 48px;
+    max-width: 600px;
+    max-height: 48px;
+    background: #222E52;
+    border-radius: 8px 8px 0px 0px;
+}
+
+QWidget#messageTitleWidget {
+    min-width: 720px;
+    min-height: 48px;
+    max-width: 720px;
+    max-height: 48px;
+    background: #222E52;
+    border-radius: 8px 8px 0px 0px;
+}
+
+QWidget#SingleSettingWidget QListView::item {
+    height: 30px;
+}
+
+QWidget#SingleSettingWidget QWidget#scrollAreaWidget {
+    border-style: solid;
+    border-width: 1px;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    margin-right: 10px;
+    color: rgba(0,0,0,0.88);
+}
+
+QWidget#leftscrollAreaWidget QWidget#scrollAreaWidget {
+    border-style: solid;
+    border-width: 1px;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    margin-right: 10px;
+    color: rgba(0,0,0,0.88);
+}
+
+QWidget#multiTitleWidget QLabel#TitleLabel {
+    min-width: 0px;
+    min-height: 0px;
+    max-width: 0px;
+    max-height: 0px;
+}
+
+QWidget#messageTitleWidget QLabel#TitleLabel {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+
+QWidget#Thresholdset2View QPushButton#SettingProcessThresholdBtn{
+    min-width: 108px;
+    min-height: 25px;
+    max-width: 108px;
+    max-height: 25px;
+    font-size: 18px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    line-height: 25px;
+    margin-right:12px;
+    text-decoration: underline bold;color: #ffffff;
+}
+
+QWidget#Thresholdset2View QPushButton#SettingSystemThresholdBtn{
+    min-width: 108px;
+    min-height: 25px;
+    max-width: 108px;
+    max-height: 25px;
+    font-size: 18px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    line-height: 25px;
+    margin-right:12px;
+    text-decoration: underline bold;color: #ffffff;
+}
+
+QWidget#Thresholdset2View QLabel#allCategoryLabel,
+QWidget#Thresholdset2View QLabel#allCategoryLabel[state="thresholdsetWidgt"] {
+min-width: 440px;
+max-width: 440px;
+min-height: 36px;
+max-height: 36px;
+font-size: 16px;
+font-family: PingFangSC, PingFang SC;
+font-weight: 500;
+color: rgba(0,0,0,0.9);
+line-height: 22px;
+}
+QWidget#Thresholdset2View QLabel#allCategoryLabel[state="singlethresholdsetWidgt"] {
+    min-width: 210px;
+    max-width: 210px;
+    min-height: 36px;
+    max-height: 36px;
+    font-size: 16px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 500;
+    color: rgba(0,0,0,0.9);
+    line-height: 22px;
+}
+
+QWidget#Thresholdset2View QLabel#selectedConfigDataLabel {
+min-width: 640px;
+max-width: 640px;
+min-height: 36px;
+max-height: 36px;
+font-size: 16px;
+font-family: PingFangSC, PingFang SC;
+font-weight: 500;
+color: rgba(0,0,0,0.9);
+line-height: 22px;
+}
+
+QWidget#multiSettingWidget QListView::item {
+    height: 30px;
+}
+
+QWidget#multiSettingWidget QLineEdit#SelectCategoryEdit {
+    height: 24px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: #D9D9D9;
+    background-image: url(./resources/theme/default/thresholdset2_page/Shape.png); 
+    background-position: left center; 
+    background-repeat: no-repeat; 
+    padding-left: 20px;
+    margin-right: 5px;
+}
+
+QWidget#multiSettingWidget QLineEdit#SelectItemEdit {
+    height: 24px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: #D9D9D9;
+    background-image: url(./resources/theme/default/thresholdset2_page/Shape.png); 
+    background-position: left center; 
+    background-repeat: no-repeat; 
+    padding-left: 20px;
+    margin-right: 5px;
+}
+
+QWidget#leftscrollAreaWidget QCheckBox::indicator:checked {
+    min-width: 5px;
+    min-height: 5px;
+    image: url(./resources/theme/default/common/image/icon_qx.png);
+}
+
+QWidget#SingleSettingWidget QCheckBox::indicator:checked {
+    min-width: 5px;
+    min-height: 5px;
+    image: url(./resources/theme/default/common/image/icon_qx.png);
+}
+
+QWidget#ItemValueWidget {
+    border-radius: 6px;
+    background: #FFFFFF;  
+    
+}
+
+QWidget#ItemValueWidget QLabel#selectedConfigDataLabel {
+    min-width: 140px;
+    min-height: 30px;
+    max-width: 140px;
+    max-height: 30px;
+    margin-top: 0px;
+    margin-left: 20px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.85);
+}
+QWidget#ItemValueWidget QLineEdit#valuelineEdit {
+    min-width: 180px;
+    min-height: 28px;
+    max-width: 180px;
+    max-height: 28px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    margin-left: 20px;
+    border-color: #D9D9D9;
+    font-size: 14px;
+    color: rgba(0,0,0,0.65);
+}
+
+QWidget#ItemValueWidget QScrollArea#selectConfigScrollArea{
+/*    min-width: 330px;
+    min-height: 482px;
+    max-width: 330px;
+    max-height: 482px;*/
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+QWidget#Thresholdset2View QPushButton#cancel {
+width: 76px;
+height: 32px;
+background: #FFFFFF;
+border-radius: 6px;
+border: 1px solid rgba(0,0,0,0.15);
+font-size: 14px;
+font-family: PingFangSC, PingFang SC;
+font-weight: 400;
+color: rgba(0,0,0,0.88);
+line-height: 22px;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+QWidget#Thresholdset2View QPushButton#ok {
+width: 76px;
+height: 32px;
+background: #3B64FB;
+border-radius: 6px;
+font-size: 14px;
+font-family: PingFangSC, PingFang SC;
+font-weight: 400;
+color: #FFFFFF;
+line-height: 22px;
+margin-left: 20px;
+margin-right: 20px;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+QWidget#SystemSettingWidget QLabel#SystemSettingLabel{
+min-width: 140px;
+min-height: 22px;
+max-width: 140px;
+max-height: 22px;
+font-size: 14px;
+font-family: PingFangSC, PingFang SC;
+font-weight: 400;
+color: rgba(0,0,0,0.85);
+line-height: 22px;
+margin-left: 20px;
+margin-right: 20px;
+}
+
+QWidget#SystemSettingWidget QLineEdit#SystemSettingEdit{
+width: 160px;
+height: 32px;
+background: #FFFFFF;
+border-radius: 6px;
+border: 1px solid rgba(0,0,0,0.15);
+}
+
+QWidget#SystemSettingWidget QScrollArea#systemConfigScrollArea{
+    min-width: 819px;
+    min-height: 472px;
+    max-width: 819px;
+    max-height: 472px;
+    background: #FFFFFF;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #ffffff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffffff
+}
+
+
+QWidget#messageSettingWidget QLabel#MessageSettingLabel{
+    min-width: 140px;
+    min-height: 22px;
+    max-width: 140px;
+    max-height: 22px;
+    font-size: 14px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: rgba(0,0,0,0.85);
+    line-height: 22px;
+}
+
+QWidget#messageSettingWidget QLabel#LowLabel{
+    min-width: 50px;
+    max-width: 50px;
+    min-height: 22px;
+    max-height: 22px;
+    font-size: 14px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: rgba(0,0,0,0.7);
+    line-height: 22px;
+}
+
+QWidget#messageSettingWidget QLabel#HighLabel{
+    min-width: 50px;
+    max-width: 50px;
+    min-height: 22px;
+    max-height: 22px;
+    font-size: 14px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: rgba(0,0,0,0.7);
+    line-height: 22px;
+}
+    
+QWidget#messageSettingWidget QLineEdit#MessageSettingEdit{
+width: 160px;
+height: 32px;
+background: #FFFFFF;
+border-radius: 6px;
+border: 1px solid rgba(0,0,0,0.15);
+}
+
+QWidget#messageSettingWidget QScrollArea#messageConfigScrollArea{
+    min-width: 700px;
+    min-height: 472px;
+    max-width: 700px;
+    max-height: 472px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+
+
+/*--------------------------------------------------------*/
+/* 列表竖直方向滑动块样式 */
+QWidget#Thresholdset2View  QScrollBar::add-page:vertical,
+QWidget#Thresholdset2View  QScrollBar::sub-page:vertical {
+    background:transparent;
+    border:none;
+    border-radius: 3px;
+}
+
+QWidget#Thresholdset2View  QScrollBar:vertical {
+    background:transparent;
+    border: none;
+    margin: 0px 0px 0px 0px;
+	width: 8px;
+    border-radius: 3px;
+}
+
+QWidget#Thresholdset2View QScrollBar::handle:vertical {
+    background-color: #DDDDDD;
+    border: none;
+    min-height: 20px;
+    margin: 0px;
+    border-radius: 3px;
+}
+
+QWidget#Thresholdset2View QScrollBar::add-line:vertical {
+    background-color: #FF0000;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QWidget#Thresholdset2View QScrollBar::sub-line:vertical {
+    background: #000066;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QWidget#Thresholdset2View QScrollBar::add-page:horizontal,
+QWidget#Thresholdset2View QScrollBar::sub-page:horizontal {
+    background:transparent;
+    border:none;
+    border-radius: 3px;
+}
+
+QWidget#Thresholdset2View QScrollBar:horizontal {
+    background:transparent;
+    border: none;
+    height: 6px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 3px;
+}
+
+QWidget#Thresholdset2View QScrollBar::handle:horizontal {
+    background-color: #DDDDDD;
+    border: none;
+    min-width: 20px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 3px;
+}
+
+QWidget#Thresholdset2View QScrollBar::add-line:horizontal {
+    background-color: #FF0000;
+    width: 0px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+
+QWidget#Thresholdset2View QScrollBar::sub-line:horizontal {
+    background: #000066;
+    width: 0px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}

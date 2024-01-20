@@ -5,10 +5,6 @@
 #include <functional>
 #include <memory>
 /**********************************************************************
- *@file  logic_module_evtdispatcher.h
- *@date  2023/07/03 17 : 29
- *@author shanwenbin
- *@brief 业务模块的事件分发器
  ***********************************************************************/
 ZCORE_NS_BEGIN
 /**

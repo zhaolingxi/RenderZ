@@ -34,8 +34,11 @@ else()
 endif()
 
 # 依赖的基础库头文件包含目录
+# zutils
+include_directories(../basic/zutils ../basic/zutils/include)
 # zcore
 include_directories(../basic/zcore  ../basic/zcore/include)
+include_directories(../basic/pages  ../basic/pages/test_page)
 
 # 拷贝依赖的基础库文件和页面动态库
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../pages/bin/${TARGET_DIRNAME})
@@ -55,3 +58,5 @@ link_directories(${DEPEND_LIBRARY_PATHS})
 copy_depend_libs("${DEPEND_LIBRARY_PATHS}")
 
 # 需要编译的页面插件
+add_subdirectory ("renderz")
+

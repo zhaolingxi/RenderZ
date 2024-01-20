@@ -9,10 +9,6 @@
 #include "logic_module_base.h"
 #include "logic_module_evtdispatcher.h"
 /**********************************************************************
- *@file  logic_module_manager.h
- *@date  2023/07/01 15 : 59
- *@author shanwenbin
- *@brief 逻辑模块管理器
  ***********************************************************************/
 ZCORE_NS_BEGIN
 class LogicModuleBase;

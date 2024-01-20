@@ -4,9 +4,6 @@
 #include "json/value.h"
 #include <memory>
 /**********************************************************************
- *@file   json_config_impl.h
- *@date   2023/01/14 17 : 11
- *@author shanwenbin
  *@brief  使用JSON对象保存的模块配置信息
  ***********************************************************************/
 ZCORE_NS_BEGIN

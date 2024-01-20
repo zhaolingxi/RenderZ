@@ -5,10 +5,6 @@
 #include "zlib_loader.h"
 
 /**********************************************************************
- *@file  logic_plugin_entity.h
- *@date  2023/07/04 17 : 05
- *@author shanwenbin
- *@brief 业务模块插件实体
  ***********************************************************************/
 ZCORE_NS_BEGIN
 class LogicModuleManager;

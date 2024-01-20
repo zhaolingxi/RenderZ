@@ -4,10 +4,6 @@
 #include <vector>
 #include "logic_plugin_entity.h"
 /**********************************************************************
- *@file  logic_plugin_manager.h
- *@date  2023/07/01 16 : 02
- *@author shanwenbin
- *@brief 业务模块插件管理器
  ***********************************************************************/
 ZCORE_NS_BEGIN
 class ZCORE_API LogicPluginManager

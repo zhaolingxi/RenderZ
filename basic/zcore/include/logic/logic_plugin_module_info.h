@@ -4,10 +4,6 @@
 #include <unordered_map>
 #include <memory>
 /**********************************************************************
- *@file  logic_plugin_module_info.h
- *@date  2023/07/04 16 : 46
- *@author shanwenbin
- *@brief 插件中包含的业务模块信息
  ***********************************************************************/
 ZCORE_NS_BEGIN
 class ZCORE_API LogicPluginModuleInfo

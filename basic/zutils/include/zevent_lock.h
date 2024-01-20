@@ -8,9 +8,6 @@
 #include <unistd.h>
 #endif
 /**********************************************************************
- *@file   hzevent_lock.h
- *@date   2020/12/10 10:20
- *@author shanwenbin
  *@brief  事件锁(信号锁),  windows下基于event实现, linux下基于sem实现
  ***********************************************************************/
 ZUTILS_NS_BEGIN

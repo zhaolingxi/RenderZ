@@ -1,0 +1,16 @@
+QFrame#NodeTopoTreeViewTest QTreeView#TopoTreeView QLabel#IconLabelOne
+,QFrame#NodeTopoTreeViewTest QTreeView#TopoTreeView QLabel#IconLabelTwo {
+    min-width: 16px;
+    min-height: 16px;
+    max-width: 16px;
+    max-height: 16px;
+    border-image: url(:/resources/soc_icon.svg);
+}
+
+QFrame#NodeTopoTreeViewTest QTreeView#TopoTreeView QLabel#TextLabelOne {
+    font: 600 16px "PingFangSC-Regular, PingFang SC";
+}
+QFrame#NodeTopoTreeViewTest QTreeView#TopoTreeView QLabel#TextLabelTwo
+,QFrame#NodeTopoTreeViewTest QTreeView#TopoTreeView QLabel#TextLabelThree {
+    font: 600 14px "PingFangSC-Regular, PingFang SC";
+}

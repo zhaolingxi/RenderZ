@@ -1,0 +1,231 @@
+/* table */
+QTableView[class="toolbox-table"] {
+  qproperty-row_hover_color: #f3f7ff; /* 鼠标所在行的颜色 */
+  qproperty-row_bottom_color: #f7f7f7; /* 每一行底部边框的颜色 */
+  qproperty-column_right_color: ""; /* 每一行右边边框的颜色 */
+
+  min-width: 490px;
+  min-height: 30px;
+  background: #ffffff;
+  margin-top: 12px;
+  margin-left: 24px;
+  margin-right: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.88);
+  border: 0px;
+  font-family: "PingFangSC, PingFang SC";
+}
+
+QTableView[class="toolbox-table"] aa--TableHeaderView {
+  border-radius: 8px; 
+  qproperty-right_border_color: ""; /*表头右边框颜色*/
+  qproperty-bottom_border_color: ""; /* 表头底部边框颜色,取值为空或删除该项表示不设底部边框颜色*/
+
+  background: transparent; /* 表头的背景色 */
+}
+
+QTableView[class="toolbox-table"] aa--TableHeaderView::section {
+  max-height: 42px; /*高度可以设置，宽度设置需要调用 setFixedColumnWidth 接口设置*/
+  min-height: 42px;
+  border: none; /*使用自定义边框颜色,需要将section的边框颜色设置为0*/
+  background: transparent; /* 表头的背景色 */
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  /*表头的字体*/
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.4);
+  line-height: 22px;
+}
+
+QTableView[class="toolbox-table"]::item {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+
+/* 表内元素 */
+QTableView[class="toolbox-table"] #RowStateLabel {
+    max-width: 40px;
+    max-height: 24px;
+    background: #E7E7E7;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: "PingFangSC, PingFang SC";
+    font-weight: 400;
+    color: rgba(0,0,0,0.9);
+    text-align: center;
+}
+
+QTableView[class="toolbox-table"] #RowStateLabel[state="normal"] {
+    background: #E7E7E7;
+    border: 0px;
+}
+
+QTableView[class="toolbox-table"] #RowStateLabel[state="abnormal"] {
+    background: #FDECEE;
+    border: 1px solid #F26E78;
+}
+
+QTableView[class="toolbox-table"] #RowSetThresholdBtn, 
+QTableView[class="toolbox-table"] #ShowItemHistoryBtn, 
+QTableView[class="toolbox-table"] #RowDeleteBtn{
+    height: 20px;
+    font-size: 14px;
+    font-family: "PingFangSC, PingFang SC";
+    font-weight: 400;
+    color: #3B64FB;
+    line-height: 20px;
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+QTableView[class="toolbox-table"] #RowSetThresholdBtn,
+QTableView[class="toolbox-table"] #ShowItemHistoryBtn {
+    max-width: 56px;
+}
+
+QTableView[class="toolbox-table"] #RowDeleteBtn{
+    max-width: 28px;
+}
+
+QTableView[class="toolbox-table"] #RowSetThresholdBtn:hover, 
+QTableView[class="toolbox-table"] #ShowItemHistoryBtn:hover, 
+QTableView[class="toolbox-table"] #RowDeleteBtn:hover {
+    text-decoration: underline;
+}
+
+QTableView[class="toolbox-table"] #HeaderFilterWidget {
+    margin: 3px;
+}
+
+QTableView[class="toolbox-table"] #HeaderFilterWidget #Filter {
+    height: 21px;
+    width: 21px; 
+    border: none;
+    background-color: transparent;
+    qproperty-icon: url(./resources/theme/default/toolbox/image/filter.png);
+}
+
+QTableView[class="toolbox-table"] #HeaderFilterWidget #Filter:hover {
+    background-color: #DBE6FF;
+}
+
+#ColumnFilterWidget #ContentWidget  {
+    min-width: 400px;
+    min-height: 497px;
+    background: transparent;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    border: 0px solid black;
+    margin: 20px;
+}
+
+
+#ColumnFilterWidget #Title {
+    min-height: 48px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background: transparent;
+    background-color: #3b486f;
+    font-size: 18px;
+    font-family: 'PingFangSC, PingFang SC';
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    line-height: 25px;
+    padding-left: 15px;
+}
+
+#ColumnFilterWidget QListWidget {
+    border: 0px;
+    padding: 9px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+#ColumnFilterWidget QListWidget::item {
+    height: 28px;
+    padding-left: 3px;
+}
+
+#ColumnFilterWidget QCheckBox::indicator {
+    width: 17px;  
+    height: 17px;
+}
+
+#ColumnFilterWidget QCheckBox::indicator:unchecked {
+    image: url(./resources/theme/default/toolbox/image/unchecked.png);
+}
+
+#ColumnFilterWidget QCheckBox::indicator:checked {
+    image: url(./resources/theme/default/toolbox/image/checked.png);
+}
+
+
+#ColumnFilterWidget QPushButton {
+    width: 76px;
+    height: 32px;
+    background: #3B64FB;
+    border-radius: 6px;
+    border: none;
+}
+
+#ColumnFilterWidget QPushButton#OkBtn {
+    color: #FFFFFF;
+    margin: 9px;
+}
+
+#ColumnFilterWidget QPushButton#OkBtn:hover {
+    background: #1d4efd;
+}
+
+#ColumnFilterWidget QPushButton#OkBtn:pressed {
+    background: #0037ff;
+}
+
+#ColumnFilterWidget QPushButton#CancelBtn {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.15);
+    color: #000000;
+}
+
+#ColumnFilterWidget QPushButton#CancelBtn:hover {
+    background: #DBE6FF
+}
+
+#ColumnFilterWidget QPushButton#CancelBtn:pressed {
+    background: #9ebbff
+}
+
+ 
+QTableView[class="toolbox-table"] QScrollBar:vertical {
+    background: transparent;
+    width: 8px;
+    border-radius: 3px;
+    margin-left: 2px;
+}
+
+QTableView[class="toolbox-table"] QScrollBar::handle:vertical {
+    background: #DDDDDD;
+    border: 0px solid grey;
+    border-radius: 3px;
+    width: 8px;
+    min-height: 30px;
+    padding-left: 3px;
+}
+
+QTableView[class="toolbox-table"] QScrollBar::add-line:vertical,
+QTableView[class="toolbox-table"] QScrollBar::sub-line:vertical {
+    width: 0px;
+}
+
+QTableView[class="toolbox-table"] QScrollBar::add-page:vertical,
+QTableView[class="toolbox-table"] QScrollBar::sub-page:vertical {
+    background-color: rgba(255, 255, 255, 0);
+}

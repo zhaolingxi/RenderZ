@@ -2,9 +2,6 @@
 #include "zcore_sdk.h"
 #include "config/config_decorator.h"
 /**********************************************************************
- *@file   corecfg_decorator.h
- *@date   2023/01/16 10 : 34
- *@author shanwenbin
  *@brief  基础框架配置
  ***********************************************************************/
 ZCORE_NS_BEGIN

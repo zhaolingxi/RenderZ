@@ -3,11 +3,8 @@
 #if defined(WIN32) || defined(WIN64)
 #include <windows.h>
 #endif
-//#include "aastring.h"
+#include "zstring.h"
 /**********************************************************************
- *@file   aasystem_api.h
- *@date   2022/10/26 20 : 53
- *@author shanwenbin
  *@brief  跨平台系统api
  ***********************************************************************/
 ZUTILS_NS_BEGIN
@@ -31,14 +28,14 @@ public:
 	 @param[out] procName 当前进程的名称
 	 @return 无
 	 */
-//	static void getCurrentProcName(AAString& procName);
+	static void getCurrentProcName(ZString& procName);
 
 	/**
 	 @brief 获取当前进行所在的文件夹
 	 @param[in] procDir 当前进程所在的文件夹
 	 @return 无
 	 */
-//	static void getCurrentProcDir(AAString& procDir);
+	static void getCurrentProcDir(ZString& procDir);
 
 	/**
 	  @brief 设置程序的工作目录
@@ -52,14 +49,14 @@ public:
 	 @param[out] docDir 本机的document目录
 	 @return 无
 	 */
-//	static void getDocumentDir(AAString& docDir);
+	static void getDocumentDir(ZString& docDir);
 
 	/**
 	 @brief 获取当前用户主目录, linux为home目录, windows为AppData目录
 	 @param[out] appDataDir 本机的AppData目录
 	 @return 无
 	 */
-//	static void getUserHomeDir(AAString& appDataDir);
+	static void getUserHomeDir(ZString& appDataDir);
 
 	/**
 	 @brief 生成一个位于 [from, to]的整数，包括from和to

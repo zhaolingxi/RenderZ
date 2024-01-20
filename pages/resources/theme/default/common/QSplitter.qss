@@ -1,0 +1,19 @@
+QSplitter::handle
+{
+	background-color: rgb(255, 0, 0);
+}
+
+QSplitter::handle:horizontal
+{
+    width: 2px;
+}
+
+QSplitter::handle:vertical
+{
+    height: 2px;
+}
+
+QSplitter::handle:pressed
+{
+    background-color: rgb(255, 0, 0);
+}

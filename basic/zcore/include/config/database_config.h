@@ -2,9 +2,6 @@
 #include "zcore_sdk.h"
 #include "config/config_decorator.h"
 /**********************************************************************
- *@file   databasecfg_decorator.h
- *@date   2023/01/16 10 : 34
- *@author shanwenbin
  *@brief  数据库配置
  ***********************************************************************/
 ZCORE_NS_BEGIN

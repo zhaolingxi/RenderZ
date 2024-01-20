@@ -2,9 +2,6 @@
 #include "zcore_sdk.h"
 #include "config/config_decorator.h"
 /**********************************************************************
- *@file   networkcfg_decorator.h
- *@date   2023/01/16 10 : 35
- *@author shanwenbin
  *@brief  网络基础库配置
  ***********************************************************************/
 ZCORE_NS_BEGIN
