@@ -31,9 +31,9 @@ message("Info: Project ${PROJECT_NAME} config qt compile finished")
 
 # 依赖的基础库头文件包含目录
 # aautils
-include_directories(../basic/aautils ../basic/zutils/include)
+include_directories(../basic/zutils ../basic/zutils/include)
 # aacore
-include_directories(../basic/aacore ../basic/zcore/include)
+include_directories(../basic/zcore ../basic/zcore/include)
 # triLibrary 
 if(MSVC64)
         include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/include)
@@ -45,31 +45,31 @@ endif()
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../logics/bin/${TARGET_DIRNAME})
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../basic/bin/${TARGET_DIRNAME})
 # zmq
-list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prebuild/${TARGET_DIRNAME}/zmq/bin)
-list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prebuild/${TARGET_DIRNAME}/zmq/lib)
+list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prebuild/${TARGET_DIRNAME}/zmq/bin)
+list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prebuild/${TARGET_DIRNAME}/zmq/lib)
 # openssl
 if(MSVC64)
     # 直接使用已经编译好的openssl二进制库
-    list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/x64/openssl/lib)
-    list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/x64/openssl/bin)
+    list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/openssl/lib)
+    list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/openssl/bin)
 else()
-    list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prebuild/${TARGET_DIRNAME}/openssl/lib)
+    list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prebuild/${TARGET_DIRNAME}/openssl/lib)
 endif()
 
 # danetsdk
 if(MSVC64)
 	if(DEBUG)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/x64/danetsdk/debug/lib)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/x64/danetsdk/debug/bin)
+		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/debug/lib)
+		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/debug/bin)
 	else()
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/x64/danetsdk/release/lib)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/x64/danetsdk/release/bin)
+		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/release/lib)
+		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/release/bin)
 	endif()
 else()
 	if(DEBUG)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/linux64/danetsdk/debug/lib)
+		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/linux64/danetsdk/debug/lib)
 	else()
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/prelibrary/linux64/danetsdk/release/lib)
+		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/linux64/danetsdk/release/lib)
 	endif()
 endif()
 
@@ -87,6 +87,6 @@ endif()
 # 需要编译的页面插件
 add_subdirectory ("test_page")
 if(BUILD_TEST)
-#	add_subdirectory ("apppage_test")
+#	add_subdirectory ("test_page")
 endif()
 

@@ -8,7 +8,7 @@
 #include <memory>
 #include "zutils.h"
 #include "zcore.h"
-//#include "renderz_main_view.h"
+#include "renderz_main_page.h"
 
 int main(int argc, char* argv[])
 {
@@ -21,9 +21,8 @@ int main(int argc, char* argv[])
 	QDir::setCurrent(appDir);
 	qDebug() << "appDir: " << appDir;
 
-	//ThresholdsetPopUpWidget* ptest = new ThresholdsetPopUpWidget(nullptr,"");
-	//ptest->createView();
-	//ptest->show();
+	RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
+	pMianPage->createPage();
 
 	ret = app->exec();
 	return ret;
