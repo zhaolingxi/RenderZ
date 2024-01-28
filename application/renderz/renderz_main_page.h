@@ -7,8 +7,10 @@
 #include <unordered_set>
 #include <QGridLayout>
 #include<QPushButton>
+#include <QPainter>
+#include <QStyleOption>
 
-class RenderZMainPage : public QWidget
+class RenderZMainPage : public QFrame
 {
 	Q_OBJECT
 public:
@@ -17,16 +19,21 @@ public:
 
 	bool createPage();
 	void initUI();
+	void tempLoadTheme(QApplication* app=nullptr);
 
 
 protected:
 	void addPushBtm(QHBoxLayout*& ioLayout);
+	std::shared_ptr<QString> readQssFiles(const QString& dirPath);
 
+	void RenderZMainPage::paintEvent(QPaintEvent* e) override;
 private:
 	QGridLayout* mainLayout_{ nullptr }; /**< 页面主布局 */
 	QWidget* mainSideBarLeft_{ nullptr }; /**< 侧边栏 */
 	QWidget* mainSideBarRight_{ nullptr }; /**< 侧边栏 */
 	QVBoxLayout* pageViewLayout_{ nullptr }; /**< 显示页面视图的布局(top|mid|btm) */
+
+
 	QHBoxLayout* pageViewLayoutTop_{ nullptr };
 	QHBoxLayout* pageViewLayoutMid_{ nullptr };
 	QHBoxLayout* pageViewLayoutBtm_{ nullptr };

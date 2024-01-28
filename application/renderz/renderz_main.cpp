@@ -22,6 +22,7 @@ int main(int argc, char* argv[])
 	qDebug() << "appDir: " << appDir;
 
 	RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
+	pMianPage->tempLoadTheme(app.get());
 	pMianPage->createPage();
 
 	ret = app->exec();

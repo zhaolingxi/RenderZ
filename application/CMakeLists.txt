@@ -38,7 +38,11 @@ endif()
 include_directories(../basic/zutils ../basic/zutils/include)
 # zcore
 include_directories(../basic/zcore  ../basic/zcore/include)
+# zqtgui
+include_directories(../basic/zqtui   ../basic/zqtui/include)
+
 include_directories(../basic/pages  ../basic/pages/test_page)
+
 
 # 拷贝依赖的基础库文件和页面动态库
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../pages/bin/${TARGET_DIRNAME})
