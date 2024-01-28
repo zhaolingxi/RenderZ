@@ -2,6 +2,10 @@
 #include<QApplication>
 #include<QDir>
 #include<QDirIterator>
+#include<QLabel>
+#include<QLineEdit>
+#include<QPushButton>
+
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
 }
@@ -18,6 +22,58 @@ bool RenderZMainPage::createPage()
 	return ret;
 }
 
+bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
+{
+	std::string appSourceDir = _APP_SOURCE_DIR;
+	std::string pagesThemeDir = appSourceDir + "/../assert/image/icon/login.bmp";
+	QIcon titleIcon(pagesThemeDir.c_str());
+	QPushButton* titleIconbtn = new QPushButton();
+	titleIconbtn->setIcon(titleIcon);
+	QLabel *titleNameLab=new QLabel(tr("RenderZ_v0.1"));
+	QLineEdit* serachLine = new QLineEdit();
+	QPushButton* personalPage = new QPushButton();
+	QPushButton* globalSetting=new QPushButton();
+	QPushButton* minBtn = new QPushButton();
+	QPushButton* maxBtn = new QPushButton();
+	QPushButton* closeBtn=new QPushButton();
+
+	pageViewLayoutTop->addWidget(titleIconbtn);
+	pageViewLayoutTop->addWidget(titleNameLab);
+	pageViewLayoutTop->addStretch();
+	pageViewLayoutTop->addWidget(serachLine);
+	pageViewLayoutTop->addStretch();
+	pageViewLayoutTop->addWidget(personalPage);
+	pageViewLayoutTop->addWidget(globalSetting);
+	pageViewLayoutTop->addStretch();
+	pageViewLayoutTop->addWidget(minBtn);
+	pageViewLayoutTop->addWidget(maxBtn);
+	pageViewLayoutTop->addWidget(closeBtn);
+	return true;
+}
+
+bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
+{
+	mainSideBarLeft_ = new QWidget();
+	mianViewer_ = new ZQtViewer();
+	mainSideBarRight_ = new QWidget();
+
+	pageViewLayoutMid->addWidget(mainSideBarLeft_);
+	pageViewLayoutMid->addWidget(mianViewer_);
+	pageViewLayoutMid->addWidget(mainSideBarRight_);
+	return true;
+}
+
+bool RenderZMainPage::createLayoutBtm(QHBoxLayout*& pageViewLayoutBtm)
+{
+	QLabel* messageLab = new QLabel(tr("ÌáÊ¾£º"));
+	QPushButton* axisBtn = new QPushButton();
+	pageViewLayoutBtm_->addWidget(messageLab);
+	pageViewLayoutBtm_->addStretch();
+	pageViewLayoutBtm_->addWidget(axisBtn);
+	return true;
+
+}
+
 void RenderZMainPage::initUI()
 {
 	mainLayout_ = new QGridLayout(this);
@@ -28,9 +84,9 @@ void RenderZMainPage::initUI()
 	pageViewLayoutMid_ = new QHBoxLayout();
 	pageViewLayoutBtm_ = new QHBoxLayout();
 
-	addPushBtm(pageViewLayoutTop_);
-	addPushBtm(pageViewLayoutMid_);
-	addPushBtm(pageViewLayoutBtm_);
+	createLayoutTop(pageViewLayoutTop_);
+	createLayoutMid(pageViewLayoutMid_);
+	createLayoutBtm(pageViewLayoutBtm_);
 
 	pageViewLayout_->addLayout(pageViewLayoutTop_);
 	pageViewLayout_->addLayout(pageViewLayoutMid_);
@@ -39,19 +95,6 @@ void RenderZMainPage::initUI()
 	mainLayout_->addLayout(pageViewLayout_,0,0);
 }
 
-void RenderZMainPage::addPushBtm(QHBoxLayout*& ioLayout)
-{
-
-	auto addbtm = [ioLayout]() {
-		QPushButton* pb1 = new QPushButton();
-		ioLayout->addWidget(pb1);
-		};
-
-	for (int i = 0; i < 2;i++) {
-		addbtm();
-	}
-
-}
 
 void RenderZMainPage::tempLoadTheme(QApplication* app)
 {
@@ -114,13 +157,3 @@ std::shared_ptr<QString> RenderZMainPage::readQssFiles(const QString& dirPath)
 	return allQssStr;
 }
 
-
-
-void RenderZMainPage::paintEvent(QPaintEvent* e)
-{
-	QStyleOption opt;
-	opt.init(this);
-	QPainter p(this);
-	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-	QWidget::paintEvent(e);
-}

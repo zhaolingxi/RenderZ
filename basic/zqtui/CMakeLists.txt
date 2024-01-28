@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.8)
-project(zqtui)
+project(zqtgui)
 
 # Qt编译选项
 include(qt_utils) 
@@ -9,7 +9,7 @@ message("Info: Project ${PROJECT_NAME} config qt compile finished")
 # 依赖库头文件包含目录
 include_directories(../zutils/include ../zcore/include)
 # project的头文件包含目录
-include_directories(include src src/manager)
+include_directories(include include/zqtviewer src src/zqtviewer)
 
 if(MSVC)
 	add_definitions(-D_ZQTGUI_EXPORTS)

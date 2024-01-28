@@ -13,7 +13,7 @@ file(GLOB_RECURSE RCC_SOURCE_FILES "resource/*.qrc")
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} ${RCC_SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME}  Qt5::Widgets  Qt5::Core Qt5::Gui)
-target_link_libraries(${PROJECT_NAME} zutils zcore)
+target_link_libraries(${PROJECT_NAME} zutils zcore zqtgui)
 if(GNUC)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'") 
 endif()
