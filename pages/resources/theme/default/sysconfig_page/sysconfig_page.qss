@@ -1,0 +1,483 @@
+/* 样式文件 styles.qss */
+QWidget#SysConfigView {
+    min-width: 880px;
+    max-width: 880px;
+    min-height: 600px;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+QWidget#SysConfigView QPushButton#sysConfigServerBtn {
+    background: #ffffff;
+	max-width:120px;
+	min-width:80px;
+	max-height:25px;
+	min-height: 25px;
+    border-style: none;
+    margin-top:40px;
+    margin-left:20px;
+}
+
+QWidget#SysConfigView QPushButton#sysConfigLocalBtn {
+    background: #ffffff;
+	max-width:120px;
+	min-width:80px;
+	max-height:25px;
+	min-height: 25px;
+    border-style: none;
+    margin-top:20px;
+    margin-left:20px;
+}
+
+QWidget#SysConfigView QPushButton#domainCtrolConfigBtn {
+    background: #ffffff;
+	max-width:120px;
+	min-width:80px;
+	max-height:25px;
+	min-height: 25px;
+    border-style: none;
+    margin-top:20px;
+    margin-left:20px;
+}
+
+QWidget#SysConfigView QPushButton#capilotConfigBtn {
+    background: #ffffff;
+	max-width:120px;
+	min-width:80px;
+	max-height:25px;
+	min-height: 25px;
+    border-style: none;
+    margin-top:20px;
+    margin-left:20px;
+}
+
+QWidget#SysConfigView QPushButton#CloseBtn {
+	background: transparent;
+	max-width:40px;
+	min-width:40px;
+	max-height:40px;
+	min-height: 40px;
+	margin-top:5px;
+}
+
+#PopPathDirButton {
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    max-height: 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffffff;
+    background-color: #ffffff;
+    image: url(./resources/theme/default/common/image/icon_dir.png);
+}
+
+QWidget#domainpupUpWidget {
+    min-height:450px;
+    min-width: 500px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D9D9D9;
+    padding-top: 10px;
+    background-color: #ffffff;
+}
+
+QWidget#capilotpupUpWidget {
+    min-height:450px;
+    min-width: 500px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D9D9D9;
+    padding-top: 10px;
+    background-color: #ffffff;
+}
+
+QWidget#SysConfigView aa--ToastWidget QLabel#TipsLabel {
+	color: #2D2D2D;
+	max-width:240px;
+	min-width:240px;
+}
+
+QWidget#domainpupUpWidget QLabel {
+    margin-top:10px;
+    margin-bottom:10px;
+    min-width:92px;
+    max-width:92px;
+    margin-left:50px;
+}
+
+QWidget#domainpupUpWidget QLineEdit {
+    margin-top:10px;
+    min-height:32px;
+    max-height:32px;
+    min-width:240px;
+    max-width:240px;
+    margin-bottom:10px;
+}
+
+QWidget#domainpupUpWidget QComboBox {
+    min-height:32px;
+    max-height:32px;
+    min-width:240px;
+    max-width:240px;
+}
+
+QWidget#domainpupUpWidget QPushButton {
+    margin-bottom:10px;
+}
+
+QWidget#capilotpupUpWidget QLabel {
+    margin-top:10px;
+    margin-bottom:10px;
+    min-width:92px;
+    max-width:92px;
+    margin-left:50px;
+}
+
+QWidget#capilotpupUpWidget QLineEdit {
+    margin-top:10px;
+    min-height:32px;
+    max-height:32px;
+    margin-bottom:10px;
+}
+
+QWidget#capilotpupUpWidget QComboBox {
+    min-height:32px;
+    max-height:32px;
+}
+
+QWidget#capilotpupUpWidget QPushButton {
+    margin-bottom:10px;
+}
+
+QWidget#PopUpButton {
+    min-width: 76px;
+    min-height: 32px;
+    max-width: 76px;
+    max-height: 32px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border-style: solid;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+
+QWidget#PopUpButton:hover {
+    background-color: #3778FF;
+    color: #ffffff;
+}
+
+QWidget#capilotControlLineEdit {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: #D9D9D9;
+}
+
+QWidget#domainControlLineEdit {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: #D9D9D9;
+}
+
+QWidget#SysConfigView QWidget#titleWidget {
+    min-width: 860px;
+    min-height: 28px;
+    padding-bottom: 10px;
+    background-color: #F9FBFF;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #F3F3F3;
+}
+
+QWidget#SysConfigView QPushButton#MinBtn {
+	image: url(./resources/theme/default/common/image/icon_min.png);
+}
+
+QWidget#SysConfigView QPushButton#CloseBtn {
+    margin-right: 0px;
+	image: url(./resources/theme/default/common/image/icon_close.png);
+}
+
+QWidget#SysConfigWidget {
+    min-width: 860px;
+    position: absolute;
+    left: 253px !important;
+    top: 84 !important;
+    background-color: #ffffff;
+}
+
+QWidget#SysConfigView QLabel#TitleLabel {
+    min-width: 840px;
+    min-height: 28px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 28px;
+    background-color: transparent;
+    padding-top: 10px;
+    padding-left: 6px;
+}
+
+QWidget#SysConfigView QListView#configurationListView {
+    min-width:  130px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffffff;
+    background-color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.88);
+}
+
+QWidget#SysConfigView QWidget#ConfigurationWidget {
+    min-width:  750px;
+    background-color: #F9FBFF;
+}
+
+QWidget#SysConfigView QLabel#gitlabPath {
+    min-height:  28px;
+    max-height:  28px;
+    min-width:  150px;
+    max-width:  150px;
+    margin-top: 52px;
+    color: rgba(0,0,0,0.85);
+}
+
+QWidget#SysConfigView QLabel#gitlabLabel {
+    min-height:  28px;
+    max-height:  28px;
+    min-width:  150px;
+    max-width:  150px;
+    color: rgba(0,0,0,0.85);
+}
+
+QWidget#SysConfigView QLabel#ConfigurationLabel {
+    padding-right: 10px;
+    padding-top: 5px;
+}
+
+QWidget#SysConfigView QLabel#localComponentLabel {
+    padding-right: 10px;
+    padding-top: 30px;
+}
+
+QWidget#SysConfigView QLineEdit#gitlabPathLineEdit {
+    min-width:  350px;
+    max-width:  350px;
+    min-height:  32px;
+    max-height:  32px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: #D9D9D9;
+    font-size: 14px;
+    color: rgba(0,0,0,0.85);
+    margin-top: 52px;
+}
+
+QWidget#SysConfigView QLineEdit#gitlabLineEdit {
+    min-width:  350px;
+    max-width:  350px;
+    min-height:  32px;
+    max-height:  32px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: #D9D9D9;
+    font-size: 14px;
+    color: rgba(0,0,0,0.85);
+}
+
+QWidget#SysConfigView QLineEdit#localComponentLineEdit {
+    min-width:  400px;
+    max-width:  400px;
+    min-height: 32px;
+    max-height: 32px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D9D9D9;
+    font-size: 14px;
+    color: rgba(0,0,0,0.85);
+    margin-top: 24px;
+}
+
+QWidget#SysConfigView QLineEdit#ConfigurationLineEdit {
+    min-width:  400px;
+    max-width:  400px;
+    min-height: 32px;
+    max-height: 32px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D9D9D9;
+    font-size: 14px;
+    color: rgba(0,0,0,0.85);
+}
+
+QWidget#SysConfigView QPushButton#okButton {
+    min-width: 76px;
+    min-height: 32px;
+    max-width: 76px;
+    max-height: 32px;
+    border-radius: 6px;
+    border-style: solid;
+    border: 1px solid rgba(0,0,0,0.15);
+    margin-right: 40px;
+    margin-bottom: 10px;
+}
+
+QWidget#SysConfigView QPushButton#oklocalConfigButton {
+    min-width: 76px;
+    min-height: 32px;
+    max-width: 76px;
+    max-height: 32px;
+    border-radius: 6px;
+    border-style: solid;
+    border: 1px solid rgba(0,0,0,0.15);
+    margin-bottom: 10px;
+}
+
+QWidget#SysConfigView QPushButton#domainControlInsertButton:hover {
+    background-color: #3778FF;
+    color: #ffffff;
+}
+
+QWidget#SysConfigView QPushButton#oklocalConfigButton:hover {
+    background-color: #3778FF;
+    color: #ffffff;
+}
+
+QWidget#SysConfigView QPushButton#okButton:hover {
+    background-color: #3778FF;
+    color: #ffffff;
+}
+
+QWidget#SysConfigView QPushButton#domainControlConfigButton:hover {
+    background-color: #3778FF;
+    color: #ffffff;
+}
+
+QWidget#SysConfigView QPushButton#domainControlInsertButton {
+    min-width: 76px;
+    min-height: 32px;
+    max-width: 76px;
+    max-height: 32px;
+    border-style: solid;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.15);
+    margin-top: 10px;
+    margin-right: 30px;
+    color: rgba(0,0,0,0.85);
+}
+
+QWidget#SysConfigView QPushButton#domainControlConfigButton {
+    min-width: 76px;
+    min-height: 32px;
+    max-width: 76px;
+    max-height: 32px;
+    border-style: solid;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 1px solid rgba(0,0,0,0.15);
+    color: rgba(0,0,0,0.85);
+}
+
+QWidget#SysConfigView QPushButton#localComponentButton {
+    min-width: 30px;
+    max-width: 30px;
+    min-height: 32px;
+    max-height: 32px;
+    margin-top: 24px;
+    border: 1px solid rgba(0,0,0,0.15);
+    image: url(./resources/theme/default/common/image/icon_dir.png);
+}
+
+QWidget#SysConfigView QPushButton#ConfigurationButton {
+    min-width: 30px;
+    min-height: 32px;
+    max-width: 30px;
+    max-height: 32px;
+    padding-top: 0px;
+    border: 1px solid rgba(0,0,0,0.15);
+    image: url(./resources/theme/default/common/image/icon_dir.png);
+}
+
+QWidget#SysConfigView QTableView#tableView {
+	qproperty-row_hover_color: #F3F7FF; /* 鼠标所在行的颜色 */
+	qproperty-row_bottom_color:#F7F7F7; /* 每一行底部边框的颜色 */
+	qproperty-column_right_color:""; /* 每一行右边边框的颜色 */
+	background: #FFFFFF;
+	border:0px;
+	margin-top:12px;
+	margin-right:24px;
+	font-size: 14px;
+	font-weight: 400;
+	color: rgba(0,0,0,0.88);
+	line-height: 20px;
+}
+
+QWidget#SysConfigView aa--TableHeaderView {
+    border-radius: 4px;
+	qproperty-right_border_color: ""; /*表头右边框颜色*/
+	qproperty-bottom_border_color: ""; /* 表头底部边框颜色,取值为空或删除该项表示不设底部边框颜色*/
+}
+
+QWidget#SysConfigView QPushButton#DelIconBtn {
+	max-width:16px;
+	min-width:16px;
+    margin-top: 10px;
+    border:0px;
+    background-color: transparent;
+    image: url(./resources/theme/default/common/image/icon_del.png);
+}
+
+QWidget#SysConfigView QPushButton#ModifyIconBtn {
+	max-width:16px;
+	min-width:16px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border:0px;
+    background-color: transparent;
+    image: url(./resources/theme/default/common/image/icon_edit.png);
+}
+
+QWidget#SysConfigView QPushButton#CheckIconBtn {
+	max-width:16px;
+	min-width:16px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border:0px;
+    background-color: transparent;
+    image: url(./resources/theme/default/common/image/icon_verify.png);
+}
+
+QWidget#SysConfigView QPushButton#CapilotDelIconBtn {
+	max-width:16px;
+	min-width:16px;
+    margin-top: 15px;
+    margin-left: 30px;
+    background-color: transparent;
+    border:0px;
+    image: url(./resources/theme/default/common/image/icon_del.png);
+}
+
+QWidget#SysConfigView QPushButton#CapilotModifyIconBtn {
+	max-width:16px;
+	min-width:16px;
+    margin-left: 10px;
+    margin-top: 15px;
+    border:0px;
+    background-color: transparent;
+    image: url(./resources/theme/default/common/image/icon_edit.png);
+}
+
+QWidget#SysConfigView aa--ToastWidget QLabel#TipsLabel {
+	min-width:300px;
+    max-width:300px;
+}
+
+QWidget#SysConfigView aa--ToastWidget {
+	min-width:350px;
+    max-width:350px;
+}
