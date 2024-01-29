@@ -69,8 +69,8 @@ public:
 	 */
 	void setAt(const int idx, const char ch);
 	/**
-	 @brief 获取字符串缓存收地址
-	 @return 字符串缓存收地址
+	 @brief 获取字符串缓存首地址
+	 @return 字符串缓存首地址
 	 */
 	const char* getData() const;
 
