@@ -9,10 +9,17 @@
 #include "zutils.h"
 #include "zcore.h"
 #include "renderz_main_page.h"
+#include "test_case.h"
+
+#include "zutils_sdk.h"
+#include"zthread.h"
+#include"zstring.h"
+
+
 
 int main(int argc, char* argv[])
 {
-	int ret;
+	int ret=0;
     qputenv("QT_ENABLE_HIGHDPI_SCALING", "1");
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 
