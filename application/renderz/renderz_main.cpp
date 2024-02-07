@@ -33,7 +33,8 @@ int main(int argc, char* argv[])
 	pMianPage->tempLoadTheme(app.get());
 	pMianPage->createPage();
 
-	testcase::threadTest01();
+//	testcase::threadTest01();
+	testcase::timeTest01();
 
 	ret = app->exec();
 	return ret;
