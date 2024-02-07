@@ -32,17 +32,17 @@ public:
 		}
 	};
 
-	inline calculateTime(Task*& iTask) {
+	//inline calculateTime(Task*& iTask) {
 
-	}
+	//}
 
 public:
-	TaskQueue();
-	virtual ~TaskQueue();
+	TaskQueue() = default;
+	virtual ~TaskQueue()=default;
 
 private:
 	// 保存延时任务的小顶堆
-	std::priority_queue<Task*, TaskCompare> delayTaskHeap_;
+	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> delayTaskHeap_;
 	// 延时任务队列的最大容量
 	int maxCapcity_{ 10000 };
 };
