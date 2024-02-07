@@ -138,8 +138,8 @@ bool ZThread::resumeThread()
 bool ZThread::killThread()
 {
 	bool status = false;
-	int err;
-	if (!pstdThread_) {
+	int err=0;
+	if (pstdThread_) {
 #ifdef _MSVC
 		status = ::TerminateThread(pstdThread_->native_handle(), err);
 #else

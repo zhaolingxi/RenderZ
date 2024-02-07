@@ -14,6 +14,7 @@
 #include "zutils_sdk.h"
 #include"zthread.h"
 #include"zstring.h"
+#include"test_case.h"
 
 
 
@@ -31,6 +32,8 @@ int main(int argc, char* argv[])
 	RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
 	pMianPage->tempLoadTheme(app.get());
 	pMianPage->createPage();
+
+	testcase::threadTest01();
 
 	ret = app->exec();
 	return ret;
