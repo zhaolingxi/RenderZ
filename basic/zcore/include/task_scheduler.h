@@ -3,35 +3,24 @@
 #include <cstdint>
 #include <functional>
 #include <atomic>
-#include "delaytask_queue.h"
-//#include "thread_base.h"
+#include "task_queue.h"
+#include"zthread.h"
 /**********************************************************************
- *@brief 基于Asio和无锁队列实现的异步任务调度器
+ *@brief 异步任务调度器
  ***********************************************************************/
 ZCORE_NS_BEGIN
 class ZCORE_API TaskScheduler
 {
 public:
-	// 任务调度器的使用场景(界面Model、数据库读写)
-	enum class SchedScope : int {
-		kGenral = 0,   /**< 通用调度器 */
-		kLogicModule = 1, /**< 供逻辑模块使用的调度器 */
-		kWSServer = 2,   /**< 供Websocket服务端使用的调度器 */
-		kWSClient = 3,   /**< 供Websocket服务端使用的调度器 */
-		kHttpServer = 4, /**< 用于Http服务端的调度器(暂未使用) */
-		kServiceModel = 5,    /**< 供Websocket服务端ServiceModel使用的调度器  */
-		kDatabase = 6,   /**< 用于数据库读写的调度器 */
-		kMax
+	enum class SchedType : int {
+		PRIOR_Sched = 0,//优先级调度
+		FIFO_Sched,//先入先出调度
+		WEB_TASK_Sched,//网络任务调度
 	};
 
-	enum class SchedType : int {
-		kNone = 0, /**< 无 */
-		kNonThread = 1, /**< 不带线程的任务调度器(运行在主线程) */
-		kThread = 2, /**< 带线程的任务调度器(运行在子线程) */
-	};
 public:
-	TaskScheduler(SchedType type, SchedScope scope = SchedScope::kGenral);
-	virtual ~TaskScheduler();
+	TaskScheduler(SchedType type,int workerNum=-1);
+	virtual ~TaskScheduler()=default;
 
 public:
 	/**
@@ -41,7 +30,7 @@ public:
 	 */
 	uint64_t getIdentity();
 
-	SchedScope getScope();
+
 	SchedType getType();
 
 	/**
@@ -51,7 +40,7 @@ public:
 	int getRunningTaskCnt();
 
 	/**
-	  @brief 获取异步调度上下文
+	  @brief 获取异步调度上下文（WEB_TASK_Sched）
 	  @return 异步调度上下文
 	 */
 	template<typename T>
@@ -136,19 +125,6 @@ public:
 	 */
 	static TaskScheduler* getCommServiceModelScheduler();
 
-	/**
-	  @brief 创建不带子线程的任务调度器
-	  @param[in] scope 调度器的作用范围
-	  @return 调度器对象
-	 */
-	static TaskScheduler* createNonThreadScheduler(SchedScope scope = SchedScope::kGenral);
-
-	/**
-	  @brief 创建带子线程的任务调度器
-	  @param[in] scope 调度器的作用范围
-	  @return 调度器对象
-	 */
-	static TaskScheduler* createThreadScheduler(SchedScope scope = SchedScope::kGenral);
 
 	/**
 	  @brief 销毁任务调度器
@@ -157,37 +133,8 @@ public:
 	 */
 	static void destroyScheduler(TaskScheduler* scheduler);
 
-	/**
-	  @brief 获取系统启动时预设的任务调度器--待完善
-	 */
-	static TaskScheduler* getSchedulerByScope(SchedScope scope);
 	static void releaseScheduler(TaskScheduler* scheduler);
 
-protected:
-
-	/**
-	 @brief 启动调度子线程(仅用于ThreadTaskService)
-	 @return 成功:线程ID, 失败: -1
-	 */
-	virtual unsigned long startShedThread();
-
-	/**
-	 @brief 停止调度子线程(仅用于ThreadTaskService)
-	 @return 成功:线程ID, 失败: -1
-	 */
-	virtual void stopShedThread();
-
-	/**
-	 @brief 等待调度子线程停止完成(仅用于ThreadTaskService)
-	 @return 成功:线程ID, 失败: -1
-	 */
-	virtual void waitShedThreadStop();
-
-	/**
-	 @brief 服务调度线程是否已退出
-	 @return 是/否
-	 */
-	virtual bool isShedThreadStopped();
 
 private:
 	// 不允许对象拷贝
@@ -196,13 +143,12 @@ private:
 	TaskScheduler(const TaskScheduler&& other) = delete;
 	void operator=(const TaskScheduler&& other) = delete;
 private:
-	SchedScope scope_{ SchedScope::kGenral };
-	SchedType schedType_{ SchedType::kNone };
+	SchedType schedType_{ SchedType::PRIOR_Sched };
 	bool isRunning_{ false }; /**< 调度服务是否处于运行中 */
 	std::atomic<int> runningTaskCnt_{ 0 }; /**< 正在执行的任务数量 */
 	void* asyncIOContext_{ nullptr }; /**< 基础IO异步服务 */
-	unsigned long schedThreadId_{ 0 }; /**< 负责调度任务的线程ID */
-	DelayTaskQueue delayTaskQueue_; /**<  延时任务队列 */
-//	ThreadBase schedThread_; /**< 调度线程 */
+	std::shared_ptr < TaskQueue> taskQueue_{ nullptr }; /**<  延时任务队列 */
+	std::shared_ptr<zutils::ZThread> schedThread_{nullptr}; /**< 调度线程 */
+	int threadNum_{0};
 };
 ZCORE_NS_END

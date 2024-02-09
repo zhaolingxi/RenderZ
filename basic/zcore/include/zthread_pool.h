@@ -10,7 +10,6 @@
 //#include<future>
 //#include<atomic>
 //
-////#include "Condition.hh"
 //
 //class ThreadPool {
 //public:
@@ -28,7 +27,7 @@
 //    void addTask(const TaskPair&);
 //
 //private:
-//    ThreadPool(const ThreadPool&);//½ûÖ¹¸´¿Ï¿½±´.
+//    ThreadPool(const ThreadPool&);
 //    const ThreadPool& operator=(const ThreadPool&);
 //
 //    struct TaskPriorityCmp

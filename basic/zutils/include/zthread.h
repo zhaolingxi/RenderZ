@@ -24,9 +24,29 @@ enum runType {ONCE=0,LOOP};
 
 class ZUTILS_API ZThread
 {
+	struct ZThreadCompare
+	{
+		bool operator()(const ZThread* left, const ZThread* right) {
+			if (left->threadIdle_) {//空闲优先
+				return false;
+			}
+			else if (right->threadIdle_) {
+				return false;
+			}
+			else {//比较id
+				return (left->threadId_ < right->threadId_);
+			}
+		}
+	};
+
 public:
 	explicit ZThread(const char* strName, THREAD_MAIN_TASK mainProc = nullptr,runType type = runType::ONCE);
 	explicit ZThread(ZString strName,THREAD_MAIN_TASK mainProc=nullptr, runType type = runType::ONCE);
+
+
+
+	void operator=(const ZThread& other) = delete;
+	void operator=(const ZThread&& other) = delete;
 	virtual~ZThread();
 	std::shared_ptr<STDTHREAD> getStdThread();
 
@@ -48,8 +68,6 @@ public:
 
 private:
 	bool run();
-
-
 	std::shared_ptr <STDTHREAD> pstdThread_;
 	ZString threadName_;
 	THREAD_MAIN_TASK mainTask_{ nullptr };

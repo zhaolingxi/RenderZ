@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <functional>
+#include"ztime.hpp"
 /**********************************************************************
  *@brief 任务优先队列，优先级高的先执行
  ***********************************************************************/
@@ -32,18 +33,25 @@ public:
 		}
 	};
 
-	//inline calculateTime(Task*& iTask) {
-
-	//}
+	_forceinline int calculateTime(Task* iTask, const int& delayTime) {
+		if (!iTask) { return 0; }
+		uint64_t currentTime = _getCurrentTime_();
+		iTask->tickTime = currentTime + delayTime;
+		return 1;
+	}
 
 public:
 	TaskQueue() = default;
 	virtual ~TaskQueue()=default;
 
+	bool pushTask(Task*& task, const int& delayTime);//单位毫秒
+	Task* popTask();
+	bool topTask(Task*& task);
+
 private:
 	// 保存延时任务的小顶堆
-	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> delayTaskHeap_;
+	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> taskHeap_;
 	// 延时任务队列的最大容量
-	int maxCapcity_{ 10000 };
+	int maxCapcity_{ 1024 };
 };
 ZCORE_NS_END
