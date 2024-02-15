@@ -9,16 +9,11 @@
 
 ZUTILS_NS_BEGIN
 
-class Node;
-class T;
-
-using spNode = std::shared_ptr<Node>;
-using spData = std::shared_ptr<T>;
 
 template<typename T>
 struct Node {
-    spData val_{nullptr};
-    spNode next_{ nullptr };
+    std::shared_ptr<T> val_{nullptr};
+    std::shared_ptr<Node> next_{ nullptr };
 };
 
 template<typename T>
@@ -40,8 +35,8 @@ public:
 
     bool push(const T& val) {
         if (stop_push_) { return false; }
-        spNode last = nullptr;
-        spNode new_node = std::make_shared<Node<T>>();
+        auto last = nullptr;
+        auto new_node = std::make_shared<Node<T>>();
         new_node->val_ = val;
         last = atomic_load(&tail_);
         //CAS compare and swap
@@ -54,14 +49,15 @@ public:
         //3.½»»»³É¹¦ tail_ = new_node
         //4.last->next = new_node;
         std::atomic_store(&(last->next_), new_node); //
-        ++_size;
+        ++size_;
         return true;
     }
 
+
     bool push(T&& val) {
-        if (_stop_push) return false;
-        spNode last = nullptr;
-        spNode new_node = std::make_shared<Node<T>>();
+        if (stop_push_) return false;
+        auto last = nullptr;
+        auto new_node = std::make_shared<Node<T>>();
         new_node->val_ = std::move(val);
         last = atomic_load(&tail_);
         //CAS compare and swap
@@ -76,8 +72,8 @@ public:
 
     bool pop(T& val) {
         if (stop_pop_) return false;
-        spNode first = nullptr;
-        spNode first_next = nullptr;
+        auto first = nullptr;
+        auto first_next = nullptr;
 
         do {
             first = std::atomic_load(&front_);

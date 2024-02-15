@@ -9,7 +9,7 @@
  *@brief 任务优先队列，优先级高的先执行
  ***********************************************************************/
 ZCORE_NS_BEGIN
-using TaskFunc = std::function<void(const int errCode)>;
+using TaskFunc = std::function<void()>;
 enum PriorityLevel {Highest=0,Normal,UnImportant};
 
 class ZCORE_API TaskQueue
@@ -47,7 +47,7 @@ public:
 	bool pushTask(Task*& task, const int& delayTime);//单位毫秒
 	Task* popTask();
 	bool topTask(Task*& task);
-
+	bool isEmpty();
 private:
 	// 保存延时任务的小顶堆
 	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> taskHeap_;

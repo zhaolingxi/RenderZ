@@ -39,4 +39,9 @@ bool TaskQueue::topTask(Task*& task)
 	task= taskHeap_.top();
 	return true;
 }
+
+bool TaskQueue::isEmpty()
+{
+	return taskHeap_.empty();
+}
 ZCORE_NS_END

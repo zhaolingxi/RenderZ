@@ -53,6 +53,11 @@ bool ZThread::isThreadIdle()
 	return threadIdle_.load();
 }
 
+bool ZThread::isThreadRunning()
+{
+	return isRunning_.load();
+}
+
 bool ZThread::setMainTask(THREAD_MAIN_TASK mainProc)
 {
 	mainTask_ = mainProc;
@@ -84,7 +89,7 @@ bool ZThread::run()
 {
 	threadIdle_.store(false);//启动，标志位视为busy
 	while (isRunning_.load()) {
-		std::cout << std::this_thread::get_id() << std::endl;
+		//std::cout << std::this_thread::get_id() << std::endl;
 
 		if (runType_ == runType::ONCE) {
 			mainTask_();

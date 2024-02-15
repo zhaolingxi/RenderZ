@@ -34,7 +34,8 @@ int main(int argc, char* argv[])
 	pMianPage->createPage();
 
 //	testcase::threadTest01();
-	testcase::timeTest01();
+//	testcase::timeTest01();
+	testcase::taskSechTest01();
 
 	ret = app->exec();
 	return ret;
