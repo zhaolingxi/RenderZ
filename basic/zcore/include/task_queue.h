@@ -48,6 +48,7 @@ public:
 	Task* popTask();
 	bool topTask(Task*& task);
 	bool isEmpty();
+	void clearTask();
 private:
 	// 保存延时任务的小顶堆
 	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> taskHeap_;

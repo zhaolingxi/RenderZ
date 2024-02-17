@@ -3,7 +3,6 @@
 #include"zthread.h"
 #include"zstring.h"
 #include"ztime.hpp"
-
 class testcase {
 public:
 	testcase() {
@@ -14,4 +13,5 @@ public:
 	static void timeTest01();//时间类的测试
 	static void logTest01();//log测试
 	static void taskSechTest01();//进行简单的任务调度测试
+	static void taskSechTest02();//进行简单的任务调度测试
 };

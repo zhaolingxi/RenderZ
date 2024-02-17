@@ -15,7 +15,7 @@
 #include"zthread.h"
 #include"zstring.h"
 #include"test_case.h"
-
+#include "log4z.h"
 
 
 int main(int argc, char* argv[])
@@ -25,9 +25,20 @@ int main(int argc, char* argv[])
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 
 	std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
+
+	LoggerId logId = ILog4zManager::getInstance()->createLogger("mainlogger");
+
+
 	QString appDir = QApplication::applicationDirPath();
 	QDir::setCurrent(appDir);
 	qDebug() << "appDir: " << appDir;
+
+	ILog4zManager::getInstance()->setLoggerPath(logId,appDir.toStdString().c_str());
+	ILog4zManager::getInstance()->setLoggerName(logId,"mainlogger");
+	ILog4zManager::getInstance()->setLoggerOutFile(logId, 1);
+
+	ILog4zManager::getInstance()->start();
+	LOGFMTI("ILog4zManager start");
 
 	RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
 	pMianPage->tempLoadTheme(app.get());
@@ -38,5 +49,7 @@ int main(int argc, char* argv[])
 	testcase::taskSechTest01();
 
 	ret = app->exec();
+
+	ILog4zManager::getInstance()->stop();
 	return ret;
 }

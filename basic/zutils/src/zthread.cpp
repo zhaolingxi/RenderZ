@@ -67,6 +67,8 @@ bool ZThread::setMainTask(THREAD_MAIN_TASK mainProc)
 bool ZThread::runThread(runType type)
 {
 	if (!mainTask_) {
+		isRunning_.store(false);
+		threadIdle_.store(true);
 		return false;
 	}
 	runType_ = type;

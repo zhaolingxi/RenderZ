@@ -44,4 +44,10 @@ bool TaskQueue::isEmpty()
 {
 	return taskHeap_.empty();
 }
+
+void TaskQueue::clearTask()
+{
+	std::priority_queue<Task*, std::vector<Task*>, TaskCompare>  null_queue;
+	taskHeap_.swap(null_queue);
+}
 ZCORE_NS_END

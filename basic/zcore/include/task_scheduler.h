@@ -75,7 +75,7 @@ public:
 	  @param[in] isPollAll 是否执行调度队列中的所有任务
 	  @return 是否需要增加singleStep的调用频率
 	 */
-//	bool singleStep(const uint64_t tickTime, const bool isPollAll = false);
+	bool singleStep(const uint64_t tickTime, const bool isPollAll = false);
 
 	/**
 	  @brief 添加异步任务到调度队列(可以跨线程调用)
@@ -103,7 +103,7 @@ private:
 	bool isRunning_{ false }; /**< 调度服务是否处于运行中 */
 	std::atomic<int> runningTaskCnt_{ 0 }; /**< 正在执行的任务数量 */
 	void* asyncIOContext_{ nullptr }; /**< 基础IO异步服务 */
-	std::shared_ptr <TaskQueue> taskQueue_{ nullptr }; /**<  延时任务队列 */
+	std::shared_ptr<TaskQueue> taskQueue_{ nullptr }; /**<  延时任务队列 */
 	std::shared_ptr<zutils::ZThread> schedThread_{nullptr}; /**< 调度线程 */
 	int threadNum_{0};
 	std::deque<zutils::ZThread*> threadQueue_;//后面需要修改为无锁队列 

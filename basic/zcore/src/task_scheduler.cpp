@@ -7,13 +7,16 @@ TaskScheduler::TaskScheduler(SchedType type, int workerNum)
 	schedThread_ = std::make_shared<zutils::ZThread>("schedThread");
 	std::function<void()> it = std::bind(&TaskScheduler::schedule, this);
 	schedThread_->setMainTask(it);
-	if (workerNum=-1) {//自动设置线程数量
+	if (workerNum==-1) {//自动设置线程数量
 		if (type == SchedType::WEB_TASK_Sched) {
 			threadNum_ = 1;
 		}
 		else{
 			threadNum_ = std::thread::hardware_concurrency();
 		}
+	}
+	else {
+		threadNum_ = workerNum;
 	}
 	//数据成员
 	//创建线程队列
@@ -28,19 +31,31 @@ TaskScheduler::TaskScheduler(SchedType type, int workerNum)
 
 void TaskScheduler::schedule()
 {
-	while (!taskQueue_->isEmpty()) {
+	while (taskQueue_ && !taskQueue_->isEmpty()) {
 		if (threadQueue_.empty()) {
-			if (!threadBusyQueue_.front()->isThreadRunning()) {
-				threadQueue_.push_back(threadBusyQueue_.front());
-				threadBusyQueue_.pop_front();
+			if (!threadBusyQueue_.empty()) {
+				if (!threadBusyQueue_.front()->isThreadRunning()) {
+					threadQueue_.push_back(threadBusyQueue_.front());
+					threadBusyQueue_.pop_front();
+				}
+				else {
+					threadBusyQueue_.front()->runThread();
+				}
 			}
 			continue;
 		}
 		auto th = threadQueue_.front();
-		th->setMainTask(taskQueue_->popTask()->taskFunc);
-		th->runThread();
 		threadQueue_.pop_front();
 		threadBusyQueue_.push_back(th);
+		th->setMainTask(taskQueue_->popTask()->taskFunc);
+		th->runThread();		
+	}
+
+	while (!threadBusyQueue_.empty()) {
+		if (!threadBusyQueue_.front()->isThreadRunning()) {
+			threadQueue_.push_back(threadBusyQueue_.front());
+			threadBusyQueue_.pop_front();
+		}
 	}
 }
 
@@ -48,6 +63,20 @@ void TaskScheduler::start() {
 	schedThread_->runThread();
 }
 
+void TaskScheduler::pause()
+{
+	schedThread_->pauseThread();
+}
+
+void TaskScheduler::stopNow()
+{
+	schedThread_->killThread();
+}
+
+void TaskScheduler::waitStop()
+{
+	schedThread_->exitThread();
+}
 
 TaskScheduler::SchedType TaskScheduler::getType()
 {
