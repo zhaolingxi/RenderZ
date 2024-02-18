@@ -34,12 +34,13 @@ void TaskScheduler::schedule()
 	while (taskQueue_ && !taskQueue_->isEmpty()) {
 		if (threadQueue_.empty()) {
 			if (!threadBusyQueue_.empty()) {
-				if (!threadBusyQueue_.front()->isThreadRunning()) {
-					threadQueue_.push_back(threadBusyQueue_.front());
-					threadBusyQueue_.pop_front();
-				}
-				else {
-					threadBusyQueue_.front()->runThread();
+				for (auto it= threadBusyQueue_.begin();it!= threadBusyQueue_.end();it++)
+				{
+					if (!(*it)->isThreadRunning()) {
+						threadQueue_.push_back(*it);
+						threadBusyQueue_.erase(it);
+						break;
+					}
 				}
 			}
 			continue;
@@ -51,10 +52,20 @@ void TaskScheduler::schedule()
 		th->runThread();		
 	}
 
+	//while (!threadBusyQueue_.empty()) {
+	//	if (!threadBusyQueue_.front()->isThreadRunning()) {
+	//		threadQueue_.push_back(threadBusyQueue_.front());
+	//		threadBusyQueue_.pop_front();
+	//	}
+	//}
 	while (!threadBusyQueue_.empty()) {
-		if (!threadBusyQueue_.front()->isThreadRunning()) {
-			threadQueue_.push_back(threadBusyQueue_.front());
-			threadBusyQueue_.pop_front();
+		for (auto it = threadBusyQueue_.begin(); it != threadBusyQueue_.end(); it++)
+		{
+			if (!(*it)->isThreadRunning()) {
+				threadQueue_.push_back(*it);
+				threadBusyQueue_.erase(it);
+				break;
+			}
 		}
 	}
 }
