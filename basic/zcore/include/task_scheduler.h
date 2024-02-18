@@ -108,5 +108,7 @@ private:
 	int threadNum_{0};
 	std::deque<zutils::ZThread*> threadQueue_;//后面需要修改为无锁队列 
 	std::deque<zutils::ZThread*> threadBusyQueue_;//后面需要修改为无锁队列 
+	int maxWaitingTime_{ 3000 };//ms
+	int singleStepTime_{10};//ms
 };
 ZCORE_NS_END

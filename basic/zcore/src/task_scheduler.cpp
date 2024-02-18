@@ -34,14 +34,17 @@ void TaskScheduler::schedule()
 	while (taskQueue_ && !taskQueue_->isEmpty()) {
 		if (threadQueue_.empty()) {
 			if (!threadBusyQueue_.empty()) {
-				for (auto it= threadBusyQueue_.begin();it!= threadBusyQueue_.end();it++)
+				for (auto it= threadBusyQueue_.begin();it!= threadBusyQueue_.end();)
 				{
 					if (!(*it)->isThreadRunning()) {
 						threadQueue_.push_back(*it);
-						threadBusyQueue_.erase(it);
+						it=threadBusyQueue_.erase(it);
 						break;
 					}
+					it++;
 				}
+				std::chrono::milliseconds duration(singleStepTime_);//所有线程都忙的时候
+				std::this_thread::sleep_for(duration);
 			}
 			continue;
 		}
@@ -51,21 +54,16 @@ void TaskScheduler::schedule()
 		th->setMainTask(taskQueue_->popTask()->taskFunc);
 		th->runThread();		
 	}
-
-	//while (!threadBusyQueue_.empty()) {
-	//	if (!threadBusyQueue_.front()->isThreadRunning()) {
-	//		threadQueue_.push_back(threadBusyQueue_.front());
-	//		threadBusyQueue_.pop_front();
-	//	}
-	//}
+	//任务提交完毕，等待执行完成
 	while (!threadBusyQueue_.empty()) {
-		for (auto it = threadBusyQueue_.begin(); it != threadBusyQueue_.end(); it++)
+		for (auto&& it: threadBusyQueue_)
 		{
-			if (!(*it)->isThreadRunning()) {
-				threadQueue_.push_back(*it);
-				threadBusyQueue_.erase(it);
-				break;
+			if (it->isThreadRunning()) {			
+				std::chrono::milliseconds duration(maxWaitingTime_);
+				std::this_thread::sleep_for(duration);
 			}
+			threadQueue_.push_back(it);
+			threadBusyQueue_.pop_front();
 		}
 	}
 }
