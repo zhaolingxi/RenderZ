@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "zcore_sdk.h"
 #include "zutils_define.h"
-#include "logic/logic_module_base.h"
+//#include "logic/logic_module_base.h"
 #include <functional>
 #include <string>
 #include <cstdint>
@@ -56,7 +56,7 @@ public:
 	  @param[in] instIdx 业务模块的实例索引编号
 	  @return 业务模块实例
 	 */
-	static std::shared_ptr<LogicModuleBase> getModuleByIdentity(const int64_t moduleId, const uint8_t instIdx = 0);
+//	static std::shared_ptr<LogicModuleBase> getModuleByIdentity(const int64_t moduleId, const uint8_t instIdx = 0);
 
 	template<class TypeInterface>
 	static std::shared_ptr<TypeInterface> getModuleByIdCast(const int64_t moduleId, const uint8_t instIdx = 0)
