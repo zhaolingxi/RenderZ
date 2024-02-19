@@ -4,6 +4,7 @@ ZCORE_NS_BEGIN
 
 bool TaskQueue::pushTask(Task*& task, const int& delayTime)
 {
+	std::unique_lock pushLock(lock_);
 	if (taskHeap_.size() >= maxCapcity_) {
 		return false;
 	}
@@ -17,6 +18,7 @@ bool TaskQueue::pushTask(Task*& task, const int& delayTime)
 
 TaskQueue::Task* TaskQueue::popTask()
 {
+	std::unique_lock popLock(lock_);
 	if (taskHeap_.empty()) {
 		return nullptr;
 	}
@@ -32,6 +34,7 @@ TaskQueue::Task* TaskQueue::popTask()
 
 bool TaskQueue::topTask(Task*& task)
 {
+	std::unique_lock topLock(lock_);
 	if (taskHeap_.empty()) {
 		task = nullptr;
 		return false;
@@ -47,6 +50,7 @@ bool TaskQueue::isEmpty()
 
 void TaskQueue::clearTask()
 {
+	std::unique_lock clearLock(lock_);
 	std::priority_queue<Task*, std::vector<Task*>, TaskCompare>  null_queue;
 	taskHeap_.swap(null_queue);
 }

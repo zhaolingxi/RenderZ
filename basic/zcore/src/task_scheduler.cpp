@@ -51,8 +51,16 @@ void TaskScheduler::schedule()
 		auto th = threadQueue_.front();
 		threadQueue_.pop_front();
 		threadBusyQueue_.push_back(th);
-		th->setMainTask(taskQueue_->popTask()->taskFunc);
-		th->runThread();		
+		TaskQueue::Task* task = nullptr;
+		taskQueue_->topTask(task);
+		if (task) {
+			if (task->tickTime> _getCurrentTime_()) {
+				std::chrono::milliseconds duration(task->tickTime- _getCurrentTime_());
+				std::this_thread::sleep_for(duration);
+			}
+			th->setMainTask(taskQueue_->popTask()->taskFunc);
+			th->runThread();
+		}
 	}
 	//任务提交完毕，等待执行完成
 	while (!threadBusyQueue_.empty()) {

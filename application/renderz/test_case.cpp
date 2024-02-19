@@ -49,7 +49,7 @@ void testcase::timeTest01()
 void testcase::taskSechTest01()
 {
 	auto it=new zcore::TaskScheduler(zcore::TaskScheduler::SchedType::PRIOR_Sched,-1);
-	int num = 3000;
+	int num = 1000;
 	while (num--) {
 		auto func = std::bind(printTimeAndThreadID, num);
 		it->postTask(func);

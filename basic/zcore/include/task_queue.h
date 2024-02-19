@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <functional>
+#include<mutex>
 #include"ztime.hpp"
 /**********************************************************************
  *@brief 任务优先队列，优先级高的先执行
@@ -49,6 +50,8 @@ public:
 	bool topTask(Task*& task);
 	bool isEmpty();
 	void clearTask();
+
+	std::mutex lock_;
 private:
 	// 保存延时任务的小顶堆
 	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> taskHeap_;

@@ -55,7 +55,6 @@ public:
 
 	uint64_t getSchedThreadId();
 
-	void schedule();//调度线程函数，使用调度线程进行线程的任务分配
 
 	void start();//启动调度器，会调用当前空闲的线程执行准备好的任务
 	void pause();//暂停调度器
@@ -98,6 +97,9 @@ private:
 	void operator=(const TaskScheduler& other) = delete;
 	TaskScheduler(const TaskScheduler&& other) = delete;
 	void operator=(const TaskScheduler&& other) = delete;
+
+	void schedule();//调度线程函数，使用调度线程进行线程的任务分配
+
 private:
 	SchedType schedType_{ SchedType::PRIOR_Sched };
 	bool isRunning_{ false }; /**< 调度服务是否处于运行中 */
