@@ -102,7 +102,7 @@ private:
 
 private:
 	SchedType schedType_{ SchedType::PRIOR_Sched };
-	bool isRunning_{ false }; /**< 调度服务是否处于运行中 */
+	std::atomic<bool> isRunning_{ false }; /**< 调度服务是否处于运行中 */
 	std::atomic<int> runningTaskCnt_{ 0 }; /**< 正在执行的任务数量 */
 	void* asyncIOContext_{ nullptr }; /**< 基础IO异步服务 */
 	std::shared_ptr<TaskQueue> taskQueue_{ nullptr }; /**<  延时任务队列 */
@@ -112,5 +112,6 @@ private:
 	std::deque<zutils::ZThread*> threadBusyQueue_;//后面需要修改为无锁队列 
 	int maxWaitingTime_{ 3000 };//ms
 	int singleStepTime_{10};//ms
+	std::mutex lock_;
 };
 ZCORE_NS_END

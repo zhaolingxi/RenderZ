@@ -40,7 +40,7 @@ std::shared_ptr<STDTHREAD> ZThread::getStdThread()
 
 unsigned int ZThread::getThreadId()
 {
-	if (threadIdle_) { threadId_ = 0; }
+	//if (threadIdle_) { threadId_ = 0; }
 	if (!threadId_) {
 		auto tid = std::this_thread::get_id();
 		threadId_ = *(unsigned int*)&tid;
@@ -48,10 +48,10 @@ unsigned int ZThread::getThreadId()
 	return threadId_;
 }
 
-bool ZThread::isThreadIdle()
-{
-	return threadIdle_.load();
-}
+//bool ZThread::isThreadIdle()
+//{
+//	return threadIdle_.load();
+//}
 
 bool ZThread::isThreadRunning()
 {
@@ -68,7 +68,7 @@ bool ZThread::runThread(runType type)
 {
 	if (!mainTask_) {
 		isRunning_.store(false);
-		threadIdle_.store(true);
+		//threadIdle_.store(true);
 		return false;
 	}
 	runType_ = type;
@@ -77,6 +77,7 @@ bool ZThread::runThread(runType type)
 		{
 			pstdThread_ = std::make_shared<std::thread>(&ZThread::run, this);
 			isRunning_.store(true);//线程被创建（由于std::stread的机制，创建后等待时间片执行）
+			//threadIdle_.store(false);
 		}
 		thread_locker.unlock();
 		return true;
@@ -89,7 +90,7 @@ bool ZThread::runThread(runType type)
 
 bool ZThread::run()
 {
-	threadIdle_.store(false);//启动，标志位视为busy
+	//threadIdle_.store(false);//启动，标志位视为busy
 	while (isRunning_.load()) {
 		//std::cout << std::this_thread::get_id() << std::endl;
 
@@ -113,9 +114,14 @@ bool ZThread::run()
 			}
 			thread_locker.unlock();
 		}
+
+		if (mainTask_) {
+			isRunning_.store(true);
+		}
 	}
 
-	threadIdle_.store(true);//结束，线程空闲
+	//threadIdle_.store(true);//结束，线程空闲
+	isRunning_.store(false);//结束，线程空闲
 	return true;
 }
 
@@ -162,7 +168,7 @@ bool ZThread::exitThread()
 	if (!pstdThread_ )
 	{
 		isRunning_.store(false);
-		threadIdle_.store(true);
+		//threadIdle_.store(true);
 		task_cv_.notify_all();
 
 		if (pstdThread_->joinable()){

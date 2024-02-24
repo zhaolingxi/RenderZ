@@ -74,25 +74,32 @@ void TaskScheduler::schedule()
 			threadBusyQueue_.pop_front();
 		}
 	}
+	isRunning_.store(false);
 }
 
 void TaskScheduler::start() {
-	schedThread_->runThread();
+	if (!isRunning_.load()) {
+		isRunning_.store(true);
+		schedThread_->runThread();
+	}
 }
 
 void TaskScheduler::pause()
 {
 	schedThread_->pauseThread();
+	isRunning_.store(false);
 }
 
 void TaskScheduler::stopNow()
 {
 	schedThread_->killThread();
+	isRunning_.store(false);
 }
 
 void TaskScheduler::waitStop()
 {
 	schedThread_->exitThread();
+	isRunning_.store(false);
 }
 
 TaskScheduler::SchedType TaskScheduler::getType()
