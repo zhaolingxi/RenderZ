@@ -1,10 +1,8 @@
 #pragma once
-#include "zdatabase_sdk.h"
 #include "sqlite3.h"
 #include"zthread.h"
-#include"zstring.h"
-#include <memory>
-
+#include"zstr_coding_convert.h"
+#include"zdatabase_operation_define.h"
 ZDATABASE_NS_BEGIN
 class SQLiteOperation
 {
@@ -15,9 +13,21 @@ public:
 	SQLiteOperation(const SQLiteOperation& other) = delete;
 	SQLiteOperation& operator = (const SQLiteOperation& other) = delete;
 
+    zutils::ZString name_{""};//用户自定义标识
+
+    SQLiteRetPtr excuteSqlOper(SQLiteCmd& sqlCmd);
+    bool excuteSqlOper(SQLiteCmd &sqlCmd, SQLiteRetPtr& retPtr);
+
+    SQLiteRetPtr excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd);
+    bool excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd, SQLiteRetPtr& retPtr);
+
+    int get_max_id(zutils::ZString table_name);
+
+protected:
     //数据库开关
-    bool open(zutils::ZString path, zutils::ZString connect);
+    bool open(zutils::ZString path);
     bool close();
+    //等待当前数据库任务处理完毕
     void waitClose();
 
     //表格操作
@@ -37,8 +47,6 @@ public:
 
     //获取数据
     bool get_row();
-
-    int get_max_id(zutils::ZString table_name);
 
 private:
 	static constexpr int BatchCnt{ 100 }; /**< 事务批量数量 */

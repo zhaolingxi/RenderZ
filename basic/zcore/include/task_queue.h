@@ -56,6 +56,6 @@ private:
 	// 保存延时任务的小顶堆
 	std::priority_queue<Task*,std::vector<Task*>,TaskCompare> taskHeap_;
 	// 延时任务队列的最大容量
-	int maxCapcity_{ 1024 };
+	int maxCapcity_{ 2048 };
 };
 ZCORE_NS_END
