@@ -40,7 +40,8 @@ include_directories(../basic/zutils ../basic/zutils/include)
 include_directories(../basic/zcore  ../basic/zcore/include)
 # zqtgui
 include_directories(../basic/zqtui   ../basic/zqtui/include)
-
+# zdatabase
+include_directories(../basic/zdatabase   ../basic/zdatabase/include)
 include_directories(../basic/pages  ../basic/pages/test_page)
 
 

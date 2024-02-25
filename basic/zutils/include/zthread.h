@@ -27,10 +27,10 @@ class ZUTILS_API ZThread
 	struct ZThreadCompare
 	{
 		bool operator()(const ZThread* left, const ZThread* right) {
-			if (left->threadIdle_) {//空闲优先
+			if (left->isRunning_) {//空闲优先
 				return false;
 			}
-			else if (right->threadIdle_) {
+			else if (right->isRunning_) {
 				return false;
 			}
 			else {//比较id
@@ -47,12 +47,6 @@ public:
 
 	void operator=(const ZThread& other) = delete;
 	void operator=(const ZThread&& other) = delete;
-
-	//ZThread& operator=(ZThread&& other) {//应对std::move
-	//	if (this != &other){
-
-	//	}
-	//}
 
 
 	virtual~ZThread();
@@ -82,10 +76,10 @@ private:
 	std::shared_ptr <STDTHREAD> pstdThread_;
 	ZString threadName_;
 	THREAD_MAIN_TASK mainTask_{ nullptr };
-	std::atomic<bool> threadIdle_{ true };//线程是否处于空闲状态（空闲状态可以忙等）
+	//std::atomic<bool> threadIdle_{ true };//线程是否处于空闲状态（空闲状态可以忙等）
 	std::atomic<bool> isRunning_{ false };//线程是否处于运行状态（运行状态与是否空闲无关）
 	std::condition_variable task_cv_;
 	std::mutex lock_;
-	runType runType_{ ONCE };
+	std::atomic <runType> runType_{ ONCE };
 };
 ZUTILS_NS_END

@@ -4,7 +4,9 @@
 #include "zutils.h"
 #include "zcore.h"
 #include "log4z.h"
-
+#include"sqlite_operation.h"
+#include"zdatabase.h"
+#include"zdatabase_operation_define.h"
 void func1() {
 	std::cout << "testfun1" << std::endl;
 }
@@ -49,10 +51,11 @@ void testcase::timeTest01()
 void testcase::taskSechTest01()
 {
 	auto it=new zcore::TaskScheduler(zcore::TaskScheduler::SchedType::PRIOR_Sched,-1);
-	int num = 1000;
+	int num = 3000;
 	while (num--) {
 		auto func = std::bind(printTimeAndThreadID, num);
 		it->postTask(func);
+		it->start();
 	}
 	it->start();
 //	it->waitStop();
@@ -68,5 +71,15 @@ void testcase::taskSechTest02()
 		it->start();
 	}
 	it->waitStop();
+}
+
+void testcase::taskSqliteTest01()
+{
+	zutils::ZString str("testSqliteDB");
+	//zdatabase::SQLiteOperation DB(str);
+	//zdatabase::SQLiteCmd sqlLine1;
+	//sqlLine1.sql_type_ = zdatabase::SqlOperType::SQL_Open;
+	//sqlLine1.sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
+	//DB.excuteSqlOper(sqlLine1);
 }
 
