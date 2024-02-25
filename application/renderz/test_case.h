@@ -14,4 +14,5 @@ public:
 	static void logTest01();//log测试
 	static void taskSechTest01();//进行简单的任务调度测试
 	static void taskSechTest02();//进行简单的任务调度测试
+	static void taskSqliteTest01();//进行简单的任务调度测试
 };
