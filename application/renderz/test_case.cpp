@@ -4,7 +4,9 @@
 #include "zutils.h"
 #include "zcore.h"
 #include "log4z.h"
-
+#include"sqlite_operation.h"
+#include"zdatabase.h"
+#include"zdatabase_operation_define.h"
 void func1() {
 	std::cout << "testfun1" << std::endl;
 }
@@ -69,5 +71,15 @@ void testcase::taskSechTest02()
 		it->start();
 	}
 	it->waitStop();
+}
+
+void testcase::taskSqliteTest01()
+{
+	zutils::ZString str("testSqliteDB");
+	//zdatabase::SQLiteOperation DB(str);
+	//zdatabase::SQLiteCmd sqlLine1;
+	//sqlLine1.sql_type_ = zdatabase::SqlOperType::SQL_Open;
+	//sqlLine1.sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
+	//DB.excuteSqlOper(sqlLine1);
 }
 
