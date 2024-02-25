@@ -26,6 +26,9 @@ SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd)
 bool SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	int ret = false;
+	if (!retPtr) {
+		return ret;
+	}
 	auto type = sqlCmd.sql_type_;
 	switch (type)
 	{
@@ -85,9 +88,11 @@ bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd, SQLiteR
 bool SQLiteOperation::open(zutils::ZString path)
 {
 	char* utf8Str=nullptr;
-	zutils::ZStrCodingConvert::mbcsToUtf8(path.getData(), utf8Str);
-	std::shared_ptr<std::string> strPath=std::make_shared<std::string>(utf8Str);
-	int ret = sqlite3_open(strPath->c_str(), &sqlite3Handler_);
+	//字符转换暂时有bug，待修复
+//	zutils::ZStrCodingConvert::mbcsToUtf8(path.getData(), utf8Str);
+//	std::shared_ptr<std::string> strPath=std::make_shared<std::string>(utf8Str);
+//	int ret = sqlite3_open(strPath->c_str(), &sqlite3Handler_);
+	int ret = sqlite3_open(path.getData(), &sqlite3Handler_);
 	if (ret != SQLITE_OK) {
 		LOGFMTE("SQLiteConnection::initConnection() sqlite3_open failed, ret = %d", ret);
 		sqlite3_close(sqlite3Handler_);
@@ -144,14 +149,15 @@ bool SQLiteOperation::doSqlWithRetData(SQLiteCmd& sqlCmd, SQLiteRetPtr& sqlRet)
 		int col_num = sqlite3_column_count(stmt);
 		for (int i = 0; i < col_num; ++i) {
 			const char* columnName = sqlite3_column_name(stmt, i);// 获取列名
-			sqlRet->table_name_vec_.emplace_back(columnName);
+			zutils::ZString strColName(columnName);
+			sqlRet->table_name_vec_.emplace_back(strColName);
 		}
 		 while (sqlite3_step(stmt) == SQLITE_ROW) {// 每调一次sqlite3_step()函数，stmt语句句柄就会指向下一条记录
 			 int col = 0;
 			 while (col< col_num) {
 				 const unsigned char* val = sqlite3_column_text(stmt, col);// 取出第i列字段的值
 				 const char* charPtr = reinterpret_cast<const char*>(val);//待优化
-				 sqlRet->table_name_vec_.emplace_back(charPtr);
+				 sqlRet->table_value_vec_.emplace_back(zutils::ZString(charPtr));
 				 col++;
 			 }	
 		 }		
