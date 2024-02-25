@@ -6,7 +6,6 @@
 #include "log4z.h"
 #include"sqlite_operation.h"
 #include"zdatabase.h"
-#include"zdatabase_operation_define.h"
 void func1() {
 	std::cout << "testfun1" << std::endl;
 }
@@ -76,10 +75,28 @@ void testcase::taskSechTest02()
 void testcase::taskSqliteTest01()
 {
 	zutils::ZString str("testSqliteDB");
-	//zdatabase::SQLiteOperation DB(str);
-	//zdatabase::SQLiteCmd sqlLine1;
-	//sqlLine1.sql_type_ = zdatabase::SqlOperType::SQL_Open;
-	//sqlLine1.sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
-	//DB.excuteSqlOper(sqlLine1);
+	zdatabase::SQLiteOperation DB(str);
+	zdatabase::SQLiteCmd sqlLine0;
+	sqlLine0.sql_type_ = zdatabase::SqlOperType::SQL_Open;
+	sqlLine0.sqlite_sql_ = "./testdb.db";
+	DB.excuteSqlOper(sqlLine0);
+
+
+	zdatabase::SQLiteCmd sqlLine1;
+	sqlLine1.sql_type_ = zdatabase::SqlOperType::SQL_Insert;
+	sqlLine1.sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
+	DB.excuteSqlOper(sqlLine1);
+
+	zdatabase::SQLiteCmd sqlLine2;
+	sqlLine2.sql_type_ = zdatabase::SqlOperType::SQL_Insert;
+	sqlLine2.sqlite_sql_ = "INSERT INTO xxx(name, age) VALUES('´óÃ÷', 22);";
+	DB.excuteSqlOper(sqlLine2);
+
+	zdatabase::SQLiteCmd sqlLine3;
+	SQLiteRetPtr ret3=std::make_shared<SQLiteRetData>();
+	sqlLine3.sql_type_ = zdatabase::SqlOperType::SQL_Select;
+	sqlLine3.sqlite_sql_ = "SELECT name, age FROM xxx WHERE age < 80;";
+	DB.excuteSqlOper(sqlLine3, ret3);
+	
 }
 
