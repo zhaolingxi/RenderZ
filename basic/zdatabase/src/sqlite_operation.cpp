@@ -16,27 +16,27 @@ SQLiteOperation::~SQLiteOperation()
 {
 }
 
-SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd)
+SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmd*& sqlCmd)
 {
 	SQLiteRetPtr ret= std::make_shared<SQLiteRetData>();
 	excuteSqlOper(sqlCmd, ret);
 	return ret;
 }
 
-bool SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd, SQLiteRetPtr& retPtr)
+bool SQLiteOperation::excuteSqlOper(SQLiteCmd*& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	int ret = false;
 	if (!retPtr) {
 		return ret;
 	}
-	auto type = sqlCmd.sql_type_;
+	auto type = sqlCmd->sql_type_;
 	switch (type)
 	{
 	case SqlOperType::None: {
 		break;
 	}
 	case SqlOperType::SQL_Open: {
-		ret = open(sqlCmd.sqlite_sql_);
+		ret = open(sqlCmd->sqlite_sql_);
 		break;
 	}
 	case SqlOperType::SQL_Close: {
@@ -66,7 +66,7 @@ bool SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd, SQLiteRetPtr& retPtr)
 	return ret;
 }
 
-bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd, SQLiteRetPtr& retPtr)
+bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmd*>& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	std::unique_lock<std::mutex> uniqueLck(lock_);
 	bool ret = false;
@@ -120,14 +120,14 @@ bool SQLiteOperation::close()
 	return true;
 }
 
-bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd& sqlCmd)
+bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd*& sqlCmd)
 {
 	bool ret = true;
-	const char* sqlSentence = sqlCmd.sqlite_sql_.getData();        //SQL语句
+	const char* sqlSentence = sqlCmd->sqlite_sql_.getData();        //SQL语句
 	sqlite3_stmt* stmt = NULL;        //stmt语句句柄
 	int result = sqlite3_prepare_v2(sqlite3Handler_, sqlSentence, -1, &stmt, NULL);//进行插入前的准备工作——检查语句合法性
 	if (result == SQLITE_OK) {
-		LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
+		//LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
 		sqlite3_step(stmt);
 	}
 	else {
@@ -138,14 +138,14 @@ bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd& sqlCmd)
 	return ret;
 }
 
-bool SQLiteOperation::doSqlWithRetData(SQLiteCmd& sqlCmd, SQLiteRetPtr& sqlRet)
+bool SQLiteOperation::doSqlWithRetData(SQLiteCmd*& sqlCmd, SQLiteRetPtr& sqlRet)
 {
 	int ret = true;
-	const char* sqlSentence = sqlCmd.sqlite_sql_.getData();       //SQL语句
+	const char* sqlSentence = sqlCmd->sqlite_sql_.getData();       //SQL语句
 	sqlite3_stmt * stmt = NULL;    // stmt语句句柄
 	int result = sqlite3_prepare_v2(sqlite3Handler_, sqlSentence, -1, &stmt, NULL);//进行查询前的准备工作——检查语句合法性
 	if (result == SQLITE_OK) {
-		LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
+		//LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
 		int col_num = sqlite3_column_count(stmt);
 		for (int i = 0; i < col_num; ++i) {
 			const char* columnName = sqlite3_column_name(stmt, i);// 获取列名
