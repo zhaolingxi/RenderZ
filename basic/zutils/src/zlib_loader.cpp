@@ -1,5 +1,4 @@
 #include "zlib_loader.h"
-//#include "zmisc_utils.hpp"
 #include "zfile_utils.h"
 ZUTILS_NS_BEGIN
 
@@ -75,12 +74,10 @@ ZLibLoader::ProcAddress ZLibLoader::getProcAddress(ModHandler modHandler, const 
 	fnProc = ::GetProcAddress(modHandler, procName);
 	if (fnProc == nullptr) {
 		DWORD err = GetLastError();
-		//LOGFMTE("AALibLoader::getProcAddress() procName: %s failed, err=%lu", procName, err);
 	}
 #else
 	fnProc = dlsym(modHandler, procName);
 	if (fnProc == nullptr) {
-		//LOGFMTE("AALibLoader::getProcAddress() procName: %s failed, err:%s", procName, dlerror());
 	}
 #endif
 	return fnProc;

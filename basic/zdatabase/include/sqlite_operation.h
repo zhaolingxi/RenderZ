@@ -32,11 +32,11 @@ public:
 	SQLiteOperation& operator = (const SQLiteOperation& other) = delete;
 
 
-    SQLiteRetPtr excuteSqlOper(SQLiteCmd& sqlCmd);
-    bool excuteSqlOper(SQLiteCmd &sqlCmd, SQLiteRetPtr& retPtr);
+    SQLiteRetPtr excuteSqlOper(SQLiteCmd*& sqlCmd);
+    bool excuteSqlOper(SQLiteCmd* &sqlCmd, SQLiteRetPtr& retPtr);
 
-    SQLiteRetPtr excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd);
-    bool excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd, SQLiteRetPtr& retPtr);
+    SQLiteRetPtr excuteBatchSqlOper(std::vector<SQLiteCmd*>& sqlCmd);
+    bool excuteBatchSqlOper(std::vector<SQLiteCmd*>& sqlCmd, SQLiteRetPtr& retPtr);
 
     int get_max_id(zutils::ZString table_name);
 
@@ -47,8 +47,8 @@ protected:
     //等待当前数据库任务处理完毕
     void waitClose();
 
-    bool doSqlWithOutRetData(SQLiteCmd& sqlCmd);
-    bool doSqlWithRetData(SQLiteCmd& sqlCmd, SQLiteRetPtr&sqlRet);
+    bool doSqlWithOutRetData(SQLiteCmd*& sqlCmd);
+    bool doSqlWithRetData(SQLiteCmd*& sqlCmd, SQLiteRetPtr&sqlRet);
 
     //static int sqliteExecCallback(void* userData, int cnt, char** values, char** columnNames);
 

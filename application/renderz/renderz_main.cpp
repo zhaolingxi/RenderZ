@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 //	testcase::threadTest01();
 //	testcase::timeTest01();
 //	testcase::taskSechTest01();
-	testcase::taskSqliteTest01();
+	testcase::taskSqliteTest02();
 
 	ret = app->exec();
 
