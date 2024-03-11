@@ -4,13 +4,16 @@
 #####################################################################################
 cmake_minimum_required (VERSION 3.8)
 project(zdatabase)
-if(MSVC)
-	add_definitions(-D_ZDATABASE_EXPORTS -D_MSVC)
-endif()
+
 include_directories(../zutils ../zutils/include)
 include_directories(../zcore ../zcore/include)
-include_directories(include)
 include_directories(sqlite3)
+
+include_directories(include src)
+
+if(MSVC)
+	add_definitions(-D_ZDATABASE_EXPORTS)
+endif()
 
 file(GLOB HEADER_FILES ${HEADER_FILES} "sqlite3/*.h")  # sqlite3头文件
 file(GLOB SOURCE_FILES ${SOURCE_FILES} "sqlite3/*.c")  # sqlite3源文件

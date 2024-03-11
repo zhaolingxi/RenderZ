@@ -17,7 +17,6 @@
 #include"test_case.h"
 #include "log4z.h"
 
-
 int main(int argc, char* argv[])
 {
 	int ret=0;
@@ -46,7 +45,8 @@ int main(int argc, char* argv[])
 
 //	testcase::threadTest01();
 //	testcase::timeTest01();
-	testcase::taskSechTest01();
+//	testcase::taskSechTest01();
+	testcase::taskSqliteTest02();
 
 	ret = app->exec();
 
