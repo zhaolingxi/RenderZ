@@ -120,7 +120,7 @@ bool ZStrCodingConvert::utf8ToMbcs(const char* utf8Str, char*& mbcsStr)
 bool ZStrCodingConvert::mbcsToUtf8(const char* mbcsStr, char*& utf8Str)
 {
 	wchar_t* unicodeStr = nullptr;
-	if (!utf8ToUnicode(utf8Str, unicodeStr) || !unicodeStr) {
+	if (!mbcsToUnicode(mbcsStr, unicodeStr) || !unicodeStr) {
 		return false;
 	}
 	if (!unicodeToMbcs(unicodeStr, utf8Str)) {

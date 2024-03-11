@@ -16,24 +16,27 @@ SQLiteOperation::~SQLiteOperation()
 {
 }
 
-SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd)
+SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmdPtr& sqlCmd)
 {
 	SQLiteRetPtr ret= std::make_shared<SQLiteRetData>();
 	excuteSqlOper(sqlCmd, ret);
 	return ret;
 }
 
-bool SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd, SQLiteRetPtr& retPtr)
+bool SQLiteOperation::excuteSqlOper(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	int ret = false;
-	auto type = sqlCmd.sql_type_;
+	if (!retPtr) {
+		return ret;
+	}
+	auto type = sqlCmd->sql_type_;
 	switch (type)
 	{
 	case SqlOperType::None: {
 		break;
 	}
 	case SqlOperType::SQL_Open: {
-		ret = open(sqlCmd.sqlite_sql_);
+		ret = open(sqlCmd->sqlite_sql_);
 		break;
 	}
 	case SqlOperType::SQL_Close: {
@@ -63,7 +66,7 @@ bool SQLiteOperation::excuteSqlOper(SQLiteCmd& sqlCmd, SQLiteRetPtr& retPtr)
 	return ret;
 }
 
-bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd, SQLiteRetPtr& retPtr)
+bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmdPtr>& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	std::unique_lock<std::mutex> uniqueLck(lock_);
 	bool ret = false;
@@ -85,9 +88,11 @@ bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmd>& sqlCmd, SQLiteR
 bool SQLiteOperation::open(zutils::ZString path)
 {
 	char* utf8Str=nullptr;
-	zutils::ZStrCodingConvert::mbcsToUtf8(path.getData(), utf8Str);
-	std::shared_ptr<std::string> strPath=std::make_shared<std::string>(utf8Str);
-	int ret = sqlite3_open(strPath->c_str(), &sqlite3Handler_);
+	//字符转换暂时有bug，待修复
+//	zutils::ZStrCodingConvert::mbcsToUtf8(path.getData(), utf8Str);
+//	std::shared_ptr<std::string> strPath=std::make_shared<std::string>(utf8Str);
+//	int ret = sqlite3_open(strPath->c_str(), &sqlite3Handler_);
+	int ret = sqlite3_open(path.getData(), &sqlite3Handler_);
 	if (ret != SQLITE_OK) {
 		LOGFMTE("SQLiteConnection::initConnection() sqlite3_open failed, ret = %d", ret);
 		sqlite3_close(sqlite3Handler_);
@@ -115,14 +120,14 @@ bool SQLiteOperation::close()
 	return true;
 }
 
-bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd& sqlCmd)
+bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmdPtr& sqlCmd)
 {
 	bool ret = true;
-	const char* sqlSentence = sqlCmd.sqlite_sql_.getData();        //SQL语句
+	const char* sqlSentence = sqlCmd->sqlite_sql_.getData();        //SQL语句
 	sqlite3_stmt* stmt = NULL;        //stmt语句句柄
 	int result = sqlite3_prepare_v2(sqlite3Handler_, sqlSentence, -1, &stmt, NULL);//进行插入前的准备工作——检查语句合法性
 	if (result == SQLITE_OK) {
-		LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
+		//LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
 		sqlite3_step(stmt);
 	}
 	else {
@@ -133,25 +138,26 @@ bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd& sqlCmd)
 	return ret;
 }
 
-bool SQLiteOperation::doSqlWithRetData(SQLiteCmd& sqlCmd, SQLiteRetPtr& sqlRet)
+bool SQLiteOperation::doSqlWithRetData(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& sqlRet)
 {
 	int ret = true;
-	const char* sqlSentence = sqlCmd.sqlite_sql_.getData();       //SQL语句
+	const char* sqlSentence = sqlCmd->sqlite_sql_.getData();       //SQL语句
 	sqlite3_stmt * stmt = NULL;    // stmt语句句柄
 	int result = sqlite3_prepare_v2(sqlite3Handler_, sqlSentence, -1, &stmt, NULL);//进行查询前的准备工作——检查语句合法性
 	if (result == SQLITE_OK) {
-		LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
+		//LOGFMTI("SQL_Insert OK sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
 		int col_num = sqlite3_column_count(stmt);
 		for (int i = 0; i < col_num; ++i) {
 			const char* columnName = sqlite3_column_name(stmt, i);// 获取列名
-			sqlRet->table_name_vec_.emplace_back(columnName);
+			zutils::ZString strColName(columnName);
+			sqlRet->table_name_vec_.emplace_back(strColName);
 		}
 		 while (sqlite3_step(stmt) == SQLITE_ROW) {// 每调一次sqlite3_step()函数，stmt语句句柄就会指向下一条记录
 			 int col = 0;
 			 while (col< col_num) {
 				 const unsigned char* val = sqlite3_column_text(stmt, col);// 取出第i列字段的值
 				 const char* charPtr = reinterpret_cast<const char*>(val);//待优化
-				 sqlRet->table_name_vec_.emplace_back(charPtr);
+				 sqlRet->table_value_vec_.emplace_back(zutils::ZString(charPtr));
 				 col++;
 			 }	
 		 }		

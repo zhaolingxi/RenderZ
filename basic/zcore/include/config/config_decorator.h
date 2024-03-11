@@ -26,11 +26,6 @@ public:
 
     ZSpVecStdString getValueStrings(const char* key) override;
 
-	/**
- 	  @brief 获取Json配置项的值
- 	  @param[in] key 配置项的键值, 使用 / 表示配置项的层级关系; 如: driver_view/freq
- 	  @return 配置项对应的Json对象
- 	 */
 	const Json::Value* getJsonValue(const char* key) override;
 
     void parseConfig() override;
