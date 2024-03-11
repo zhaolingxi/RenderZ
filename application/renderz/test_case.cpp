@@ -102,23 +102,23 @@ void testcase::taskSqliteTest01()
 void testcase::taskSqliteTest02()
 {
 	zutils::ZString str("testSqliteDB");
-	zdatabase::SQLiteOperation DB(str);
-	zdatabase::SQLiteCmd* sqlLine0=new zdatabase::SQLiteCmd();
+	SQLiteOperation DB(str);
+	SQLiteCmdPtr sqlLine0=std::make_shared<SQLiteCmd>();
 	sqlLine0->sql_type_ = zdatabase::SqlOperType::SQL_Open;
 	sqlLine0->sqlite_sql_ = "./testdb.db";
 	DB.excuteSqlOper(sqlLine0);
 
-	zdatabase::SQLiteCmd* sqlLine1 = new zdatabase::SQLiteCmd();
+	SQLiteCmdPtr sqlLine1 = std::make_shared<SQLiteCmd>();
 	sqlLine1->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
 	sqlLine1->sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
 	DB.excuteSqlOper(sqlLine1);
 
 	int num = 10000000;
 	LOGFMTI("start batch sql :%d Time:%d \n", num, _getCurrentTime_());
-	zdatabase::SQLiteCmd* sqlLine2 = new zdatabase::SQLiteCmd();
+	auto sqlLine2 = std::make_shared<SQLiteCmd>();
 	sqlLine2->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
 	sqlLine2->sqlite_sql_ = "INSERT INTO xxx(name, age) VALUES('´óÃ÷', 22);";
-	std::vector<SQLiteCmd*> sqlCmdVec;
+	std::vector<SQLiteCmdPtr> sqlCmdVec;
 	sqlCmdVec.reserve(num);
 	for (int i = 0; i < num;i++) {
 		sqlCmdVec.emplace_back(sqlLine2);
@@ -128,7 +128,7 @@ void testcase::taskSqliteTest02()
 	LOGFMTI("end batch sql :%d Time:%d\n", num, _getCurrentTime_());
 
 
-	zdatabase::SQLiteCmd *sqlLine3 = new zdatabase::SQLiteCmd();
+	auto sqlLine3 = std::make_shared<SQLiteCmd>();
 	SQLiteRetPtr ret3 = std::make_shared<SQLiteRetData>();
 	sqlLine3->sql_type_ = zdatabase::SqlOperType::SQL_Select;
 	sqlLine3->sqlite_sql_ = "SELECT name, age FROM xxx WHERE age < 80;";

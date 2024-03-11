@@ -16,14 +16,14 @@ SQLiteOperation::~SQLiteOperation()
 {
 }
 
-SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmd*& sqlCmd)
+SQLiteRetPtr SQLiteOperation::excuteSqlOper(SQLiteCmdPtr& sqlCmd)
 {
 	SQLiteRetPtr ret= std::make_shared<SQLiteRetData>();
 	excuteSqlOper(sqlCmd, ret);
 	return ret;
 }
 
-bool SQLiteOperation::excuteSqlOper(SQLiteCmd*& sqlCmd, SQLiteRetPtr& retPtr)
+bool SQLiteOperation::excuteSqlOper(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	int ret = false;
 	if (!retPtr) {
@@ -66,7 +66,7 @@ bool SQLiteOperation::excuteSqlOper(SQLiteCmd*& sqlCmd, SQLiteRetPtr& retPtr)
 	return ret;
 }
 
-bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmd*>& sqlCmd, SQLiteRetPtr& retPtr)
+bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmdPtr>& sqlCmd, SQLiteRetPtr& retPtr)
 {
 	std::unique_lock<std::mutex> uniqueLck(lock_);
 	bool ret = false;
@@ -120,7 +120,7 @@ bool SQLiteOperation::close()
 	return true;
 }
 
-bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd*& sqlCmd)
+bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmdPtr& sqlCmd)
 {
 	bool ret = true;
 	const char* sqlSentence = sqlCmd->sqlite_sql_.getData();        //SQLÓï¾ä
@@ -138,7 +138,7 @@ bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmd*& sqlCmd)
 	return ret;
 }
 
-bool SQLiteOperation::doSqlWithRetData(SQLiteCmd*& sqlCmd, SQLiteRetPtr& sqlRet)
+bool SQLiteOperation::doSqlWithRetData(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& sqlRet)
 {
 	int ret = true;
 	const char* sqlSentence = sqlCmd->sqlite_sql_.getData();       //SQLÓï¾ä
