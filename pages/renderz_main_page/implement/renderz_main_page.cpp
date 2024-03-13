@@ -8,6 +8,7 @@
 
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
+	setObjectName(viewName);
 }
 
 RenderZMainPage::~RenderZMainPage()
@@ -29,13 +30,17 @@ bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 	QIcon titleIcon(pagesThemeDir.c_str());
 	QPushButton* titleIconbtn = new QPushButton();
 	titleIconbtn->setIcon(titleIcon);
-	QLabel *titleNameLab=new QLabel(tr("RenderZ_v0.1"));
-	QLineEdit* serachLine = new QLineEdit();
-	QPushButton* personalPage = new QPushButton();
-	QPushButton* globalSetting=new QPushButton();
-	QPushButton* minBtn = new QPushButton();
-	QPushButton* maxBtn = new QPushButton();
-	QPushButton* closeBtn=new QPushButton();
+	QLabel *titleNameLab=new QLabel(tr("RenderZ_v0.1"), this);
+	QLineEdit* serachLine = new QLineEdit(this);
+	QPushButton* personalPage = new QPushButton(this);
+	QPushButton* globalSetting=new QPushButton(this);
+	QPushButton* minBtn = new QPushButton(this);
+	minBtn->setObjectName("minBtn");
+	QPushButton* maxBtn = new QPushButton(this);
+	minBtn->setObjectName("maxBtn");
+	QPushButton* closeBtn=new QPushButton(this);
+	minBtn->setObjectName("closeBtn");
+
 
 	pageViewLayoutTop->addWidget(titleIconbtn);
 	pageViewLayoutTop->addWidget(titleNameLab);
@@ -65,7 +70,7 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 
 bool RenderZMainPage::createLayoutBtm(QHBoxLayout*& pageViewLayoutBtm)
 {
-	QLabel* messageLab = new QLabel(tr("ÌáÊ¾£º"));
+	QLabel* messageLab = new QLabel(tr("tips:"));
 	QPushButton* axisBtn = new QPushButton();
 	pageViewLayoutBtm_->addWidget(messageLab);
 	pageViewLayoutBtm_->addStretch();

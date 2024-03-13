@@ -16,6 +16,7 @@
 #include"zstring.h"
 #include"test_case.h"
 #include "log4z.h"
+#include"zlib_loader.h"
 
 int main(int argc, char* argv[])
 {
@@ -39,14 +40,21 @@ int main(int argc, char* argv[])
 	ILog4zManager::getInstance()->start();
 	LOGFMTI("ILog4zManager start");
 
-	RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
-	pMianPage->tempLoadTheme(app.get());
-	pMianPage->createPage();
+	std::vector<std::string> pluginPages{ "renderz_main_page", };
+	for (auto& pluginPage : pluginPages) {
+		std::string strdll = appDir.toUtf8().data();
+		strdll=strdll + "/" + pluginPage.c_str() + ".dll";
+		auto ret = zutils::ZLibLoader::loadLib(strdll.c_str());
+	}
+
+	//RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
+	//pMianPage->tempLoadTheme(app.get());
+	//pMianPage->createPage();
 
 //	testcase::threadTest01();
 //	testcase::timeTest01();
 //	testcase::taskSechTest01();
-	testcase::taskSqliteTest02();
+//	testcase::taskSqliteTest02();
 
 	ret = app->exec();
 
