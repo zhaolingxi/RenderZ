@@ -10,7 +10,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include"zqtgui.h"
-
+#include"logmonitor_page_sdk.h"
 
 class RenderZMainPage : public QFrame
 {
