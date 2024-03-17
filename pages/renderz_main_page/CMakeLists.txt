@@ -4,7 +4,7 @@ project(renderz_main_page)
 # project的头文件包含目录
 include_directories(framework interface implement)
 if(MSVC)
-	add_compile_definitions(${PROJECT_NAME} PRIVATE _TEMPLATEPAGE_EXPORTS)
+	add_compile_definitions(${PROJECT_NAME} PRIVATE _RENDERZ_MAIN_PAGE_EXPORTS)
 endif()
 # 项目头文件
 file(GLOB_RECURSE H_HEADER_FILES "framework/*.h")

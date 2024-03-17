@@ -17,6 +17,8 @@
 #include"test_case.h"
 #include "log4z.h"
 #include"zlib_loader.h"
+#include"zlib_plugin_info.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -45,6 +47,8 @@ int main(int argc, char* argv[])
 		std::string strdll = appDir.toUtf8().data();
 		strdll=strdll + "/" + pluginPage.c_str() + ".dll";
 		auto ret = zutils::ZLibLoader::loadLib(strdll.c_str());
+		auto funcAddress = zutils::ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
+		auto pluginModuleInfo = std::make_shared<zutils::ZLibPluginInfo>();
 	}
 
 	//RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");

@@ -25,8 +25,6 @@ public:
 	bool getConfigData(const ConfigType& configType, const ConfigFileType& configFileType, const DataType& dataType, const char* key,T &data);
 
 public:
-
-
 	//virtual int getValueInt(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const int defaultVal = 0);
 
 	//virtual long long getValueInt64(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const long long defaultVal = 0);
