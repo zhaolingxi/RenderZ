@@ -20,16 +20,16 @@ void printTimeAndThreadID(int num) {
 	//printf("printTimeAndThreadID Number:%d :Time:%d ThreadID:%d \n", num,_getCurrentTime_(), id);
 
 	uint64_t currentTime = _getCurrentTime_();
-	zutils::ZString curTime;
-	zutils::ZTime::getNowTimeMilliSecStr(curTime);
+	ZString curTime;
+	ZTime::getNowTimeMilliSecStr(curTime);
 	LOGFMTI("printTimeAndThreadID Number:%d Time:%d StrTime:%s ThreadID:%d \n", num, _getCurrentTime_(), curTime.getData(), id);
 }
 
 
 void testcase::threadTest01()
 {
-	zutils::ZThread thread1("aa", func1, zutils::runType::LOOP);
-	thread1.runThread(zutils::runType::LOOP);
+	ZThread thread1("aa", func1, runType::LOOP);
+	thread1.runThread(runType::LOOP);
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	thread1.pauseThread();
 
@@ -37,14 +37,14 @@ void testcase::threadTest01()
 //	thread1.killThread();
 
 	thread1.setMainTask(func2);
-	thread1.runThread(zutils::runType::ONCE);
+	thread1.runThread(runType::ONCE);
 }
 
 void testcase::timeTest01()
 {
 	uint64_t currentTime = _getCurrentTime_();
-	zutils::ZString curTime;
-	zutils::ZTime::getNowTimeMilliSecStr(curTime);
+	ZString curTime;
+	ZTime::getNowTimeMilliSecStr(curTime);
 }
 
 void testcase::taskSechTest01()
@@ -74,7 +74,7 @@ void testcase::taskSechTest02()
 
 void testcase::taskSqliteTest01()
 {
-	//zutils::ZString str("testSqliteDB");
+	//ZString str("testSqliteDB");
 	//zdatabase::SQLiteOperation DB(str);
 	//zdatabase::SQLiteCmd sqlLine0;
 	//sqlLine0.sql_type_ = zdatabase::SqlOperType::SQL_Open;
@@ -102,7 +102,7 @@ void testcase::taskSqliteTest01()
 void testcase::taskSqliteTest02()
 {
 	auto test = []() {
-		zutils::ZString str("testSqliteDB");
+		ZString str("testSqliteDB");
 		SQLiteOperation DB(str);
 		SQLiteCmdPtr sqlLine0 = std::make_shared<SQLiteCmd>();
 		sqlLine0->sql_type_ = zdatabase::SqlOperType::SQL_Open;
@@ -138,7 +138,7 @@ void testcase::taskSqliteTest02()
 	
 
 
-	zutils::ZThread thread1("aa", test);
+	ZThread thread1("aa", test);
 	thread1.runThread();
 }
 

@@ -4,7 +4,6 @@
 #define ZUtilsNS zutils
 #define ZUTILS_NS_BEGIN  namespace ZUtilsNS {
 #define ZUTILS_NS_END  }
-
 #ifdef _ZUTILS_EXPORTS
 #if defined(WIN32) || defined(WIN64)
 // Windows平台导出接口

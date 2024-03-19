@@ -11,11 +11,11 @@ public:
 	};
 	virtual ~ZLibPluginInfo() {};
 
-	void setUUID(const zutils::ZString uuid);
+	void setUUID(const ZString uuid);
 
-	void getUUID(zutils::ZString& uuid) ;
+	void getUUID(ZString& uuid) ;
 private:
-	zutils::ZString libuuid_;
+	ZString libuuid_;
 	std::unordered_map < int64_t, std::shared_ptr < std::vector<ZLibPluginInfo> >> moduleChainMap_;
 };
 ZUTILS_NS_END
