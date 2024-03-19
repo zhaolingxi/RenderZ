@@ -10,4 +10,6 @@
 // 仅支持使用在linux上的接口
 #endif
 // 基础模板库
-//using namespace ZUtilsNS;
+ZUTILS_NS_BEGIN
+ZUTILS_NS_END
+using namespace ZUtilsNS;

@@ -37,7 +37,7 @@ union ConfigDataValue
 	float fVal;
 	int64_t i64TVal;
 	int32_t i32TVal;
-	std::shared_ptr<zutils::ZString> strVal;
+	std::shared_ptr<ZString> strVal;
 };
 
 struct ConfigNode

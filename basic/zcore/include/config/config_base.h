@@ -47,7 +47,7 @@ public:
 
 private:
 	ConfigManager* cfgManager_{ nullptr }; /**< 配置管理器 */
-	//std::unordered_map<zutils::ZString, ConfigNode> configCache_;
+	//std::unordered_map<ZString, ConfigNode> configCache_;
 	//std::unordered_map<std::string, ConfigNode> configCache_;
 };
 

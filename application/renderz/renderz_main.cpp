@@ -46,9 +46,16 @@ int main(int argc, char* argv[])
 	for (auto& pluginPage : pluginPages) {
 		std::string strdll = appDir.toUtf8().data();
 		strdll=strdll + "/" + pluginPage.c_str() + ".dll";
-		auto ret = zutils::ZLibLoader::loadLib(strdll.c_str());
-		auto funcAddress = zutils::ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
-		auto pluginModuleInfo = std::make_shared<zutils::ZLibPluginInfo>();
+		auto ret = ZLibLoader::loadLib(strdll.c_str());
+		typedef void(__cdecl* ModuleInfo)(ZLibPluginInfo*);
+
+		auto func = (ModuleInfo)ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
+		auto pluginModuleInfo = std::make_shared<ZLibPluginInfo*>();
+		func(*pluginModuleInfo);
+
+
+		auto func2 = ZLibLoader::getProcAddress(ret, "InstallPluginView");
+		func2();
 	}
 
 	//RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
