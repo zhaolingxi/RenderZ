@@ -2,7 +2,7 @@
 #include "log4z.h"
 
 ZDATABASE_NS_BEGIN
-SQLiteOperation::SQLiteOperation(zutils::ZString& baseName):
+SQLiteOperation::SQLiteOperation(ZString& baseName):
 name_(baseName)
 {
 }
@@ -85,11 +85,11 @@ bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmdPtr>& sqlCmd, SQLi
 	return ret;
 }
 
-bool SQLiteOperation::open(zutils::ZString path)
+bool SQLiteOperation::open(ZString path)
 {
 	char* utf8Str=nullptr;
 	//字符转换暂时有bug，待修复
-//	zutils::ZStrCodingConvert::mbcsToUtf8(path.getData(), utf8Str);
+//	ZStrCodingConvert::mbcsToUtf8(path.getData(), utf8Str);
 //	std::shared_ptr<std::string> strPath=std::make_shared<std::string>(utf8Str);
 //	int ret = sqlite3_open(strPath->c_str(), &sqlite3Handler_);
 	int ret = sqlite3_open(path.getData(), &sqlite3Handler_);
@@ -149,7 +149,7 @@ bool SQLiteOperation::doSqlWithRetData(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& sqlRe
 		int col_num = sqlite3_column_count(stmt);
 		for (int i = 0; i < col_num; ++i) {
 			const char* columnName = sqlite3_column_name(stmt, i);// 获取列名
-			zutils::ZString strColName(columnName);
+			ZString strColName(columnName);
 			sqlRet->table_name_vec_.emplace_back(strColName);
 		}
 		 while (sqlite3_step(stmt) == SQLITE_ROW) {// 每调一次sqlite3_step()函数，stmt语句句柄就会指向下一条记录
@@ -157,7 +157,7 @@ bool SQLiteOperation::doSqlWithRetData(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& sqlRe
 			 while (col< col_num) {
 				 const unsigned char* val = sqlite3_column_text(stmt, col);// 取出第i列字段的值
 				 const char* charPtr = reinterpret_cast<const char*>(val);//待优化
-				 sqlRet->table_value_vec_.emplace_back(zutils::ZString(charPtr));
+				 sqlRet->table_value_vec_.emplace_back(ZString(charPtr));
 				 col++;
 			 }	
 		 }		

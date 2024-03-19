@@ -25,8 +25,6 @@ public:
 	bool getConfigData(const ConfigType& configType, const ConfigFileType& configFileType, const DataType& dataType, const char* key,T &data);
 
 public:
-
-
 	//virtual int getValueInt(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const int defaultVal = 0);
 
 	//virtual long long getValueInt64(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const long long defaultVal = 0);
@@ -49,7 +47,7 @@ public:
 
 private:
 	ConfigManager* cfgManager_{ nullptr }; /**< 配置管理器 */
-	//std::unordered_map<zutils::ZString, ConfigNode> configCache_;
+	//std::unordered_map<ZString, ConfigNode> configCache_;
 	//std::unordered_map<std::string, ConfigNode> configCache_;
 };
 
