@@ -20,16 +20,16 @@ void printTimeAndThreadID(int num) {
 	//printf("printTimeAndThreadID Number:%d :Time:%d ThreadID:%d \n", num,_getCurrentTime_(), id);
 
 	uint64_t currentTime = _getCurrentTime_();
-	zutils::ZString curTime;
-	zutils::ZTime::getNowTimeMilliSecStr(curTime);
+	ZString curTime;
+	ZTime::getNowTimeMilliSecStr(curTime);
 	LOGFMTI("printTimeAndThreadID Number:%d Time:%d StrTime:%s ThreadID:%d \n", num, _getCurrentTime_(), curTime.getData(), id);
 }
 
 
 void testcase::threadTest01()
 {
-	zutils::ZThread thread1("aa", func1, zutils::runType::LOOP);
-	thread1.runThread(zutils::runType::LOOP);
+	ZThread thread1("aa", func1, runType::LOOP);
+	thread1.runThread(runType::LOOP);
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	thread1.pauseThread();
 
@@ -37,14 +37,14 @@ void testcase::threadTest01()
 //	thread1.killThread();
 
 	thread1.setMainTask(func2);
-	thread1.runThread(zutils::runType::ONCE);
+	thread1.runThread(runType::ONCE);
 }
 
 void testcase::timeTest01()
 {
 	uint64_t currentTime = _getCurrentTime_();
-	zutils::ZString curTime;
-	zutils::ZTime::getNowTimeMilliSecStr(curTime);
+	ZString curTime;
+	ZTime::getNowTimeMilliSecStr(curTime);
 }
 
 void testcase::taskSechTest01()
@@ -74,7 +74,7 @@ void testcase::taskSechTest02()
 
 void testcase::taskSqliteTest01()
 {
-	//zutils::ZString str("testSqliteDB");
+	//ZString str("testSqliteDB");
 	//zdatabase::SQLiteOperation DB(str);
 	//zdatabase::SQLiteCmd sqlLine0;
 	//sqlLine0.sql_type_ = zdatabase::SqlOperType::SQL_Open;
@@ -101,37 +101,44 @@ void testcase::taskSqliteTest01()
 
 void testcase::taskSqliteTest02()
 {
-	zutils::ZString str("testSqliteDB");
-	SQLiteOperation DB(str);
-	SQLiteCmdPtr sqlLine0=std::make_shared<SQLiteCmd>();
-	sqlLine0->sql_type_ = zdatabase::SqlOperType::SQL_Open;
-	sqlLine0->sqlite_sql_ = "./testdb.db";
-	DB.excuteSqlOper(sqlLine0);
+	auto test = []() {
+		ZString str("testSqliteDB");
+		SQLiteOperation DB(str);
+		SQLiteCmdPtr sqlLine0 = std::make_shared<SQLiteCmd>();
+		sqlLine0->sql_type_ = zdatabase::SqlOperType::SQL_Open;
+		sqlLine0->sqlite_sql_ = "./testdb.db";
+		DB.excuteSqlOper(sqlLine0);
 
-	SQLiteCmdPtr sqlLine1 = std::make_shared<SQLiteCmd>();
-	sqlLine1->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
-	sqlLine1->sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
-	DB.excuteSqlOper(sqlLine1);
+		SQLiteCmdPtr sqlLine1 = std::make_shared<SQLiteCmd>();
+		sqlLine1->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
+		sqlLine1->sqlite_sql_ = "CREATE TABLE IF NOT EXISTS xxx (id integer PRIMARY KEY AUTOINCREMENT, name text NOT NULL, age integer NOT NULL);";
+		DB.excuteSqlOper(sqlLine1);
 
-	int num = 10000000;
-	LOGFMTI("start batch sql :%d Time:%d \n", num, _getCurrentTime_());
-	auto sqlLine2 = std::make_shared<SQLiteCmd>();
-	sqlLine2->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
-	sqlLine2->sqlite_sql_ = "INSERT INTO xxx(name, age) VALUES('大明', 22);";
-	std::vector<SQLiteCmdPtr> sqlCmdVec;
-	sqlCmdVec.reserve(num);
-	for (int i = 0; i < num;i++) {
-		sqlCmdVec.emplace_back(sqlLine2);
-	}
-	SQLiteRetPtr retPtr=std::make_shared<SQLiteRetData>();
-	DB.excuteBatchSqlOper(sqlCmdVec, retPtr);
-	LOGFMTI("end batch sql :%d Time:%d\n", num, _getCurrentTime_());
+		int num = 1000000;
+		LOGFMTI("start batch sql :%d Time:%d \n", num, _getCurrentTime_());
+		auto sqlLine2 = std::make_shared<SQLiteCmd>();
+		sqlLine2->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
+		sqlLine2->sqlite_sql_ = "INSERT INTO xxx(name, age) VALUES('大明', 22);";
+		std::vector<SQLiteCmdPtr> sqlCmdVec;
+		sqlCmdVec.reserve(num);
+		for (int i = 0; i < num; i++) {
+			sqlCmdVec.emplace_back(sqlLine2);
+		}
+		SQLiteRetPtr retPtr = std::make_shared<SQLiteRetData>();
+		DB.excuteBatchSqlOper(sqlCmdVec, retPtr);
+		LOGFMTI("end batch sql :%d Time:%d\n", num, _getCurrentTime_());
 
 
-	auto sqlLine3 = std::make_shared<SQLiteCmd>();
-	SQLiteRetPtr ret3 = std::make_shared<SQLiteRetData>();
-	sqlLine3->sql_type_ = zdatabase::SqlOperType::SQL_Select;
-	sqlLine3->sqlite_sql_ = "SELECT name, age FROM xxx WHERE age < 80;";
-	DB.excuteSqlOper(sqlLine3, ret3);
+		auto sqlLine3 = std::make_shared<SQLiteCmd>();
+		SQLiteRetPtr ret3 = std::make_shared<SQLiteRetData>();
+		sqlLine3->sql_type_ = zdatabase::SqlOperType::SQL_Select;
+		sqlLine3->sqlite_sql_ = "SELECT name, age FROM xxx WHERE age < 80;";
+		DB.excuteSqlOper(sqlLine3, ret3);
+	};
+	
+
+
+	ZThread thread1("aa", test);
+	thread1.runThread();
 }
 

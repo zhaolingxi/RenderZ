@@ -39,11 +39,11 @@ include_directories(../basic/zutils ../basic/zutils/include)
 # zcore
 include_directories(../basic/zcore  ../basic/zcore/include)
 # zqtgui
-include_directories(../basic/zqtui   ../basic/zqtui/include)
+include_directories(../basic/zqtgui   ../basic/zqtgui/include)
 # zdatabase
 include_directories(../basic/zdatabase   ../basic/zdatabase/include)
 
-include_directories(../basic/pages  ../basic/pages/test_page)
+include_directories(../pages/renderz_main_page/framework  ../pages/renderz_main_page/implement)
 
 
 # 拷贝依赖的基础库文件和页面动态库

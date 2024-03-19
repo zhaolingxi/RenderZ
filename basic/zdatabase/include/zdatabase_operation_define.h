@@ -18,8 +18,8 @@ enum class SqlOperType :int {
 
 struct SQLiteRetData {//操作数据库之后的返回值，尤其是查找数据库
 public:
-    std::vector<zutils::ZString> table_name_vec_;
-    std::vector<zutils::ZString> table_value_vec_;
+    std::vector<ZString> table_name_vec_;
+    std::vector<ZString> table_value_vec_;
     bool retFlag{false};
 };
 using SQLiteRetPtr = std::shared_ptr<SQLiteRetData>;
@@ -27,7 +27,7 @@ using SQLiteRetPtr = std::shared_ptr<SQLiteRetData>;
 
 struct SQLiteCmd {
 public:
-    zutils::ZString sqlite_sql_;//操作数据库的sql语句
+    ZString sqlite_sql_;//操作数据库的sql语句
     SqlOperType sql_type_;//操作类型
 };
 using SQLiteCmdPtr = std::shared_ptr<SQLiteCmd>;

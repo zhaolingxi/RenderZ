@@ -49,6 +49,6 @@ add_definitions(-D_BASIC_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 # 添加子项目
 add_subdirectory ("zutils")
 add_subdirectory ("zcore")
-add_subdirectory ("zqtui")
+add_subdirectory ("zqtgui")
 add_subdirectory ("zdatabase")
 #add_subdirectory ("zrender")

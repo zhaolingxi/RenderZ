@@ -24,7 +24,7 @@ ZDATABASE_NS_BEGIN
 class ZDATABASE_API SQLiteOperation
 {
 public:
-    SQLiteOperation(zutils::ZString& baseName);
+    SQLiteOperation(ZString& baseName);
     SQLiteOperation(const char* & baseName);
 	virtual ~SQLiteOperation();
 
@@ -38,11 +38,11 @@ public:
     SQLiteRetPtr excuteBatchSqlOper(std::vector<SQLiteCmdPtr>& sqlCmd);
     bool excuteBatchSqlOper(std::vector<SQLiteCmdPtr>& sqlCmd, SQLiteRetPtr& retPtr);
 
-    int get_max_id(zutils::ZString table_name);
+    int get_max_id(ZString table_name);
 
 protected:
     //数据库开关
-    bool open(zutils::ZString path);
+    bool open(ZString path);
     bool close();
     //等待当前数据库任务处理完毕
     void waitClose();
@@ -57,11 +57,11 @@ protected:
 
 private:
 	static constexpr int BatchCnt{ 100 }; /**< 事务批量数量 */
-	std::shared_ptr<zutils::ZThread> schedThread_{ nullptr }; /**< 调度线程 */
+	std::shared_ptr<ZThread> schedThread_{ nullptr }; /**< 调度线程 */
 
     std::mutex lock_;   /**< SQLite操作句柄保护锁 */
     sqlite3* sqlite3Handler_{ nullptr }; /**< SQLite操作句柄 */
-    zutils::ZString name_{ "" };//用户自定义标识
+    ZString name_{ "" };//用户自定义标识
 
 };
 ZDATABASE_NS_END

@@ -44,21 +44,16 @@ void ZLibLoader::unload()
 
 ZLibLoader::ModHandler ZLibLoader::loadLib(const char* libFilePath)
 {
-	//if (!ZFileUtils::isFileExit(libFilePath)) {
-	//	LOGFMTE("ZLibLoader::loadLib() file: %s not existed!!!", libFilePath);
-	//	return nullptr;
-	//}
+//文件实体判空（待补充）
 	ModHandler hDll = nullptr;
 #ifdef _MSVC
 	hDll = ::LoadLibraryA(libFilePath);
 	if (hDll == nullptr) {
 		DWORD err = GetLastError();
-		//ZLOGFMTE("ZLibLoader::loadLib() Load: %s failed, err=%lu", libFilePath, err);
 	}
 #else
 	hDll = dlopen(libFilePath, RTLD_NOW | RTLD_GLOBAL);
 	if (hDll == nullptr) {
-		//ZLOGFMTE("ZLibLoader::loadLib() Load: %s failed, err: %s", libFilePath, dlerror());
 	}
 #endif
 	return hDll;

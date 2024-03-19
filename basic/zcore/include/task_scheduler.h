@@ -19,7 +19,7 @@ public:
 		FIFO_Sched,//先入先出调度
 		WEB_TASK_Sched,//网络任务调度
 	};
-#define ThreadQueue zutils::ZLockFreeQueue<zutils::ZThread>
+#define ThreadQueue ZLockFreeQueue<ZThread>
 
 public:
 	TaskScheduler(SchedType type,int workerNum=-1);
@@ -106,10 +106,10 @@ private:
 	std::atomic<int> runningTaskCnt_{ 0 }; /**< 正在执行的任务数量 */
 	void* asyncIOContext_{ nullptr }; /**< 基础IO异步服务 */
 	std::shared_ptr<TaskQueue> taskQueue_{ nullptr }; /**<  延时任务队列 */
-	std::shared_ptr<zutils::ZThread> schedThread_{nullptr}; /**< 调度线程 */
+	std::shared_ptr<ZThread> schedThread_{nullptr}; /**< 调度线程 */
 	int threadNum_{0};
-	std::deque<zutils::ZThread*> threadQueue_;//后面需要修改为无锁队列 
-	std::deque<zutils::ZThread*> threadBusyQueue_;//后面需要修改为无锁队列 
+	std::deque<ZThread*> threadQueue_;//后面需要修改为无锁队列 
+	std::deque<ZThread*> threadBusyQueue_;//后面需要修改为无锁队列 
 	int maxWaitingTime_{ 3000 };//ms
 	int singleStepTime_{10};//ms
 	std::mutex lock_;

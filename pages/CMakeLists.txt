@@ -28,18 +28,19 @@ include(qt_utils)
 find_package(Qt5 REQUIRED COMPONENTS OpenGL PrintSupport)
 config_qt_compile(${PLATFORM_NAME})
 message("Info: Project ${PROJECT_NAME} config qt compile finished")
+if(DEBUG)
+	add_definitions(-D_APP_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+else()
+	add_definitions(-D_APP_SOURCE_DIR="./")
+endif()
 
 # 依赖的基础库头文件包含目录
 # aautils
 include_directories(../basic/zutils ../basic/zutils/include)
 # aacore
 include_directories(../basic/zcore ../basic/zcore/include)
-# triLibrary 
-if(MSVC64)
-        include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/include)
-else()
-        include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/linux64/danetsdk/include)
-endif()
+include_directories(../basic/zqtgui ../basic/zqtgui/include)
+
 
 # 拷贝依赖的基础库文件和业务模块
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../logics/bin/${TARGET_DIRNAME})
@@ -56,23 +57,6 @@ else()
     list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prebuild/${TARGET_DIRNAME}/openssl/lib)
 endif()
 
-# danetsdk
-if(MSVC64)
-	if(DEBUG)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/debug/lib)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/debug/bin)
-	else()
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/release/lib)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/danetsdk/release/bin)
-	endif()
-else()
-	if(DEBUG)
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/linux64/danetsdk/debug/lib)
-	else()
-		list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/linux64/danetsdk/release/lib)
-	endif()
-endif()
-
 link_directories(${DEPEND_LIBRARY_PATHS})
 copy_depend_libs("${DEPEND_LIBRARY_PATHS}") # 拷贝依赖的基础库文件
 
@@ -85,7 +69,7 @@ else()
 endif()
 
 # 需要编译的页面插件
-add_subdirectory ("test_page")
+add_subdirectory ("renderz_main_page")
 if(BUILD_TEST)
 #	add_subdirectory ("test_page")
 endif()

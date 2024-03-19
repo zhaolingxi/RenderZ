@@ -4,7 +4,7 @@ ZCORE_NS_BEGIN
 
 TaskScheduler::TaskScheduler(SchedType type, int workerNum)
 {
-	schedThread_ = std::make_shared<zutils::ZThread>("schedThread");
+	schedThread_ = std::make_shared<ZThread>("schedThread");
 	std::function<void()> it = std::bind(&TaskScheduler::schedule, this);
 	schedThread_->setMainTask(it);
 	if (workerNum==-1) {//自动设置线程数量
@@ -22,7 +22,7 @@ TaskScheduler::TaskScheduler(SchedType type, int workerNum)
 	//创建线程队列
 	int i = 0;
 	while (i< threadNum_) {
-		auto thread =new zutils::ZThread("TaskSchedulerThread");
+		auto thread =new ZThread("TaskSchedulerThread");
 		threadQueue_.push_back(thread);
 		++i;
 	}
