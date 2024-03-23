@@ -1,8 +1,4 @@
-﻿#####################################################################################
-# description: 数据库处理框架
-# author: zhaolingxi
-#####################################################################################
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 project(zdatabase)
 
 include_directories(../zutils ../zutils/include)

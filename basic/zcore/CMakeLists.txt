@@ -1,7 +1,4 @@
-﻿#####################################################################################
-# description: 应用程序基础框架
-# author: zhaolingxi
-#####################################################################################
+﻿
 cmake_minimum_required (VERSION 3.8)
 project(zcore)
 
@@ -24,6 +21,7 @@ file(GLOB_RECURSE C_SOURCE_FILES "src/*.c")
 set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES} ${C_SOURCE_FILES})
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+
 target_link_libraries(${PROJECT_NAME} zutils)
 if(GNUC)
 	target_link_libraries(${PROJECT_NAME} pthread rt dl)

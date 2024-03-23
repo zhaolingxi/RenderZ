@@ -14,12 +14,7 @@ if (NOT PLATFORM_NAME)
         message(FATAL "Unsupported current operating system.")
     endif()
 endif()
-if (NOT BUILD_TEST)
-        set(BUILD_TEST "True")
-endif()
-if (NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Debug")
-endif()
+
 
 # cmake模块路径
 set(CMAKE_MODULE_PATH
@@ -52,3 +47,4 @@ add_subdirectory ("pages") # 功能页面插件
 #add_subdirectory ("service") # 服务模块
 add_subdirectory ("application")   # 应用程序
 add_subdirectory ("triLibrary") # 三方库
+

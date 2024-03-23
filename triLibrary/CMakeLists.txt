@@ -1,15 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.8)
 project(triLibrary)
-# 默认生成linux64位下的debug版
-if (NOT PLATFORM_NAME)
-        set(PLATFORM_NAME "LINUX64")
-endif()
-if (NOT BUILD_TEST)
-        set(BUILD_TEST "True")
-endif()
-if (NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Debug")
-endif()
+
 
 # cmake模块路径
 set(CMAKE_MODULE_PATH
@@ -67,12 +58,15 @@ macro(run_3rdparty_build_script _script_path _install_dir)
     endif()
 endmacro()
 
-# 编译zlib库
-if(MSVC)
-    set(ZLIB_BUILD_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR} /scripts/zlib_build.bat")
+
+#三方库拷贝
+if(MSVC64)
+    list(APPEND TRILIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/jsoncpp/${TARGET_DIRNAME}/lib)
 else()
-    set(ZLIB_BUILD_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR} /scripts/zlib_build.sh")
+    list(APPEND TRILIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/jsoncpp/${TARGET_DIRNAME}/lib)
 endif()
-run_3rdparty_build_script(${ZLIB_BUILD_SCRIPT} ${3RDPARTY_TARGET_DIR}/zlib)
 
 
+foreach(LIB ${TRILIBRARY_PATHS})
+    file(COPY "${LIB}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}")
+endforeach()

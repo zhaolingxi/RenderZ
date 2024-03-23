@@ -25,20 +25,6 @@ elseif(GNUC)
 endif()
 message("---compile ${PROJECT_NAME} Platform: ${PLATFORM_NAME}, Debug: ${DEBUG}, CXX: ${CMAKE_CXX_COMPILER}")
 
-if(MSVC64)
-	include_directories(../triLibrary/prelibrary/x64/openssl/include)
-else()
-	include_directories(../triLibrary/prebuild/${TARGET_DIRNAME}/openssl/include)
-endif()
-
-if(MSVC64)
-    # 直接使用已经编译好的openssl二进制库
-	list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/openssl/lib)
-	list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/openssl/bin)
-else()
-	list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prebuild/${TARGET_DIRNAME}/openssl/lib)
-endif()
-#list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/bin/${TARGET_DIRNAME})
 
 link_directories(${DEPEND_LIBRARY_PATHS})
 copy_depend_libs("${DEPEND_LIBRARY_PATHS}") # 拷贝依赖的基础库文件
