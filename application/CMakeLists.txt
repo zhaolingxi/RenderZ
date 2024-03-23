@@ -63,6 +63,15 @@ endif()
 link_directories(${DEPEND_LIBRARY_PATHS})
 copy_depend_libs("${DEPEND_LIBRARY_PATHS}")
 
+
+#拷贝三方库
+set(LIBRARIES ../triLibrary/lib/)
+foreach(LIB ${LIBRARIES})
+    file(COPY "${LIB}" DESTINATION "${TARGET_PATH}")
+endforeach()
+
+
+
 # 需要编译的页面插件
 add_subdirectory ("renderz")
 
