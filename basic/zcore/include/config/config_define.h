@@ -1,6 +1,7 @@
 #pragma once
 #include "zcore_sdk.h"
 #include "zutils_define.h"
+#include "zutils.h"
 #include "zstring.h"
 ZCORE_NS_BEGIN
 enum class ConfigType :int {
