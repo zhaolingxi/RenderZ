@@ -1,0 +1,13 @@
+prefix=D:/Code/renderZ/RenderZ/triLibrary/prebuild/x64-debug/zlib
+exec_prefix=D:/Code/renderZ/RenderZ/triLibrary/prebuild/x64-debug/zlib
+libdir=D:/Code/renderZ/RenderZ/triLibrary/prebuild/x64-debug/zlib/lib
+sharedlibdir=D:/Code/renderZ/RenderZ/triLibrary/prebuild/x64-debug/zlib/lib
+includedir=D:/Code/renderZ/RenderZ/triLibrary/prebuild/x64-debug/zlib/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.3
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
