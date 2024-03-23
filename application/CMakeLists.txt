@@ -52,13 +52,7 @@ list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../service/bin/${TA
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../logics/bin/${TARGET_DIRNAME})
 list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../basic/bin/${TARGET_DIRNAME})
 
-if(MSVC64)
-    # 直接使用已经编译好的openssl二进制库
-	list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/openssl/lib)
-	list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prelibrary/x64/openssl/bin)
-else()
-	list(APPEND DEPEND_LIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/prebuild/${TARGET_DIRNAME}/openssl/lib)
-endif()
+
 
 link_directories(${DEPEND_LIBRARY_PATHS})
 copy_depend_libs("${DEPEND_LIBRARY_PATHS}")

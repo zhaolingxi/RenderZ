@@ -14,12 +14,7 @@ if (NOT PLATFORM_NAME)
         message(FATAL "Unsupported current operating system.")
     endif()
 endif()
-if (NOT BUILD_TEST)
-        set(BUILD_TEST "True")
-endif()
-if (NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE "Debug")
-endif()
+
 
 # cmake模块路径
 set(CMAKE_MODULE_PATH
