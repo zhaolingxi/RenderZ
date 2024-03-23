@@ -5,6 +5,10 @@ cmake_minimum_required (VERSION 3.8)
 project(zutils)
 
 include_directories(include include/encode include/json include/file)
+
+#三方库头文件
+set (TRILIBRARY_PATHS ../../triLibrary)
+include_directories(${TRILIBRARY_PATHS}/jsoncpp/include )
 if(MSVC)
 	add_definitions(-D _ZUTILS_EXPORTS)
 endif()
@@ -22,9 +26,17 @@ file(GLOB_RECURSE CPP_SOURCE_FILES "src/*.cpp")
 file(GLOB_RECURSE C_SOURCE_FILES "src/*.c")
 set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES} ${C_SOURCE_FILES})
 
+
+
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+
+find_library(../../triLibrary/jsoncpp/${TARGET_DIRNAME}/lib)
+add_executable(jsoncpp)
+target_link_libraries(../../triLibrary/jsoncpp/${TARGET_DIRNAME}/lib jsoncpp)
 if(GNUC)
 	# 需要安装uuid依赖,sudo apt-get install uuid-dev
 	target_link_libraries(${PROJECT_NAME} pthread rt dl uuid)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'")
 endif()
+
+

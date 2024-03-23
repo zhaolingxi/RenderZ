@@ -76,3 +76,15 @@ endif()
 run_3rdparty_build_script(${ZLIB_BUILD_SCRIPT} ${3RDPARTY_TARGET_DIR}/zlib)
 
 
+
+#三方库拷贝
+if(MSVC64)
+    list(APPEND TRILIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/jsoncpp/${TARGET_DIRNAME}/lib)
+else()
+    list(APPEND TRILIBRARY_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../triLibrary/jsoncpp/${TARGET_DIRNAME}/lib)
+endif()
+
+
+foreach(LIB ${TRILIBRARY_PATHS})
+    file(COPY "${LIB}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}")
+endforeach()

@@ -24,6 +24,7 @@ file(GLOB_RECURSE C_SOURCE_FILES "src/*.c")
 set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES} ${C_SOURCE_FILES})
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+
 target_link_libraries(${PROJECT_NAME} zutils)
 if(GNUC)
 	target_link_libraries(${PROJECT_NAME} pthread rt dl)
