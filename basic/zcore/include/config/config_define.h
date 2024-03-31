@@ -34,6 +34,10 @@ enum class DataType :int {
 
 union ConfigDataValue
 {
+public:
+	ConfigDataValue() {};
+	~ConfigDataValue() {};
+
 	int iVal;
 	float fVal;
 	int64_t i64TVal;
@@ -43,7 +47,14 @@ union ConfigDataValue
 
 struct ConfigNode
 {
+public:
+	ConfigNode(){
+	}
+	~ConfigNode() {
+	};
+
 	DataType type;
 	ConfigDataValue val;
+
 };
 ZCORE_NS_END

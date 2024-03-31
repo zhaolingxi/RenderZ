@@ -672,7 +672,12 @@ void ZString::appendFormat(const char* format, ...)
 
 size_t ZString::hashCode() const noexcept
 {
-	return ZHash::encodeStr(getData(), getLength());
+	return ZHash::encodeStr32(getData(), getLength());
+}
+
+size_t ZString::hashCode(const ZString& str)
+{
+	return ZHash::encodeStr32(str.getData(), str.getLength());
 }
 
 bool ZString::isEmptyStr(const char* str)
