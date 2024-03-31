@@ -6,6 +6,8 @@
 #include"zutils.h"
 #include"zstring.h"
 #include<unordered_map>
+#include<map>
+#include<functional>
 /**********************************************************************
  *@brief  模块配置基础接口
  ***********************************************************************/
@@ -47,8 +49,7 @@ public:
 
 private:
 	ConfigManager* cfgManager_{ nullptr }; /**< 配置管理器 */
-	//std::unordered_map<ZString, ConfigNode> configCache_;
-	//std::unordered_map<std::string, ConfigNode> configCache_;
+	std::unordered_map<ZString, ConfigNode*>configCache_;
 };
 
 
