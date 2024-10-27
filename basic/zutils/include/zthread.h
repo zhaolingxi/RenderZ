@@ -43,8 +43,6 @@ public:
 	explicit ZThread(const char* strName, THREAD_MAIN_TASK mainProc = nullptr,runType type = runType::ONCE);
 	explicit ZThread(ZString strName,THREAD_MAIN_TASK mainProc=nullptr, runType type = runType::ONCE);
 
-
-
 	void operator=(const ZThread& other) = delete;
 	void operator=(const ZThread&& other) = delete;
 
@@ -76,7 +74,6 @@ private:
 	std::shared_ptr <STDTHREAD> pstdThread_;
 	ZString threadName_;
 	THREAD_MAIN_TASK mainTask_{ nullptr };
-	//std::atomic<bool> threadIdle_{ true };//线程是否处于空闲状态（空闲状态可以忙等）
 	std::atomic<bool> isRunning_{ false };//线程是否处于运行状态（运行状态与是否空闲无关）
 	std::condition_variable task_cv_;
 	std::mutex lock_;

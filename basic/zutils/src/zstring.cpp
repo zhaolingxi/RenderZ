@@ -525,7 +525,7 @@ bool ZString::ensureBuffer(int len)
 	if (bufferSize_ - strLength_ >= len + 1) {
 		return true;
 	}
-	int newBufferSize = Z_align8(bufferSize_ + len + 1) << 1; // 2倍扩容
+	int newBufferSize = z_align8(bufferSize_ + len + 1) << 1; // 2倍扩容
 	bufferSize_ = newBufferSize;
 	char* newBuffer = nullptr;
 	if (!isStoreInHeapMem_) { // 第一次申请堆空间
@@ -623,7 +623,7 @@ void ZString::format(const char* format, ...)
 	va_list argList;
 	va_start(argList, format);
 	int len = vsnprintf(0, 0, format, argList);
-	buffer.resize(Z_align8(len + 1));
+	buffer.resize(z_align8(len + 1));
 	vsprintf_s(buffer.data(), buffer.size(), format, argList);
 	va_end(argList);
 #else
@@ -651,7 +651,7 @@ void ZString::appendFormat(const char* format, ...)
 	va_list argList;
 	va_start(argList, format);
 	int len = vsnprintf(0, 0, format, argList);
-	buffer.resize(Z_align8(len + 1));
+	buffer.resize(z_align8(len + 1));
 	vsprintf_s(buffer.data(), buffer.size(), format, argList);
 	va_end(argList);
 #else

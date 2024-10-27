@@ -18,7 +18,7 @@ class ZCORE_API ConfigBase
 public:
 	using ConfigPtr = std::shared_ptr<ConfigBase>;
 public:
-	ConfigBase() {};
+		ConfigBase() {};
 	ConfigBase(ConfigManager*& cfgMgr);
 	virtual ~ConfigBase();
 
