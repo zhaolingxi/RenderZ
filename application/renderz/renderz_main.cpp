@@ -15,10 +15,9 @@
 #include"zthread.h"
 #include"zstring.h"
 #include"test_case.h"
-#include "log4z.h"
 #include"zlib_loader.h"
 #include"zlib_plugin_info.h"
-
+#include"eventpp/callbacklist.h"
 
 int main(int argc, char* argv[])
 {
@@ -28,19 +27,9 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<QApplication> app = std::make_shared<QApplication>(argc, argv);
 
-	LoggerId logId = ILog4zManager::getInstance()->createLogger("mainlogger");
-
-
 	QString appDir = QApplication::applicationDirPath();
 	QDir::setCurrent(appDir);
 	qDebug() << "appDir: " << appDir;
-
-	ILog4zManager::getInstance()->setLoggerPath(logId,appDir.toStdString().c_str());
-	ILog4zManager::getInstance()->setLoggerName(logId,"mainlogger");
-	ILog4zManager::getInstance()->setLoggerOutFile(logId, 1);
-
-	ILog4zManager::getInstance()->start();
-	LOGFMTI("ILog4zManager start");
 
 	std::vector<std::string> pluginPages{ "renderz_main_page", };
 	for (auto& pluginPage : pluginPages) {
@@ -49,19 +38,17 @@ int main(int argc, char* argv[])
 		auto ret = ZLibLoader::loadLib(strdll.c_str());
 		typedef void(__cdecl* ModuleInfo)(ZLibPluginInfo*);
 
-		auto func = (ModuleInfo)ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
+		auto func_GetPluginViewInfo = (ModuleInfo)ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
 		auto pluginModuleInfo = std::make_shared<ZLibPluginInfo*>();
-		func(*pluginModuleInfo);
+		func_GetPluginViewInfo(*pluginModuleInfo);
 
 
-		auto func2 = ZLibLoader::getProcAddress(ret, "InstallPluginView");
-		func2();
+		auto func_InstallPluginView = ZLibLoader::getProcAddress(ret, "InstallPluginView");
+		func_InstallPluginView();
 	}
 
-	testcase::uuidGenrateTest();
 
 	ret = app->exec();
 
-	ILog4zManager::getInstance()->stop();
 	return ret;
 }

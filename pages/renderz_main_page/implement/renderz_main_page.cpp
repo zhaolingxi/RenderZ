@@ -5,6 +5,7 @@
 #include<QLabel>
 #include<QLineEdit>
 #include<QPushButton>
+#include<QStandardItem>
 
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
@@ -59,10 +60,23 @@ bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 {
 	mainSideBarLeft_ = new QWidget();
+	leftNavigModel_ = new ZQtNavigatorModel();
+	// 添加一些示例节点
+	TreeItem* rootNode = leftNavigModel_->getRootItem();
+	TreeItem* item1 = new TreeItem("Item 1", rootNode);
+	TreeItem* item2 = new TreeItem("Item 2", rootNode);
+	TreeItem* childItem = new TreeItem("Child Item", item1);
+	// 构建树形结构
+	item1->appendChild(childItem);
+	item2->appendChild(new TreeItem("Child Item 2", item2));
+	rootNode->appendChild(item1);
+	rootNode->appendChild(item2);
+
+	leftNavigView_ = new ZQtNavigatorView(nullptr, leftNavigModel_);
 	mianViewer_ = new ZQtViewer();
 	mainSideBarRight_ = new QWidget();
 
-	pageViewLayoutMid->addWidget(mainSideBarLeft_);
+	pageViewLayoutMid->addWidget(leftNavigView_);
 	pageViewLayoutMid->addWidget(mianViewer_);
 	pageViewLayoutMid->addWidget(mainSideBarRight_);
 	return true;
