@@ -1,8 +1,9 @@
-﻿#####################################################################################
-# description: 可视化组件管理工具
-#####################################################################################
+﻿#整体cmake设置
 cmake_minimum_required (VERSION 3.14)
 project ("RenderZ")
+
+
+set(CMAKE_CXX_STANDARD 17)
 
 # 默认生成linux64位下的debug版
 if (NOT PLATFORM_NAME)
@@ -42,9 +43,7 @@ message("---compile ${PROJECT_NAME} Platform: ${PLATFORM_NAME}, Debug: ${DEBUG},
 
 # 第3方库
 add_subdirectory ("basic") # 基础库
-#add_subdirectory ("logic") # 业务插件模块
 add_subdirectory ("pages") # 功能页面插件
-#add_subdirectory ("service") # 服务模块
 add_subdirectory ("application")   # 应用程序
 add_subdirectory ("triLibrary") # 三方库
 

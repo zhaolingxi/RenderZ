@@ -323,8 +323,12 @@ public:
 	const bool operator >(const ZString& other) const;
 	// 适配 map、set等容器
 	const bool operator <(const ZString& other) const;
+
+
 	// 字符串的hash值
 	size_t hashCode() const noexcept;
+
+	size_t hashCode(const ZString& str);
 
 public:
 	/**

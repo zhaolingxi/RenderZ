@@ -1,6 +1,7 @@
 #pragma once
 #include "zcore_sdk.h"
 #include "zutils_define.h"
+#include "zutils.h"
 #include "zstring.h"
 ZCORE_NS_BEGIN
 enum class ConfigType :int {
@@ -33,6 +34,10 @@ enum class DataType :int {
 
 union ConfigDataValue
 {
+public:
+	ConfigDataValue() {};
+	~ConfigDataValue() {};
+
 	int iVal;
 	float fVal;
 	int64_t i64TVal;
@@ -42,7 +47,14 @@ union ConfigDataValue
 
 struct ConfigNode
 {
+public:
+	ConfigNode(){
+	}
+	~ConfigNode() {
+	};
+
 	DataType type;
 	ConfigDataValue val;
+
 };
 ZCORE_NS_END

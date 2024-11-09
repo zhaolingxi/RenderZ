@@ -3,8 +3,11 @@
 #include "zutils_define.h"
 #include <memory>
 #include"config_define.h"
+#include"zutils.h"
 #include"zstring.h"
 #include<unordered_map>
+#include<map>
+#include<functional>
 /**********************************************************************
  *@brief  模块配置基础接口
  ***********************************************************************/
@@ -15,67 +18,39 @@ class ZCORE_API ConfigBase
 public:
 	using ConfigPtr = std::shared_ptr<ConfigBase>;
 public:
-	ConfigBase() = default;
-	//ConfigBase(ConfigManager* cfgMgr);
-	//virtual ~ConfigBase();
+		ConfigBase() {};
+	ConfigBase(ConfigManager*& cfgMgr);
+	virtual ~ConfigBase();
 
 public:
 	template<typename T>
 	bool getConfigData(const ConfigType& configType, const ConfigFileType& configFileType, const DataType& dataType, const char* key,T &data);
 
 public:
-	//virtual int getValueInt(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const int defaultVal = 0);
+	int getValueInt(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const int defaultVal = 0);
 
-	//virtual long long getValueInt64(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const long long defaultVal = 0);
+	long long getValueInt64(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const long long defaultVal = 0);
 
-	//virtual double getValueDouble(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const double defaultVal = 0);
+	double getValueDouble(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const double defaultVal = 0);
 
-	//virtual std::shared_ptr<std::string> getValueString(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const char* defaultVal = "");
+	std::shared_ptr<ZString> getValueString(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const char* defaultVal = "");
 
-	//virtual bool getValueBool(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const bool defaultVal = false);
+	bool getValueBool(const ConfigType& configType, const ConfigFileType& configFileType, const char* key, const bool defaultVal = false);
 
-	//virtual ZSpVecInt getValueInts(const ConfigType& configType, const ConfigFileType& configFileType, const char* key);
+	ZSpVecInt getValueInts(const ConfigType& configType, const ConfigFileType& configFileType);
 
-	//virtual ZSpVecLL getValueInt64s(const ConfigType& configType, const ConfigFileType& configFileType, const char* key);
+	ZSpVecLL getValueInt64s(const ConfigType& configType, const ConfigFileType& configFileType);
 
-	//virtual ZSpVecDouble getValueDobules(const ConfigType& configType, const ConfigFileType& configFileType, const char* key);
+	ZSpVecDouble getValueDobules(const ConfigType& configType, const ConfigFileType& configFileType);
 
-	//virtual ZSpVecStdString getValueStrings(const ConfigType& configType, const ConfigFileType& configFileType, const char* key);
+	//virtual ZSpVecZString getValueStrings(const ConfigType& configType, const ConfigFileType& configFileType);
 
-	//virtual void parseConfig(const ConfigFileType& configFileType);
+	void parseConfig(const ConfigFileType& configFileType);
 
 private:
 	ConfigManager* cfgManager_{ nullptr }; /**< 配置管理器 */
-	//std::unordered_map<ZString, ConfigNode> configCache_;
-	//std::unordered_map<std::string, ConfigNode> configCache_;
+	std::unordered_map<ZString, ConfigNode*>configCache_;
 };
 
-
-//template<typename T>
-//inline bool ConfigBase::getConfigData(const ConfigType& configType, const ConfigFileType& configFileType, const DataType& dataType, const char* key, T& data)
-//{
-//	switch (dataType)
-//	{
-//		case DataType::INT32{
-//		}
-//		case DataType::INT64{
-//		}
-//		case DataType::FLOAT{
-//		}
-//		case DataType::DOUBLE{
-//		}
-//		case DataType::LONGLONG{
-//		}
-//		case DataType::STRING{
-//		}
-//		case DataType::BOOL{
-//		}
-//		case DataType::USER{
-//		}
-//	default:
-//		break;
-//	}
-//	return false;
-//}
 
 ZCORE_NS_END

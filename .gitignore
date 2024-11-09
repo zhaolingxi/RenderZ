@@ -5,6 +5,7 @@ out/
 cmake-build-*/
 backup/
 CMakeSettings.json
+CMakePresets.json
 
 /pages/resources/language/*/*.qm
 build

@@ -5,7 +5,7 @@
  *@brief  HASH函数
  ***********************************************************************/
 ZUTILS_NS_BEGIN
-uint32_t ZHash::encodeStr(const char *str, const int len /*= -1*/)
+uint32_t ZHash::encodeStr32(const char *str, const int len /*= -1*/)
 {
 	int strLen = len;
 	if (strLen < 0) {

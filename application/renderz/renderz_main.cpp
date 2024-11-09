@@ -58,14 +58,7 @@ int main(int argc, char* argv[])
 		func2();
 	}
 
-	//RenderZMainPage* pMianPage = new RenderZMainPage(nullptr,"RenderZMainPage");
-	//pMianPage->tempLoadTheme(app.get());
-	//pMianPage->createPage();
-
-//	testcase::threadTest01();
-//	testcase::timeTest01();
-//	testcase::taskSechTest01();
-//	testcase::taskSqliteTest02();
+	testcase::uuidGenrateTest();
 
 	ret = app->exec();
 

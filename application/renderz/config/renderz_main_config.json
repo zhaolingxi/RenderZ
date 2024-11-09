@@ -1,0 +1,18 @@
+{
+  "render_config": {
+    "log_path": "./",
+    "log_level": 2,
+    "max_depth": 50,
+    "plugin_names":["page1","page4"],
+  },
+  "ui_config": {
+    "main_page": {
+      "size": "adjust",
+      "color": "night",
+      "layer": 1,
+      "support_file": [ "png", "jpg", "xml","ts" ]
+    },
+    "init_dir": "./",
+    "author_names": [ "zhaolx" ]
+  }
+}
