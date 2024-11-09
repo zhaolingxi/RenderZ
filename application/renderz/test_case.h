@@ -3,6 +3,8 @@
 #include"zthread.h"
 #include"zstring.h"
 #include"ztime.hpp"
+#include"zuuid_utils.h"
+
 class testcase {
 public:
 	testcase() {
@@ -16,4 +18,6 @@ public:
 	static void taskSechTest02();//进行简单的任务调度测试
 	static void taskSqliteTest01();//简单数据库测试
 	static void taskSqliteTest02();//数据库事务读写
+	static void uuidGenrateTest();//uuid生成（暂时用hash函数，碰撞问题之后解决）
+	static void jsonReadTest();//读取json配置
 };

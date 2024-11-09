@@ -142,3 +142,18 @@ void testcase::taskSqliteTest02()
 	thread1.runThread();
 }
 
+void testcase::uuidGenrateTest()
+{
+	UUIDINFO info;
+	info.mod_type = MODTYPE::LOGIC_MOD;
+	info.main_content= "read_jsonfile_interface";
+	info.extend= "none";
+	int64_t ret;
+	ZUUIDUtils::generateUUIDINT(info, ret);
+}
+
+void testcase::jsonReadTest()
+{
+
+}
+

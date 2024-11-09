@@ -18,7 +18,8 @@ public:
 	 @param[in] len 字符串的长度
 	 @return 字符串的hash值
 	 */
-	static uint32_t encodeStr(const char *str, const int len = -1);
+	static uint32_t encodeStr32(const char* str, const int len = -1);
+	//static uint64_t encodeStr64(const char *str, const int len = -1);
 
 	/**
 	 @brief  求指定数据的hash值
