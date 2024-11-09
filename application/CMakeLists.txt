@@ -38,7 +38,7 @@ copy_depend_libs("${DEPEND_LIBRARY_PATHS}")
 
 
 #拷贝三方库
-set(LIBRARIES ../triLibrary/lib/)
+set(LIBRARIES ../triLibrary/prebuildlib/)
 foreach(LIB ${LIBRARIES})
     file(COPY "${LIB}" DESTINATION "${TARGET_PATH}")
 endforeach()
