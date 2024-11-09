@@ -4,7 +4,7 @@
 #include<QImageWriter>
 #include<QGuiApplication>
 #include<QScreen>
-
+#include"zqt3dcoordinatesystem_view.h"
 ZQTGUI_NS_BEGIN
 
 ZQtImageViewer::ZQtImageViewer(QWidget* parent)
@@ -45,6 +45,11 @@ void ZQtViewer::createViewer()
     if (viewerType_== ViewerType::EImageType) {
         zImageViewer_ = new ZQtImageViewer(this);
         mainLayout_->addWidget(zImageViewer_);
+    }
+    else if (viewerType_ == ViewerType::EOpenGLType) {
+        triDCoord_ = new ZQt3DCoordinateSystem(this);
+        triDCoord_->setMinimumSize(400, 400);
+        mainLayout_->addWidget(triDCoord_);
     }
     show();
 }
