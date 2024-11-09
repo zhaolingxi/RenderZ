@@ -9,7 +9,9 @@ message("Info: Project ${PROJECT_NAME} config qt compile finished")
 # 依赖库头文件包含目录
 include_directories(../zutils/include ../zcore/include)
 # project的头文件包含目录
-include_directories(include include/zqtviewer src src/zqtviewer)
+include_directories(include src)
+include_directories(include/zqtviewer src/zqtviewer)
+include_directories(include/zqtnavigator src/zqtnavigator)
 
 if(MSVC)
 	add_definitions(-D_ZQTGUI_EXPORTS)

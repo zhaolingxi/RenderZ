@@ -41,6 +41,8 @@ elseif(GNUC)
 endif()
 message("---compile ${PROJECT_NAME} Platform: ${PLATFORM_NAME}, Debug: ${DEBUG}, CXX: ${CMAKE_CXX_COMPILER}")
 
+include_directories(triLibrary/)
+
 # 第3方库
 add_subdirectory ("basic") # 基础库
 add_subdirectory ("pages") # 功能页面插件

@@ -4,12 +4,12 @@
 <context>
     <name>RenderZMainPage</name>
     <message>
-        <location filename="implement/renderz_main_page.cpp" line="33"/>
+        <location filename="implement/renderz_main_page.cpp" line="34"/>
         <source>RenderZ_v0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="implement/renderz_main_page.cpp" line="73"/>
+        <location filename="implement/renderz_main_page.cpp" line="87"/>
         <source>tips:</source>
         <translation type="unfinished"></translation>
     </message>
