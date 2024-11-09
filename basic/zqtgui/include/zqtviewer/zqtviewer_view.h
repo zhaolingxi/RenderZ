@@ -59,7 +59,7 @@ private:
 };
 
 enum class ViewerType :int64_t { EImageType = 0, EVideoType, EModelType, ECavasType, EOpenGLType };
-
+class ZQt3DCoordinateSystem;
 class ZQTGUI_API ZQtViewer : public QFrame
 {
     Q_OBJECT
@@ -67,6 +67,8 @@ public:
     explicit ZQtViewer(QWidget* parent =nullptr, ViewerType iViewerType= ViewerType::EImageType);
     virtual~ZQtViewer()=default;
 
+    void setViewerType(ViewerType itype) { viewerType_=itype; };
+    ViewerType getViewerType() { return viewerType_; };
 protected:
     void createViewer();
 
@@ -75,5 +77,7 @@ private:
 
     ZQtImageViewer* zImageViewer_{ nullptr };
     ViewerType viewerType_;
+
+    ZQt3DCoordinateSystem * triDCoord_{nullptr};
 };
 ZQTGUI_NS_END
