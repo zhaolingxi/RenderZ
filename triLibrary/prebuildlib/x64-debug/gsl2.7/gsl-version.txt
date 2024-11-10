@@ -1,0 +1,2 @@
+AMPLGSL version 20231107
+GSL version 2.7

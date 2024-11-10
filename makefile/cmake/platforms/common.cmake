@@ -1,19 +1,4 @@
-﻿#####################################################################################
-# description: 基础配置
-#-------------------------------------------------------------------
-# 项配置宏说明：
-# Windows平台(23和64位)：_MSVC, MSVC, WINDOWS,_WINDOWS
-# Win32平台：WIN32, _WIN32
-# Win64平台：WIN64, _WIN64
-#
-# Linux平台(23和64位)：_LINUX, LINUX, GNUC, _GNUC
-# Linux32平台：LINUX32, _LINUX32, GNUC32, _GNUC32
-# Linux64平台：LINUX64, _LINUX64，GNUC64, _GNUC64
-# Debug版本:   DEBUG, _DEBUG
-# Release版本: NDEBUG, _NDEBUG
-#####################################################################################
-
-# 基础配置项
+﻿# 基础配置项
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 17)

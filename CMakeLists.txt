@@ -41,11 +41,20 @@ elseif(GNUC)
 endif()
 message("---compile ${PROJECT_NAME} Platform: ${PLATFORM_NAME}, Debug: ${DEBUG}, CXX: ${CMAKE_CXX_COMPILER}")
 
-include_directories(triLibrary/)
+if(MSVC)
+    add_compile_options(/MP)
+endif()
 
-# 第3方库
+set(triLibraryPath ${CMAKE_CURRENT_SOURCE_DIR}/triLibrary)
+include_directories(${triLibraryPath})
+
+
+add_subdirectory ("triLibrary") # 三方库
+add_custom_target(triLibraryDependencies
+    DEPENDS triLibraryDone
+    COMMENT "Waiting for triLibrary dependencies..."
+)
 add_subdirectory ("basic") # 基础库
 add_subdirectory ("pages") # 功能页面插件
 add_subdirectory ("application")   # 应用程序
-add_subdirectory ("triLibrary") # 三方库
 
