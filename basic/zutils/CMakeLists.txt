@@ -1,13 +1,13 @@
-﻿#####################################################################################
-# description: 应用程序基础框架与服务，包括消息中心、模块管理器
-#####################################################################################
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 project(zutils)
 
-include_directories(include include/encode include/json include/file)
+include_directories(include include/encode include/file)
 #三方库头文件
-set (TRILIBRARY_PATHS ../../triLibrary)
-include_directories(${TRILIBRARY_PATHS}/lib ${TRILIBRARY_PATHS}/jsoncpp/include)
+include_directories(${triLibraryPath}/prebuildlib/${TARGET_DIRNAME}/jsoncpp/include/json)
+
+#三方库依赖
+link_directories(${triLibraryPath}/prebuildlib/${TARGET_DIRNAME}/jsoncpp/lib)
+
 
 if(MSVC)
 	add_definitions(-D _ZUTILS_EXPORTS)
@@ -28,9 +28,14 @@ set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES} ${C_SOURCE_FILES})
 
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
-
-find_library(JSONCPPLIB jsoncpp ${TRILIBRARY_PATHS}/lib)
-target_link_libraries(${PROJECT_NAME} ${JSONCPPLIB})
+file(GLOB JSONCPP_LIBS "${triLibraryPath}/prebuildlib/${TARGET_DIRNAME}/jsoncpp/lib/*jsoncpp*")
+message(STATUS "Found jsoncpp libs: ${JSONCPP_LIBS}")
+if(JSONCPP_LIBS)
+    target_link_libraries(${PROJECT_NAME} ${JSONCPP_LIBS})
+else()
+    message(FATAL_ERROR "jsoncpp library not found")
+endif()
+#target_link_libraries(${PROJECT_NAME} jsoncpp)
 
 if(GNUC)
 	target_link_libraries(${PROJECT_NAME} pthread rt dl uuid)
