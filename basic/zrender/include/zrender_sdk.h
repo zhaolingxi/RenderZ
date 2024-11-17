@@ -23,4 +23,5 @@
 #endif
 #endif
 #include "zcore.h"
+#include "zmath.h"
 

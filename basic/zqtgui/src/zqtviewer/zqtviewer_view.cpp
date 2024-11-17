@@ -32,6 +32,41 @@ ZQtImageViewer::ZQtImageViewer(QWidget* parent)
     show();
 }
 
+ZQt3DViewer::ZQt3DViewer(QWidget* parent)
+{
+    coordinateSystem_ = new ZQt3DCoordinateSystem(this);
+}
+
+void ZQt3DViewer::initializeGL()
+{
+    coordinateSystem_->initializeGL();
+}
+
+void ZQt3DViewer::resizeGL(int w, int h)
+{
+    // 设置主视图的视口和投影矩阵
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (double)w / h, 0.1, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // 调整坐标系控件的位置和大小
+   
+    coordinateSystem_->resizeGL(coordinateSystemWidth_, coordinateSystemHeight_);
+
+}
+
+void ZQt3DViewer::paintGL()
+{
+    // 再渲染坐标系，将其放在右下角
+    glViewport(width() - coordinateSystemWidth_, height() - coordinateSystemHeight_, coordinateSystemWidth_, coordinateSystemHeight_); // 假设坐标系控件大小为200x200
+    coordinateSystem_->paintGL();
+}
+
+
+
 
 ZQtViewer::ZQtViewer(QWidget* parent, ViewerType iViewerType)
 {
@@ -54,3 +89,4 @@ void ZQtViewer::createViewer()
     show();
 }
 ZQTGUI_NS_END
+
