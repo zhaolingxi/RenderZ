@@ -74,7 +74,6 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 
 	leftNavigView_ = new ZQtNavigatorView(nullptr, leftNavigModel_);
 	mianViewer_ = new ZQtViewer(this, ViewerType::EOpenGLType);
-	//mianViewer_->setViewerType(ViewerType::EOpenGLType);
 	mainSideBarRight_ = new QWidget();
 
 	pageViewLayoutMid->addWidget(leftNavigView_);

@@ -41,6 +41,8 @@ elseif(GNUC)
 endif()
 message("---compile ${PROJECT_NAME} Platform: ${PLATFORM_NAME}, Debug: ${DEBUG}, CXX: ${CMAKE_CXX_COMPILER}")
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
 if(MSVC)
     add_compile_options(/MP)
 endif()

@@ -8,10 +8,12 @@
 #include<QScrollArea>
 #include<QGridLayout>
 #include<QOpenGLWidget>
+#include<QQuaternion>
+#include"model_loader/zobj_model_loader.h"
 ZQTGUI_NS_BEGIN
 class ZQt3DCoordinateSystem;
 
-class ZQtImageViewer : public QFrame
+class ZQTGUI_API ZQtImageViewer : public QFrame
 {
     Q_OBJECT
 
@@ -60,7 +62,7 @@ private:
     QAction* fitToWindowAct;
 };
 
-class ZQt3DViewer:QOpenGLWidget{
+class ZQTGUI_API ZQt3DViewer:public QOpenGLWidget{
     Q_OBJECT
 public:
     explicit ZQt3DViewer(QWidget* parent);
@@ -70,10 +72,50 @@ protected:
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
+    void wheelEvent(QWheelEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 private:
     ZQt3DCoordinateSystem* coordinateSystem_{ nullptr };
+    zrender::ZObjModelLoader* objLoader_{ nullptr };
+private:
     int coordinateSystemWidth_ = 200; // 假设坐标系控件的宽度
     int coordinateSystemHeight_ = 200; // 假设坐标系控件的高度
+
+    double rotate_y_ = 0;
+    double rotate_x_ = 0;
+    double rotate_z_ = 0;
+
+    QQuaternion currQ;
+    /* Frustrum Things */
+    float radius;
+    float fdist;
+    double dNear;
+    double dFar;
+    double viewAngle;
+    float w0;
+    float h0;
+    /* User Control */
+   // camera cam;
+    /* Rotation */
+    bool mouseHeld;
+    bool rotationOK;
+    /* Culling */
+    bool cullingOK;
+    bool translateOK;
+    bool scaleOK;
+    /* Zoom */
+    bool zoomOK;
+    float zoomF;
+    double scale;
+    /* Color Pick */
+    double red, green, blue;
+    bool needsReset;
+    QVector3D axisOfRotation;
+    int x, y, dx, dy, x0, y0;
+    int prevPos[2];
+    float mag;
 };
 
 enum class ViewerType :int64_t { EImageType = 0, EVideoType, EModelType, ECavasType, EOpenGLType };
@@ -93,8 +135,9 @@ private:
     QGridLayout* mainLayout_{ nullptr };
 
     ZQtImageViewer* zImageViewer_{ nullptr };
-    ViewerType viewerType_;
+    ZQt3DViewer* z3DViewer_{ nullptr };
+    ZQt3DCoordinateSystem * coordinateSystem_{nullptr};
+    ViewerType viewerType_{ ViewerType::EImageType };
 
-    ZQt3DCoordinateSystem * triDCoord_{nullptr};
 };
 ZQTGUI_NS_END

@@ -17,12 +17,12 @@ public:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
-protected:
+
     void wheelEvent(QWheelEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-
+protected:
     // 获取当前的坐标变换矩阵
     QMatrix4x4 getTransformationMatrix() const;
 
@@ -38,5 +38,7 @@ private:
     float translationZ{ -30.0f };
     float planeXOffset{ 0.0f };
     float planeYOffset{ 0.0f };
+    int w_{0};
+    int h_{0};
 };
 ZQTGUI_NS_END

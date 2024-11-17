@@ -7,17 +7,18 @@ config_qt_compile(${PLATFORM_NAME})
 message("Info: Project ${PROJECT_NAME} config qt compile finished")
 
 # 依赖库头文件包含目录
-include_directories(../zutils/include ../zcore/include)
+include_directories(../zutils ../zutils/include)
+include_directories(../zcore ../zcore/include)
+include_directories(../zmath ../zmath/include)
+include_directories(../zrender ../zrender/include)
+
 # project的头文件包含目录
 include_directories(include src)
-include_directories(include/zqtviewer src/zqtviewer)
-include_directories(include/zqtnavigator src/zqtnavigator)
-include_directories(include/zqt3dcoordinatesystem src/zqt3dcoordinatesystem)
+
 
 if(MSVC)
 	add_definitions(-D_ZQTGUI_EXPORTS)
 endif()
-#add_compile_definitions(${PROJECT_NAME} PRIVATE _ZQTGUI_EXPORTS)
 
 # 项目头文件
 file(GLOB_RECURSE H_HEADER_FILES "include/*.h")
@@ -37,7 +38,7 @@ set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES})
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 # 框架基础库
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::OpenGL)
-target_link_libraries(${PROJECT_NAME} PRIVATE zutils zcore)
+target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zrender zcore)
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} PRIVATE opengl32 glu32)

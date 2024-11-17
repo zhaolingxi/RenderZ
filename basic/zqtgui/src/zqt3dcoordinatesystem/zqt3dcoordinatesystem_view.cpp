@@ -1,4 +1,4 @@
-#include "zqt3dcoordinatesystem_view.h"
+#include "zqt3dcoordinatesystem/zqt3dcoordinatesystem_view.h"
 #include<QMatrix4x4>'
 #include <QtMath>
 ZQTGUI_NS_BEGIN
@@ -18,6 +18,8 @@ void ZQt3DCoordinateSystem::initializeGL()
 void ZQt3DCoordinateSystem::resizeGL(int w, int h)
 {
     if (h == 0) h = 1;
+    w_ = w;
+    h_ = h;
     glViewport(0, 0, w, h);           //重置当前的视口
     // glMatrixMode() 用以指定当前要操作的矩阵  GL_MODELVIEW（模型视图，默认值），GL_PROJECTION（投影），GL_TEXTURE（纹理），GL_COLOR（颜色）
     glMatrixMode(GL_PROJECTION);      //选择投影矩阵

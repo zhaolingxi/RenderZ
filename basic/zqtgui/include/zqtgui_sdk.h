@@ -22,5 +22,8 @@
 #define ZQTGUI_API 
 #endif
 #endif
+
 #include "zutils.h"
 #include "zcore.h"
+#include "zrender.h"
+#include "zmath.h"

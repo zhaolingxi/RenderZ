@@ -1,4 +1,4 @@
-#include"zqtnavigator_delegate.h"
+#include"zqtnavigator/zqtnavigator_delegate.h"
 #include<QPainter>
 ZQTGUI_NS_BEGIN
 ZQtNavigatorDelegate::ZQtNavigatorDelegate(QObject* parent) :QStyledItemDelegate(parent) {

@@ -13,13 +13,11 @@ else()
 endif()
 
 # 依赖的基础库头文件包含目录
-# zutils
 include_directories(../basic/zutils ../basic/zutils/include)
-# zcore
+include_directories(../basic/zmath ../basic/zmath/include)
 include_directories(../basic/zcore  ../basic/zcore/include)
-# zqtgui
+include_directories(../basic/zrender ../basic/zrender/include)
 include_directories(../basic/zqtgui   ../basic/zqtgui/include)
-# zdatabase
 include_directories(../basic/zdatabase   ../basic/zdatabase/include)
 
 include_directories(../pages/renderz_main_page/framework  ../pages/renderz_main_page/implement)
