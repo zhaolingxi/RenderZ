@@ -1,4 +1,4 @@
-#include"zqtviewer_model.h"
+#include"zqtviewer/zqtviewer_model.h"
 
 ZQTGUI_NS_BEGIN
 

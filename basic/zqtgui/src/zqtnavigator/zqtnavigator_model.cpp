@@ -1,4 +1,4 @@
-#include"zqtnavigator_model.h"
+#include"zqtnavigator/zqtnavigator_model.h"
 
 ZQTGUI_NS_BEGIN
 

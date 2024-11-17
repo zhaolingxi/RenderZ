@@ -3,5 +3,6 @@
 #pragma warning(disable:4819)
 #endif
 #include "zmath_sdk.h"
-
-//#define ZMathVector gsl_vector
+ZMATH_NS_BEGIN
+ZMATH_NS_END
+using namespace ZMathNS;

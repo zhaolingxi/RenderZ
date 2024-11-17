@@ -15,10 +15,10 @@ else()
 endif()
 
 # 依赖的基础库头文件包含目录
-# aautils
 include_directories(../basic/zutils ../basic/zutils/include)
-# aacore
 include_directories(../basic/zcore ../basic/zcore/include)
+include_directories(../basic/zmath ../basic/zmath/include)
+include_directories(../basic/zrender ../basic/zrender/include)
 include_directories(../basic/zqtgui ../basic/zqtgui/include)
 
 
