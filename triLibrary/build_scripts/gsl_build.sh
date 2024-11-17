@@ -22,7 +22,7 @@ cd $BUILD_DIR_NAME
 # 编译选项Debug/release
 GSL_BUILD_CONFIGURE=$BUILD_CONFIGURE
 # 因为3方库通常都不会一直更改,所以只要已经编译完成,则直接退出
-if [ -e "$INSTALL_DIR/include/gsl.h" ]; then
+if [ -e "$INSTALL_DIR/include/gsl/gsl_blas.h" ]; then
     echo "gsl has compiled success quit directly......."
     exit 0
 fi

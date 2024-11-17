@@ -7,7 +7,9 @@
 #include<QLabel>
 #include<QScrollArea>
 #include<QGridLayout>
+#include<QOpenGLWidget>
 ZQTGUI_NS_BEGIN
+class ZQt3DCoordinateSystem;
 
 class ZQtImageViewer : public QFrame
 {
@@ -58,8 +60,23 @@ private:
     QAction* fitToWindowAct;
 };
 
+class ZQt3DViewer:QOpenGLWidget{
+    Q_OBJECT
+public:
+    explicit ZQt3DViewer(QWidget* parent);
+    ~ZQt3DViewer() { delete coordinateSystem_; };
+protected:
+    void initializeGL() override;
+    void resizeGL(int w, int h) override;
+    void paintGL() override;
+
+private:
+    ZQt3DCoordinateSystem* coordinateSystem_{ nullptr };
+    int coordinateSystemWidth_ = 200; // 假设坐标系控件的宽度
+    int coordinateSystemHeight_ = 200; // 假设坐标系控件的高度
+};
+
 enum class ViewerType :int64_t { EImageType = 0, EVideoType, EModelType, ECavasType, EOpenGLType };
-class ZQt3DCoordinateSystem;
 class ZQTGUI_API ZQtViewer : public QFrame
 {
     Q_OBJECT

@@ -3,4 +3,3 @@
 #pragma warning(disable:4819)
 #endif
 #include "zrender_sdk.h"
-using namespace ZRenderNS;

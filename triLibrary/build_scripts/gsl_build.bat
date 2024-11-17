@@ -24,7 +24,7 @@ if "%BUILD_CONFIGURE%"=="Release" (
 	set GSL_BUILD_CONFIGURE=RelWithDebInfo
 )
 rem 因为3方库通常都不会一直更改,所以只要已经编译完成,则直接退出
-if exist "%INSTALL_DIR%\include\gsl.h" (
+if exist "%INSTALL_DIR%\include\gsl\gsl_blas.h" (
     echo gsl has compiled success quit directly.......
     exit /B
 )

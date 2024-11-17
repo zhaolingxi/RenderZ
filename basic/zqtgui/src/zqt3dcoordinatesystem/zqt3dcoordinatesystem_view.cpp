@@ -1,5 +1,6 @@
 #include "zqt3dcoordinatesystem_view.h"
-#include<QMatrix4x4>
+#include<QMatrix4x4>'
+#include <QtMath>
 ZQTGUI_NS_BEGIN
 
 ZQt3DCoordinateSystem::ZQt3DCoordinateSystem(QWidget* parent)
@@ -17,13 +18,15 @@ void ZQt3DCoordinateSystem::initializeGL()
 void ZQt3DCoordinateSystem::resizeGL(int w, int h)
 {
     if (h == 0) h = 1;
-    float aspect = (float)w / (float)h;
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0, aspect, 0.1, 100.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    glViewport(0, 0, w, h);           //重置当前的视口
+    // glMatrixMode() 用以指定当前要操作的矩阵  GL_MODELVIEW（模型视图，默认值），GL_PROJECTION（投影），GL_TEXTURE（纹理），GL_COLOR（颜色）
+    glMatrixMode(GL_PROJECTION);      //选择投影矩阵
+    glLoadIdentity();                 //重置投影矩阵 为 单位矩阵
+
+    gluPerspective(60.0, double(w) / h, 0.1, 1000.0);  //建立透视投影
+
+    glMatrixMode(GL_MODELVIEW);       //选择模型矩阵
+    glLoadIdentity();                 //重置模型矩阵 为 单位矩阵
 }
 
 void ZQt3DCoordinateSystem::paintGL()
@@ -31,27 +34,65 @@ void ZQt3DCoordinateSystem::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    // 应用旋转
-    glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
-    glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
 
-    // 应用缩放
-    glTranslatef(0.0f, 0.0f, translationZ);
+    glTranslatef(0, 0, translationZ);    // 调整绘图坐标
+    glRotatef(rotationX, 0, -1, 0);  // 绕y轴旋转45度
+    glRotatef(rotationY, 1, 0, -1);  // 绕向量(1,0,-1) 旋转45度
 
-    // 应用平面移动
-    glTranslatef(planeXOffset, planeYOffset, 0.0f);
+    // 坐标轴
+    float axis_length = 10;
+    glLineWidth(5);
+    glBegin(GL_LINE_STRIP);
+    glColor3f(1, 0, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(axis_length, 0, 0);
+    glEnd();
+    glFlush();
 
-    // 绘制坐标轴
-    glBegin(GL_LINES);
-    glColor3f(1.0f, 0.0f, 0.0f); // X轴红色
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 0.0f);
-    glColor3f(0.0f, 1.0f, 0.0f); // Y轴绿色
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 1.0f, 0.0f);
-    glColor3f(0.0f, 0.0f, 1.0f); // Z轴蓝色
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 0.0f, 1.0f);
+    glBegin(GL_LINE_STRIP);
+    glColor3f(0, 1, 0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, axis_length, 0);
+    glEnd();
+    glFlush();
+
+    glBegin(GL_LINE_STRIP);
+    glColor3f(0, 0, 1);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, axis_length);
+    glEnd();
+    glFlush();
+
+    // 坐标轴箭头  参考官方文档: https://registry.khronos.org/OpenGL-Refpages/gl4/
+    GLUquadricObj* objCylinder = gluNewQuadric();
+    glPushMatrix();
+    glColor3f(0, 0, 1);
+    glTranslatef(0, 0, axis_length);
+    gluCylinder(objCylinder, 0.3, 0.0, 0.3, 100, 1);  // gluCylinder绘制一个沿z轴定向的圆柱体
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(1, 0, 0);
+    glRotatef(90, 0, 1, 0);      // 沿着y轴转90度 使得x轴对着原z轴方向
+    glTranslatef(0, 0, axis_length);
+    gluCylinder(objCylinder, 0.3, 0.0, 0.3, 100, 1);  // gluCylinder绘制一个沿z轴定向的圆柱体
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0, 1, 0);
+    glRotatef(-90, 1, 0, 0.0);   // 沿着x轴转90度 使得y轴对着原z轴方向
+    glTranslatef(0, 0, axis_length);
+    gluCylinder(objCylinder, 0.3, 0.0, 0.3, 100, 1);  // gluCylinder绘制一个沿z轴定向的圆柱体
+    glPopMatrix();
+
+    // 画原点 - 白色
+    glPointSize(10.0f);
+    glBegin(GL_POINTS);
+    glColor3f(1, 1, 1);
+    glVertex3f(0, 0, 0);
+    glEnd();
+    glFlush();
+
     glEnd();
 
     GLenum err;
@@ -63,7 +104,7 @@ void ZQt3DCoordinateSystem::paintGL()
 
 void ZQt3DCoordinateSystem::wheelEvent(QWheelEvent* event)
 {
-    float scaleStep = 0.1; // 缩放步长
+    float scaleStep = 0.15; // 缩放步长
     if (event->angleDelta().y() > 0) {
         translationZ -= scaleStep; // 放大
     }
@@ -115,6 +156,11 @@ void ZQt3DCoordinateSystem::initializeOpenGLFunctionsIfNeeded()
         initializeOpenGLFunctions();
         m_functionsInitialized = true;
     }
+}
+
+void ZQt3DCoordinateSystem::drawArrow(float dx, float dy, float dz, float arrowSize, float coneHeight)
+{
+
 }
 
 ZQTGUI_NS_END
