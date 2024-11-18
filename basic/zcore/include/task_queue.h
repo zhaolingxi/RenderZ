@@ -34,7 +34,7 @@ public:
 		}
 	};
 
-	_forceinline int calculateTime(Task* iTask, const int& delayTime) {
+	inline int calculateTime(Task* iTask, const int& delayTime) {
 		if (!iTask) { return 0; }
 		uint64_t currentTime = _getCurrentTime_();
 		iTask->tickTime = currentTime + delayTime;

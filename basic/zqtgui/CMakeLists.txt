@@ -1,18 +1,18 @@
 cmake_minimum_required (VERSION 3.8)
 project(zqtgui)
 
-# Qt±àÒëÑ¡Ïî
+# Qtï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
 include(qt_utils) 
 config_qt_compile(${PLATFORM_NAME})
 message("Info: Project ${PROJECT_NAME} config qt compile finished")
 
-# ÒÀÀµ¿âÍ·ÎÄ¼þ°üº¬Ä¿Â¼
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 include_directories(../zutils ../zutils/include)
 include_directories(../zcore ../zcore/include)
 include_directories(../zmath ../zmath/include)
 include_directories(../zrender ../zrender/include)
 
-# projectµÄÍ·ÎÄ¼þ°üº¬Ä¿Â¼
+# projectï¿½ï¿½Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 include_directories(include src)
 
 
@@ -20,7 +20,7 @@ if(MSVC)
 	add_definitions(-D_ZQTGUI_EXPORTS)
 endif()
 
-# ÏîÄ¿Í·ÎÄ¼þ
+# ï¿½ï¿½Ä¿Í·ï¿½Ä¼ï¿½
 file(GLOB_RECURSE H_HEADER_FILES "include/*.h")
 set(HEADER_FILES ${HEADER_FILES} ${H_HEADER_FILES})
 file(GLOB_RECURSE H_HEADER_FILES "src/*.h")
@@ -28,22 +28,23 @@ set(HEADER_FILES ${HEADER_FILES} ${H_HEADER_FILES})
 file(GLOB_RECURSE HPP_HEADER_FILES "include/*.hpp")
 set(HEADER_FILES ${HEADER_FILES} ${HPP_HEADER_FILES})
 
-# ÏîÄ¿Ô´ÎÄ¼þ
+# ï¿½ï¿½Ä¿Ô´ï¿½Ä¼ï¿½
 file(GLOB_RECURSE C_SOURCE_FILES "src/*.c")
 set(SOURCE_FILES ${SOURCE_FILES} ${C_SOURCE_FILES})
 file(GLOB_RECURSE CPP_SOURCE_FILES "src/*.cpp")
 set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES})
 
-# ÌØ±ðÌáÐÑ: ÐèÒªÌí¼Ó ${HEADER_FILES},ÒòÎªmocÉú³ÉµÄÎÄ¼þ»á±£´æµ½ ${HEADER_FILES}
+# ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ ${HEADER_FILES},ï¿½ï¿½Îªmocï¿½ï¿½ï¿½Éµï¿½ï¿½Ä¼ï¿½ï¿½á±£ï¿½æµ½ ${HEADER_FILES}
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
-# ¿ò¼Ü»ù´¡¿â
+# ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::OpenGL)
 target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zrender zcore)
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} PRIVATE opengl32 glu32)
 elseif(UNIX)
-  target_link_libraries(${PROJECT_NAME} PRIVATE GL GLU glut)
+  target_link_libraries(${PROJECT_NAME} PRIVATE GL GLU)
+  #glut
 endif()
 
 if(GNUC)

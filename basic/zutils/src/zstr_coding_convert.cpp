@@ -1,4 +1,4 @@
-﻿#include "..\include\zstr_coding_convert.h"
+﻿#include "../include/zstr_coding_convert.h"
 #include<string>
 #include<vector>
 #ifdef _WIN32
@@ -33,7 +33,7 @@ bool ZStrCodingConvert::mbcsToUnicode(const char* mbcsStr, wchar_t*& unicodeStr)
 	unicodeStr = unicodeBuffer.data();
 #else
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	unicodeStr = converter.from_bytes(str);
+	unicodeStr = converter.from_bytes(mbcsStr).c_str();
 #endif
 	return true;
 }
@@ -56,7 +56,7 @@ bool ZStrCodingConvert::unicodeToMbcs(const wchar_t* unicodeStr, char*& mbcsStr)
 	mbcsStr = strBuffer.data();
 #else
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	mbcsStr = converter.to_bytes(unicodeStr);
+	mbcsStr = converter.to_bytes(unicodeStr).c_str();
 #endif
 	return true;
 }
@@ -78,7 +78,7 @@ bool ZStrCodingConvert::unicodeToUtf8(const wchar_t* unicodeStr, char*& utf8Str)
 	utf8Str = strBuffer.data();
 #else
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	utf8Str = converter.to_bytes(unicodeStr);
+	utf8Str = converter.to_bytes(unicodeStr).c_str();
 #endif
 	return true;
 }
@@ -100,7 +100,7 @@ bool ZStrCodingConvert::utf8ToUnicode(const char* utf8Str, wchar_t*& unicodeStr)
 	unicodeStr = unicodeBuffer.data();
 #else
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	unicodeStr = converter.from_bytes(utf8Str);
+	unicodeStr = converter.from_bytes(utf8Str).c_str();
 #endif
 	return true;
 }

@@ -5,7 +5,7 @@
 #include<string>
 #include<vector>
 
-#ifdef _ZMATH_EXPORTS
+#ifdef MATHEXPORT
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_math.h>

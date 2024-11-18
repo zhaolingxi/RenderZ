@@ -80,7 +80,7 @@ option(JSONCPP_WITH_CMAKE_PACKAGE "Generate and install cmake package files" ON)
 option(JSONCPP_WITH_EXAMPLE "Compile JsonCpp example" OFF)
 option(JSONCPP_STATIC_WINDOWS_RUNTIME "Use static (MT/MTd) Windows runtime" OFF)
 option(BUILD_SHARED_LIBS "Build jsoncpp_lib as a shared library." ON)
-option(BUILD_STATIC_LIBS "Build jsoncpp_lib as a static library." ON)
+option(BUILD_STATIC_LIBS "Build jsoncpp_lib as a static library." OFF)
 option(BUILD_OBJECT_LIBS "Build jsoncpp_lib as a object library." ON)
 
 # Adhere to GNU filesystem layout conventions
