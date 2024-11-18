@@ -632,7 +632,7 @@ void ZString::format(const char* format, ...)
 	va_start(argList, format);
 	int len = vsnprintf(0, 0, format, argList);
 	va_end(argList);
-	buffer.resize(aa_align8(len + 1));
+	buffer.resize(z_align8(len + 1));
 	// 获取字符串内容
 	va_list argList2;
 	va_start(argList2, format);
@@ -660,7 +660,7 @@ void ZString::appendFormat(const char* format, ...)
 	va_start(argList, format);
 	int len = vsnprintf(0, 0, format, argList);
 	va_end(argList);
-	buffer.resize(aa_align8(len + 1));
+	buffer.resize(z_align8(len + 1));
 	// 获取字符串内容
 	va_list argList2;
 	va_start(argList2, format);

@@ -36,14 +36,14 @@ int main(int argc, char* argv[])
 		std::string strdll = appDir.toUtf8().data();
 		strdll=strdll + "/" + pluginPage.c_str() + ".dll";
 		auto ret = ZLibLoader::loadLib(strdll.c_str());
-		typedef void(__cdecl* ModuleInfo)(ZLibPluginInfo*);
+		typedef void(* ModuleInfo)(ZLibPluginInfo*);
 
 		auto func_GetPluginViewInfo = (ModuleInfo)ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
 		auto pluginModuleInfo = std::make_shared<ZLibPluginInfo*>();
 		func_GetPluginViewInfo(*pluginModuleInfo);
 
-
-		auto func_InstallPluginView = ZLibLoader::getProcAddress(ret, "InstallPluginView");
+		typedef void(*InstallPluginViewFunc)();
+		InstallPluginViewFunc func_InstallPluginView =reinterpret_cast<InstallPluginViewFunc>(ZLibLoader::getProcAddress(ret, "InstallPluginView"));
 		func_InstallPluginView();
 	}
 

@@ -13,6 +13,7 @@ link_directories(${triLibraryPath}/prebuildlib/${TARGET_DIRNAME}/gsl2.7/lib)
 if(MSVC)
 	add_definitions(-D _ZMATH_EXPORTS)
 endif()
+add_definitions(-D MATHEXPORT)
 
 # 项目头文件
 file(GLOB_RECURSE H_HEADER_FILES "include/*.h")

@@ -29,12 +29,12 @@ public:
 	static bool installModuleChain(const char* moduleTag);
 
 
-	template<class TypeInterface>
-	static std::shared_ptr<TypeInterface> getModuleByIdCast(const int64_t moduleId, const uint8_t instIdx = 0)
-	{
-		auto modInterface = getModuleByIdentity(moduleId, instIdx);
-		return aasp_dycast<LogicModuleBase, TypeInterface>(modInterface);
-	}
+	// template<class TypeInterface>
+	// static std::shared_ptr<TypeInterface> getModuleByIdCast(const int64_t moduleId, const uint8_t instIdx = 0)
+	// {
+	// 	auto modInterface = getModuleByIdentity(moduleId, instIdx);
+	// 	return aasp_dycast<LogicModuleBase, TypeInterface>(modInterface);
+	// }
 
 	static void exitCoreFramework(ZCORESINGLETON_DESTRORY_CALLBACK destroyExternalCB = nullptr);
 	static void singleLoop();

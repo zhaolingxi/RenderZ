@@ -61,31 +61,31 @@ inline bool ConfigBase::getConfigData(const ConfigType& configType, const Config
 {
 	switch (dataType)
 	{
-		case DataType::INT32{
+		case DataType::INT32:{
 			data=getValueInt(configType,configFileType,key);
 			break;
 		}
-		case DataType::INT64{
+		case DataType::INT64:{
 			data = getValueInt64(configType,configFileType,key);
 			break;
 		}
-		case DataType::FLOAT{
+		case DataType::FLOAT:{
 			break;
 		}
-		case DataType::DOUBLE{
+		case DataType::DOUBLE:{
 			data = getValueDouble(configType,configFileType,key);
 			break;
 		}
-		case DataType::LONGLONG{
+		case DataType::LONGLONG:{
 			break;
 		}
-		case DataType::STRING{
+		case DataType::STRING:{
 			break;
 		}
-		case DataType::BOOL{
+		case DataType::BOOL:{
 			break;
 		}
-		case DataType::USER{
+		case DataType::USER:{
 			break;
 		}
 		default:
