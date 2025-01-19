@@ -1,5 +1,5 @@
 #include"sqlite_operation.h"
-#include "log4z.h"
+#include"zplog_wrapper.h"
 
 ZDATABASE_NS_BEGIN
 SQLiteOperation::SQLiteOperation(ZString& baseName):
@@ -77,7 +77,7 @@ bool SQLiteOperation::excuteBatchSqlOper(std::vector<SQLiteCmdPtr>& sqlCmd, SQLi
 		char* errMessage = nullptr;
 		excuteSqlOper(sqlCmd[i], retPtr);
 		if (errMessage != nullptr) {
-			LOGFMTE("sqlite3_exec() failed message: %s", errMessage);
+			LOG_ERROR_C_STYLE("sqlite3_exec() failed message: %s", errMessage);
 			sqlite3_free(errMessage);
 		}
 	}
@@ -94,7 +94,7 @@ bool SQLiteOperation::open(ZString path)
 //	int ret = sqlite3_open(strPath->c_str(), &sqlite3Handler_);
 	int ret = sqlite3_open(path.getData(), &sqlite3Handler_);
 	if (ret != SQLITE_OK) {
-		LOGFMTE("SQLiteConnection::initConnection() sqlite3_open failed, ret = %d", ret);
+		LOG_ERROR_C_STYLE("SQLiteConnection::initConnection() sqlite3_open failed, ret = %d", ret);
 		sqlite3_close(sqlite3Handler_);
 		sqlite3Handler_ = nullptr;
 		return false;
@@ -104,7 +104,7 @@ bool SQLiteOperation::open(ZString path)
 	// 开启事务模式: "PRAGMA journal_mode=WAL;
 	ret = sqlite3_exec(sqlite3Handler_, "PRAGMA synchronous = FULL; ", 0, 0, 0);
 	if (ret != SQLITE_OK) {
-		LOGFMTE("SQLiteConnection::initConnection() exec \"PRAGMA journal_mode = WAL;\" failed, ret = % d", ret);
+		LOG_ERROR_C_STYLE("SQLiteConnection::initConnection() exec \"PRAGMA journal_mode = WAL;\" failed, ret = % d", ret);
 		sqlite3_close_v2(sqlite3Handler_);
 		sqlite3Handler_ = nullptr;
 		return false;
@@ -131,7 +131,7 @@ bool SQLiteOperation::doSqlWithOutRetData(SQLiteCmdPtr& sqlCmd)
 		sqlite3_step(stmt);
 	}
 	else {
-		LOGFMTE("SQL_Insert ERROR sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
+		LOG_ERROR_C_STYLE("SQL_Insert ERROR sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
 		ret = false;
 	}
 	sqlite3_finalize(stmt);//清理语句句柄，准备执行下一个语句
@@ -164,17 +164,12 @@ bool SQLiteOperation::doSqlWithRetData(SQLiteCmdPtr& sqlCmd, SQLiteRetPtr& sqlRe
 		 ret = true;
 	}
 	else {
-		LOGFMTE("SQL_Insert ERROR sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
+		LOG_ERROR_C_STYLE("SQL_Insert ERROR sql_str:%s Time:%d \n", sqlSentence, _getCurrentTime_());
 		ret = false;
 	}
 	sqlite3_finalize(stmt);//清理语句句柄，准备执行下一个语句
 	return ret;
 }
 
-
-//int SQLiteOperation::sqliteExecCallback(void* userData, int cnt, char** values, char** columnNames)
-//{
-//	return 0;
-//}
 
 ZDATABASE_NS_END
