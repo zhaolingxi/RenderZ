@@ -59,7 +59,7 @@ bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 
 bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 {
-	mainSideBarLeft_ = new QWidget();
+	mainSideBarLeft_ = new QWidget(this);
 	leftNavigModel_ = new ZQtNavigatorModel();
 	// 添加一些示例节点
 	TreeItem* rootNode = leftNavigModel_->getRootItem();
@@ -72,9 +72,12 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 	rootNode->appendChild(item1);
 	rootNode->appendChild(item2);
 
+	
+
 	leftNavigView_ = new ZQtNavigatorView(nullptr, leftNavigModel_);
+
 	mianViewer_ = new ZQtViewer(this, ViewerType::EOpenGLType);
-	mainSideBarRight_ = new QWidget();
+	mainSideBarRight_ = new SideSettingView(this);
 
 	pageViewLayoutMid->addWidget(leftNavigView_);
 	pageViewLayoutMid->addWidget(mianViewer_);

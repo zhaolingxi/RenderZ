@@ -62,6 +62,9 @@ public:
 
     TreeItem* getRootItem();
 
+    TreeItem* ZQtNavigatorModel::getChildOfRoot(int row) const 
+    { return m_rootItem->child(row); }
+
 private:
     TreeItem* m_rootItem{ nullptr };
 };

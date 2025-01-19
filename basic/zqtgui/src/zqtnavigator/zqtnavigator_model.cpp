@@ -74,7 +74,7 @@ bool TreeItem::removeChildren(int position, int count) {
 
 
 ZQtNavigatorModel::ZQtNavigatorModel(QObject* parent) : QAbstractItemModel(parent) {
-    m_rootItem = new TreeItem(QVariant("RootNode"));
+    m_rootItem = new TreeItem("RootNode");
 }
 
 ZQtNavigatorModel::~ZQtNavigatorModel() {

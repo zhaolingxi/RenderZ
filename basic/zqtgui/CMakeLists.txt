@@ -1,18 +1,15 @@
 cmake_minimum_required (VERSION 3.8)
 project(zqtgui)
 
-# Qt����ѡ��
 include(qt_utils) 
 config_qt_compile(${PLATFORM_NAME})
 message("Info: Project ${PROJECT_NAME} config qt compile finished")
 
-# ������ͷ�ļ�����Ŀ¼
 include_directories(../zutils ../zutils/include)
 include_directories(../zcore ../zcore/include)
 include_directories(../zmath ../zmath/include)
 include_directories(../zrender ../zrender/include)
 
-# project��ͷ�ļ�����Ŀ¼
 include_directories(include src)
 
 
@@ -20,7 +17,6 @@ if(MSVC)
 	add_definitions(-D_ZQTGUI_EXPORTS)
 endif()
 
-# ��Ŀͷ�ļ�
 file(GLOB_RECURSE H_HEADER_FILES "include/*.h")
 set(HEADER_FILES ${HEADER_FILES} ${H_HEADER_FILES})
 file(GLOB_RECURSE H_HEADER_FILES "src/*.h")
@@ -28,15 +24,12 @@ set(HEADER_FILES ${HEADER_FILES} ${H_HEADER_FILES})
 file(GLOB_RECURSE HPP_HEADER_FILES "include/*.hpp")
 set(HEADER_FILES ${HEADER_FILES} ${HPP_HEADER_FILES})
 
-# ��ĿԴ�ļ�
 file(GLOB_RECURSE C_SOURCE_FILES "src/*.c")
 set(SOURCE_FILES ${SOURCE_FILES} ${C_SOURCE_FILES})
 file(GLOB_RECURSE CPP_SOURCE_FILES "src/*.cpp")
 set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES})
 
-# �ر�����: ��Ҫ���� ${HEADER_FILES},��Ϊmoc���ɵ��ļ��ᱣ�浽 ${HEADER_FILES}
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
-# ��ܻ�����
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::OpenGL)
 target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zrender zcore)
 
