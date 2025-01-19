@@ -62,11 +62,12 @@ private:
     QAction* fitToWindowAct;
 };
 
-class ZQTGUI_API ZQt3DViewer:public QOpenGLWidget{
+class ZQTGUI_API ZQt3DViewer : public QOpenGLWidget {
     Q_OBJECT
 public:
     explicit ZQt3DViewer(QWidget* parent);
-    ~ZQt3DViewer() { delete coordinateSystem_; };
+    ~ZQt3DViewer() { delete coordinateSystem_; }
+
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -76,46 +77,49 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+
 private:
     ZQt3DCoordinateSystem* coordinateSystem_{ nullptr };
     zrender::ZObjModelLoader* objLoader_{ nullptr };
+
 private:
-    int coordinateSystemWidth_ = 200; // 假设坐标系控件的宽度
-    int coordinateSystemHeight_ = 200; // 假设坐标系控件的高度
+    QScreen* screen_{nullptr};
+    int coordinateSystemWidth_ = 100; // 假设坐标系控件的宽度
+    int coordinateSystemHeight_ = 100; // 假设坐标系控件的高度
 
     double rotate_y_ = 0;
     double rotate_x_ = 0;
     double rotate_z_ = 0;
 
-    QQuaternion currQ;
+    QQuaternion currQ_;
     /* Frustrum Things */
-    float radius;
-    float fdist;
-    double dNear;
-    double dFar;
-    double viewAngle;
-    float w0;
-    float h0;
+    float radius_;
+    float fdist_;
+    double dNear_;
+    double dFar_;
+    double viewAngle_;
+    float w0_;
+    float h0_;
     /* User Control */
-   // camera cam;
+    // camera cam_;
     /* Rotation */
-    bool mouseHeld;
-    bool rotationOK;
+    bool mouseHeld_;
+    bool rotationOK_;
     /* Culling */
-    bool cullingOK;
-    bool translateOK;
-    bool scaleOK;
+    bool cullingOK_;
+    bool translateOK_;
+    bool scaleOK_;
     /* Zoom */
-    bool zoomOK;
-    float zoomF;
-    double scale;
+    bool zoomOK_;
+    float zoomF_;
+    double scale_;
     /* Color Pick */
-    double red, green, blue;
-    bool needsReset;
-    QVector3D axisOfRotation;
-    int x, y, dx, dy, x0, y0;
-    int prevPos[2];
-    float mag;
+    double red_, green_, blue_;
+    bool needsReset_;
+    QVector3D axisOfRotation_;
+    int x_, y_, dx_, dy_, x0_, y0_;
+    int prevPos_[2];
+    float mag_;
 };
 
 enum class ViewerType :int64_t { EImageType = 0, EVideoType, EModelType, ECavasType, EOpenGLType };

@@ -14,6 +14,7 @@
 #include"zqtviewer/zqtviewer_view.h"
 #include"zqtnavigator/zqtnavigator_view.h"
 #include"zqtnavigator/zqtnavigator_model.h"
+#include"zqtsidesetting/zqtsidesetting_view.h"
 
 class RenderZMainPage : public QFrame
 {

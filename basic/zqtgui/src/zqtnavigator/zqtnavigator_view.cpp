@@ -7,7 +7,7 @@ ZQtNavigatorView::ZQtNavigatorView(QWidget* parent, ZQtNavigatorModel* model)
 {
 	if (model) {
 		setModel(model);
-		//setColumnCount(model->columnCount());
+		setHeaderHidden(true);
 	}
 
 	ZQtNavigatorDelegate* delegate = new ZQtNavigatorDelegate(this);
