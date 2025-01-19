@@ -27,7 +27,7 @@ file(GLOB_RECURSE C_SOURCE_FILES "src/*.c")
 set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES} ${C_SOURCE_FILES})
 
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} "include/zplog_wrapper.h")
 file(GLOB JSONCPP_LIBS "${triLibraryPath}/prebuildlib/${TARGET_DIRNAME}/jsoncpp/lib/*jsoncpp*")
 message(STATUS "Found jsoncpp libs: ${JSONCPP_LIBS}")
 if(JSONCPP_LIBS)

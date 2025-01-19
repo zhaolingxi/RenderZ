@@ -1,5 +1,4 @@
 ﻿#include "qtpage_manager.h"
-#include "log4z.h"
 #include <QFile>
 #include <QApplication>
 ZQTGUI_NS_BEGIN

@@ -3,7 +3,7 @@
 #include"task_scheduler.h"
 #include "zutils.h"
 #include "zcore.h"
-#include "log4z.h"
+#include "zplog_wrapper.h"
 #include"sqlite_operation.h"
 #include"zdatabase.h"
 void func1() {
@@ -22,7 +22,7 @@ void printTimeAndThreadID(int num) {
 	uint64_t currentTime = _getCurrentTime_();
 	ZString curTime;
 	ZTime::getNowTimeMilliSecStr(curTime);
-	LOGFMTI("printTimeAndThreadID Number:%d Time:%d StrTime:%s ThreadID:%d \n", num, _getCurrentTime_(), curTime.getData(), id);
+	LOG_INFO_C_STYLE("printTimeAndThreadID Number:%d Time:%d StrTime:%s ThreadID:%d \n", num, _getCurrentTime_(), curTime.getData(), id);
 }
 
 
@@ -115,7 +115,7 @@ void testcase::taskSqliteTest02()
 		DB.excuteSqlOper(sqlLine1);
 
 		int num = 1000000;
-		LOGFMTI("start batch sql :%d Time:%d \n", num, _getCurrentTime_());
+		LOG_INFO_C_STYLE("start batch sql :%d Time:%d \n", num, _getCurrentTime_());
 		auto sqlLine2 = std::make_shared<SQLiteCmd>();
 		sqlLine2->sql_type_ = zdatabase::SqlOperType::SQL_Insert;
 		sqlLine2->sqlite_sql_ = "INSERT INTO xxx(name, age) VALUES('´óÃ÷', 22);";
@@ -126,7 +126,7 @@ void testcase::taskSqliteTest02()
 		}
 		SQLiteRetPtr retPtr = std::make_shared<SQLiteRetData>();
 		DB.excuteBatchSqlOper(sqlCmdVec, retPtr);
-		LOGFMTI("end batch sql :%d Time:%d\n", num, _getCurrentTime_());
+		LOG_INFO_C_STYLE("end batch sql :%d Time:%d\n", num, _getCurrentTime_());
 
 
 		auto sqlLine3 = std::make_shared<SQLiteCmd>();

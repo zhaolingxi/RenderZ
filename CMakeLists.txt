@@ -49,6 +49,7 @@ endif()
 
 set(triLibraryPath ${CMAKE_CURRENT_SOURCE_DIR}/triLibrary)
 include_directories(${triLibraryPath})
+include_directories(${triLibraryPath}/plog/include/)
 
 
 add_subdirectory ("triLibrary") # 三方库
