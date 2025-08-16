@@ -1,0 +1,108 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "windows-base",
+      "hidden": true,
+      "generator": "Visual Studio 16 2019",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install/${presetName}",
+      "cacheVariables": {
+        "PLATFORM_NAME": "WIN64"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "toolset": {
+        "value": "host=x64",
+        "strategy": "set"
+      }
+    },
+    {
+      "name": "x64-debug",
+      "displayName": "x64 Debug",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "BUILD_TEST": "False",
+        "ENABLE_ASAN": "False"
+      }
+    },
+    {
+      "name": "x64-release",
+      "displayName": "x64 Release",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TEST": "False"
+      }
+    },
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install/${presetName}",
+      "cacheVariables": {
+        "PLATFORM_NAME": "LINUX64"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+          "sourceDir": "${sourceDir}",
+          "remoteMachineName": "-346393700;192.168.71.129 (username=root, port=22, authentication=Password)",
+          "remoteCMakeListsRoot": "/project/vcm/${projectDirName}",
+          "remoteBuildRoot": "/project/vcm/${projectDirName}/build/${presetName}",
+          "remoteInstallRoot": "/project/vcm/${projectDirName}/install/${presetName}",
+          "remoteCopySources": true,
+          "rsyncCommandArgs": "-t --delete --delete-excluded",
+          "remoteCopyBuildOutput": true,
+          "remoteCopySourcesMethod": "rsync",
+          "addressSanitizerRuntimeFlags": "detect_leaks=0"
+        }
+      }
+    },
+    {
+      "name": "linux64-debug",
+      "displayName": "WSL/Remote-Linux Debug",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "BUILD_TEST": "True"
+      }
+    },
+    {
+      "name": "linux64-release",
+      "displayName": "WSL/Remote-Linux Release",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_TEST": "False"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+          "remoteMachineName": "665542436;192.168.71.129 (username=tang, port=22, authentication=Password)"
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-build",
+      "hidden": true,
+      "jobs": 8
+    },
+    {
+      "name": "linux64-debug-build",
+      "displayName": "Build",
+      "configurePreset": "linux64-debug",
+      "inherits": "linux-build"
+    },
+    {
+      "name": "linux64-release-build",
+      "displayName": "Build",
+      "configurePreset": "linux64-release",
+      "inherits": "linux-build"
+    }
+  ]
+}
