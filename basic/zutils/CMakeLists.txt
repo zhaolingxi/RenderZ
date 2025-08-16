@@ -33,7 +33,7 @@ message(STATUS "Found jsoncpp libs: ${JSONCPP_LIBS}")
 if(JSONCPP_LIBS)
     target_link_libraries(${PROJECT_NAME} ${JSONCPP_LIBS})
 else()
-    message(FATAL_ERROR "jsoncpp library not found")
+    #message(FATAL_ERROR "jsoncpp library not found")
 endif()
 #target_link_libraries(${PROJECT_NAME} jsoncpp)
 

@@ -24,6 +24,7 @@ set(CMAKE_MODULE_PATH
 )
 # 编译默认配置和编译路径
 include(build_utils)
+include(global_config)
 config_target_path(${CMAKE_CURRENT_SOURCE_DIR})
 config_build_path(${CMAKE_CURRENT_SOURCE_DIR})
 

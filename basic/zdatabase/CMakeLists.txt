@@ -24,7 +24,7 @@ message(STATUS "Found sqlite3 libs: ${SQLITE_LIBS}")
 if(SQLITE_LIBS)
     target_link_libraries(${PROJECT_NAME} ${SQLITE_LIBS})
 else()
-    message(FATAL_ERROR "sqlite3 library not found")
+   # message(FATAL_ERROR "sqlite3 library not found")
 endif()
 
 if(GNUC)

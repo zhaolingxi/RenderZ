@@ -35,8 +35,19 @@ link_directories(${DEPEND_LIBRARY_PATHS})
 copy_depend_libs("${DEPEND_LIBRARY_PATHS}")
 
 
-#拷贝三方库
-set(LIBRARIES ../triLibrary/prebuildlib/)
+# 设置包含预构建库的根目录
+set(TRILIBRARY_PATH ../triLibrary/prebuildlib)
+
+# 使用 GLOB_RECURSE 递归查找所有子目录中的动态库和静态库文件
+# 您可以根据需要调整文件扩展名
+file(GLOB_RECURSE LIBRARIES
+    "${TRILIBRARY_PATH}/*.so"
+    "${TRILIBRARY_PATH}/*.a"
+    "${TRILIBRARY_PATH}/*.dll"
+    "${TRILIBRARY_PATH}/*.lib"
+)
+
+# 遍历文件列表并将每个文件拷贝到目标路径
 foreach(LIB ${LIBRARIES})
     file(COPY "${LIB}" DESTINATION "${TARGET_PATH}")
 endforeach()

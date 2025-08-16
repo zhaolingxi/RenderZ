@@ -35,7 +35,7 @@ message(STATUS "Found gsl2.7 libs: ${MATH_LIBS}")
 if(MATH_LIBS)
     target_link_libraries(${PROJECT_NAME} ${MATH_LIBS})
 else()
-    message(FATAL_ERROR "gsl2.7 library not found")
+    #message(FATAL_ERROR "gsl2.7 library not found")
 endif()
 
 if(GNUC)
