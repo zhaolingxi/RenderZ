@@ -17,6 +17,7 @@ build
 /*/*/bin/*-release
 
 /triLibrary/*/build
+/triLibrary/prebuildlib/*
 /triLibrary/out
 /triLibrary/*/out
 
