@@ -4,6 +4,8 @@ project ("RenderZ")
 
 
 set(CMAKE_CXX_STANDARD 17)
+set(MSVC_COMPILER "Visual Studio 17 2022" CACHE STRING "MSVC compiler")
+set(GCC_COMPILER "Unix Makefiles" CACHE STRING "GCC compiler")
 
 # 默认生成linux64位下的debug版
 if (NOT PLATFORM_NAME)

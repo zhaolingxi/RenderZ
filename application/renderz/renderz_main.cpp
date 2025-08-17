@@ -18,9 +18,19 @@
 #include"zlib_loader.h"
 #include"zlib_plugin_info.h"
 #include"eventpp/callbacklist.h"
+#include <QSurfaceFormat> // 【新增】包含这个头文件
 
 int main(int argc, char* argv[])
 {
+	// 【核心修复】在创建任何窗口之前，设置全局默认的OpenGL格式
+	QSurfaceFormat format;
+	// 请求一个兼容模式的上下文，以支持旧的OpenGL函数
+	format.setProfile(QSurfaceFormat::CompatibilityProfile);
+	// 你可以指定一个版本，例如3.3，这对于ImGui来说足够了
+	format.setVersion(3, 3);
+	QSurfaceFormat::setDefaultFormat(format);
+	// -----------------------------------------------------------------
+
 	int ret=0;
     qputenv("QT_ENABLE_HIGHDPI_SCALING", "1");
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);

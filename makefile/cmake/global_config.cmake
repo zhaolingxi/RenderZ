@@ -6,5 +6,3 @@
 
 
 
-set(MSVC_COMPILER "Visual Studio 16 2019" CACHE STRING "MSVC compiler")
-set(GCC_COMPILER "Unix Makefiles" CACHE STRING "GCC compiler")

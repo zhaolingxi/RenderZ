@@ -10,6 +10,9 @@
 #include<QOpenGLWidget>
 #include<QQuaternion>
 #include"model_loader/zobj_model_loader.h"
+#include "../../../zimgui/include/zimgui_api.h"
+#include <QElapsedTimer>
+#include <QTimer> 
 ZQTGUI_NS_BEGIN
 class ZQt3DCoordinateSystem;
 
@@ -66,7 +69,7 @@ class ZQTGUI_API ZQt3DViewer : public QOpenGLWidget {
     Q_OBJECT
 public:
     explicit ZQt3DViewer(QWidget* parent);
-    ~ZQt3DViewer() { delete coordinateSystem_; }
+    ~ZQt3DViewer();
 
 protected:
     void initializeGL() override;
@@ -81,7 +84,10 @@ protected:
 private:
     ZQt3DCoordinateSystem* coordinateSystem_{ nullptr };
     zrender::ZObjModelLoader* objLoader_{ nullptr };
-
+    QElapsedTimer m_elapsedTimer;
+    ZImGui_InputState m_imguiInputState;
+    QTimer* m_animationTimer; // 【新增】用于驱动持续渲染的计时器
+    bool m_imguiInitialized = false; // 【新增】标志位
 private:
     QScreen* screen_{nullptr};
     int coordinateSystemWidth_ = 100; // 假设坐标系控件的宽度
@@ -143,6 +149,8 @@ private:
     ZQt3DViewer* z3DViewer_{ nullptr };
     ZQt3DCoordinateSystem * coordinateSystem_{nullptr};
     ViewerType viewerType_{ ViewerType::EImageType };
+
+
 
 };
 ZQTGUI_NS_END

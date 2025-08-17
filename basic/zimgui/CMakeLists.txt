@@ -16,7 +16,7 @@ include_directories(${triLibraryPath}/imgui)   # triLibraryPath 外部传入
 # 宏定义
 # -----------------------------------------
 if(MSVC)
-    add_definitions(-D_ZIMGUI_EXPORTS)
+#    add_definitions(-D_ZIMGUI_EXPORTS)
 endif()
 
 # -----------------------------------------
@@ -69,7 +69,7 @@ endif()
 # -----------------------------------------
 # 创建动态库
 # -----------------------------------------
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME} STATIC
     ${HEADER_FILES}
     ${SOURCE_FILES}
     ${IMGUI_COMMON}

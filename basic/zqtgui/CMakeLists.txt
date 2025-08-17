@@ -9,8 +9,10 @@ include_directories(../zutils ../zutils/include)
 include_directories(../zcore ../zcore/include)
 include_directories(../zmath ../zmath/include)
 include_directories(../zrender ../zrender/include)
+include_directories(../zimgui ../zimgui/include)
 
 include_directories(include src)
+include_directories(${triLibraryPath}/imgui)   # triLibraryPath 外部传入
 
 
 if(MSVC)
@@ -31,7 +33,7 @@ set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES})
 
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::OpenGL)
-target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zrender zcore)
+target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zrender zcore zimgui)
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} PRIVATE opengl32 glu32)
