@@ -122,7 +122,8 @@ private:
     float mag_;
 };
 
-enum class ViewerType :int64_t { EImageType = 0, EVideoType, EModelType, ECavasType, EOpenGLType };
+
+enum class ViewerType :int64_t { EImageType = 0, EVideoType, EModelType, ECavasType, EOpenGLType ,EIMGUIType};
 class ZQTGUI_API ZQtViewer : public QFrame
 {
     Q_OBJECT
