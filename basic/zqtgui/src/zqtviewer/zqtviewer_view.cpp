@@ -69,15 +69,14 @@ ZQt3DViewer::ZQt3DViewer(QWidget* parent)
 
 ZQt3DViewer::~ZQt3DViewer()
 {
-    // 必须使OpenGL上下文成为当前上下文才能清理资源
     makeCurrent();
-    ZImGui_Shutdown();
-    doneCurrent();
-
+    // 先关闭依赖于OpenGL上下文的后端
     if (m_imguiInitialized) {
         ZImGui_Shutdown_OpenGL();
     }
+    // 然后关闭与OpenGL无关的核心上下文
     ZImGui_Shutdown();
+    doneCurrent();
 }
 
 void ZQt3DViewer::initializeGL() {
@@ -148,7 +147,6 @@ void ZQt3DViewer::initializeGL() {
     }
 
     // 【新增】在所有GL设置完成后，初始化ImGui
-    ZImGui_Init();
     m_elapsedTimer.start();
 }
 void ZQt3DViewer::resizeGL(int w, int h)
@@ -234,7 +232,11 @@ void ZQt3DViewer::paintGL() {
     float deltaTime = m_elapsedTimer.restart() / 1000.0f;
     if (deltaTime <= 0.0f) deltaTime = 1.0f / 60.0f;
 
-    ZImGui_NewFrame(width(), height(), deltaTime, &m_imguiInputState);
+    // 【核心修复】获取设备像素比
+    const qreal retinaScale = devicePixelRatioF();
+
+    // 【核心修复】将逻辑尺寸转换为物理尺寸传递给ImGui
+    ZImGui_NewFrame(width() * retinaScale, height() * retinaScale, deltaTime, &m_imguiInputState);
     m_imguiInputState.mouse_wheel = 0.0f;
 
     // 定义ImGui UI
@@ -289,59 +291,73 @@ void ZQt3DViewer::wheelEvent(QWheelEvent* event)
 
     // 【新增】如果ImGui占用了鼠标，则不处理3D场景的事件
     if (ImGui::GetIO().WantCaptureMouse) {
-        update(); // 请求重绘以更新ImGui
+        //update(); // 请求重绘以更新ImGui
         return;
     }
 
     coordinateSystem_->wheelEvent(event);
-    update();
+    //update();
 }
 
 void ZQt3DViewer::mousePressEvent(QMouseEvent* event)
 {
+    // 【核心修复】获取设备像素比
+    const qreal retinaScale = devicePixelRatioF();
+    // 【核心修复】将逻辑鼠标坐标转换为物理坐标
+    m_imguiInputState.mouse_x = event->x() * retinaScale;
+    m_imguiInputState.mouse_y = event->y() * retinaScale;
+
     // 【新增】更新ImGui输入状态
     if (event->button() == Qt::LeftButton) m_imguiInputState.mouse_down[0] = true;
     if (event->button() == Qt::RightButton) m_imguiInputState.mouse_down[1] = true;
     if (event->button() == Qt::MiddleButton) m_imguiInputState.mouse_down[2] = true;
 
     if (ImGui::GetIO().WantCaptureMouse) {
-        update();
+       // update();
         return;
     }
 
     coordinateSystem_->mousePressEvent(event);
-    update();
+    //update();
 }
 
 void ZQt3DViewer::mouseMoveEvent(QMouseEvent* event)
 {
-    // 【新增】更新ImGui输入状态
-    m_imguiInputState.mouse_x = event->pos().x();
-    m_imguiInputState.mouse_y = event->pos().y();
+    // 【核心修复】获取设备像素比
+    const qreal retinaScale = devicePixelRatioF();
+    // 【核心修复】将逻辑鼠标坐标转换为物理坐标
+    m_imguiInputState.mouse_x = event->x() * retinaScale;
+    m_imguiInputState.mouse_y = event->y() * retinaScale;
+
 
     if (ImGui::GetIO().WantCaptureMouse) {
-        update();
+        //update();
         return;
     }
 
     coordinateSystem_->mouseMoveEvent(event);
-    update();
+    //update();
 }
 
 void ZQt3DViewer::mouseReleaseEvent(QMouseEvent* event)
 {
+    // 【核心修复】获取设备像素比
+    const qreal retinaScale = devicePixelRatioF();
+    // 【核心修复】将逻辑鼠标坐标转换为物理坐标
+    m_imguiInputState.mouse_x = event->x() * retinaScale;
+    m_imguiInputState.mouse_y = event->y() * retinaScale;
     // 【新增】更新ImGui输入状态
     if (event->button() == Qt::LeftButton) m_imguiInputState.mouse_down[0] = false;
     if (event->button() == Qt::RightButton) m_imguiInputState.mouse_down[1] = false;
     if (event->button() == Qt::MiddleButton) m_imguiInputState.mouse_down[2] = false;
 
     if (ImGui::GetIO().WantCaptureMouse) {
-        update();
+        //update();
         // 此处不立即返回，允许3D场景处理鼠标释放事件
     }
 
     coordinateSystem_->mouseReleaseEvent(event);
-    update();
+    //update();
 }
 
 

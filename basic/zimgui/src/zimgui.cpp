@@ -22,14 +22,11 @@ extern "C" {
         ImGuiIO& io = ImGui::GetIO();
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // 启用键盘控制
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // 启用 Docking
-      //  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // 启用多视口
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // 启用多视口
 
         // 3. 设置样式
         ImGui::StyleColorsDark();
 
-        // 4. 初始化 OpenGL 后端
-        // 假设调用者已经创建并绑定了一个有效的 OpenGL 3.3+ 上下文
-        //ImGui_ImplOpenGL3_Init("#version 330 core");
     }
 
     // 【新增】一个专门用于初始化OpenGL后端的函数
@@ -56,14 +53,7 @@ extern "C" {
         g_ImGuiContext = nullptr;
     }
 
-    //ZIMGUI_API void ZImGui_Shutdown()
-    //{
-    //    if (!g_ImGuiContext) return;
 
-    //    ImGui_ImplOpenGL3_Shutdown();
-    //    ImGui::DestroyContext(g_ImGuiContext);
-    //    g_ImGuiContext = nullptr;
-    //}
 
     ZIMGUI_API void ZImGui_NewFrame(int window_width, int window_height, float delta_time, const ZImGui_InputState* input)
     {
@@ -97,11 +87,11 @@ extern "C" {
         // 使用当前绑定的 OpenGL 上下文进行绘制
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        //// 如果启用了 Viewports，则更新和渲染其他平台窗口
-        //if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-        //    ImGui::UpdatePlatformWindows();
-        //    ImGui::RenderPlatformWindowsDefault();
-        //}
+        // 如果启用了 Viewports，则更新和渲染其他平台窗口
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+        }
     }
 
 } // extern "C"
