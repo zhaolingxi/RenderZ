@@ -13,6 +13,7 @@
 #include "../../../zimgui/include/zimgui_api.h"
 #include <QElapsedTimer>
 #include <QTimer> 
+
 ZQTGUI_NS_BEGIN
 class ZQt3DCoordinateSystem;
 
@@ -70,6 +71,8 @@ class ZQTGUI_API ZQt3DViewer : public QOpenGLWidget {
 public:
     explicit ZQt3DViewer(QWidget* parent);
     ~ZQt3DViewer();
+    bool loadModel(const QString& path);
+
 
 protected:
     void initializeGL() override;

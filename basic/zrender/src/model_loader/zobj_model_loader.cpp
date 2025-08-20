@@ -18,26 +18,20 @@ ZObjModelLoader::ZObjModelLoader(std::string objPath)
             /* Get next line of file */
             getline(stream, currLine);
             /* Determine whether it is a vertex, normal, or face line */
-            //if (currLine[0] == 'v' && currLine[1] == ' ')
-            //{
-            //    ZVertex newV = this->parseVertex(currLine);
-            //    vertices.push_back(newV);
-            //    this->checkMax(newV);
-            //    this->checkMin(newV);
-
-            //}
-            //else if (currLine[0] == 'v' && currLine[1] == 'n')
-            //{
-            //    Vertex n(currLine, currLine[1]);
-            //    normals.push_back(n);
-            //}
-
-            //else if (currLine[0] == 'f' && currLine[1] == ' ')
-            //{
-            //    vector<Vertex> v = this->parseFace(currLine);
-            //    face f = face(v.at(0), v.at(1), v.at(2));
-            //    facets.push_back(f);
-            //}
+            while (getline(stream, currLine)) {
+                if (currLine.rfind("v ", 0) == 0) { // 判断是否以 "v " 开头
+                    ZVertex newV = this->parseVertex(currLine);
+                    vertices_.push_back(newV);
+                }
+                else if (currLine.rfind("vn ", 0) == 0) { // 判断是否以 "vn " 开头
+                    ZVertex newN = this->parseVertex(currLine); // 法线和顶点格式相同
+                    normals_.push_back(newN);
+                }
+                else if (currLine.rfind("f ", 0) == 0) { // 判断是否以 "f " 开头
+                    ZFace newF = this->parseFace(currLine);
+                    faces_.push_back(newF);
+                }
+            }
         }
         stream.close();
     }
@@ -51,12 +45,20 @@ std::string ZObjModelLoader::getObjPath(){
     return objfilePath_;
 }
 
-std::vector<zmath::ZVertex> ZObjModelLoader::getVertices() {
+
+
+const std::vector<zmath::ZVertex>& ZObjModelLoader::getVertices() const {
     return vertices_;
 }
-std::vector<zmath::ZFace> ZObjModelLoader::getFacets() {
+
+const std::vector<zmath::ZFace>& ZObjModelLoader::getFacets() const {
     return faces_;
 }
+
+const std::vector<zmath::ZVertex>& ZObjModelLoader::getNormals() const {
+    return normals_;
+}
+
 
 ZVertex ZObjModelLoader::parseVertex(std::string line)
 {
@@ -65,43 +67,42 @@ ZVertex ZObjModelLoader::parseVertex(std::string line)
     return vex;
 }
 
-std::vector<zmath::ZVertex> ZObjModelLoader::parseFace(std::string line) {
-    std::vector<ZVertex> toReturn;
-    /* Parses differently, depending on if there are slashes in line */
-    if (line.find("/") != std::string::npos) {
-        /* remove the "f" in front of the line */
-        line.erase(0, 1);
-        std::string delimiter = "/";
-        size_t pos = 0;
-        std::string token;
-        std::string token2;
-        int index;
-        int prevIndex = 0;
-        while ((pos = line.find(delimiter) != std::string::npos))
-        {
-            /* Token is index of vertex in the face */
-            token = line.substr(0, line.find(delimiter));
-            std::istringstream(token) >> index; /* Only succeeds if token is an integer */
-            if (index != prevIndex) {
-                /* .obj file is indexed at 1, C++ vector indexed at 0 */
-                toReturn.push_back(vertices_.at(index - 1));
-                prevIndex = index;
-            }
-            /* Tossing out token2 until further notice */
-            token2 = line.substr(line.find(delimiter), line.find(' '));
-            /* Erases everything up until next index */
-            line.erase(0, token.length() + token2.length());
+ZFace ZObjModelLoader::parseFace(std::string line) {
+    // 替换所有的'/'为空格，这样可以统一处理 f v v v 和 f v/vt/vn v/vt/vn v/vt/vn 等格式
+    for (char& c : line) {
+        if (c == '/') {
+            c = ' ';
         }
     }
-    else {
-        /* If there aren't any slashes, parses like coordinates */
-        std::vector<double> indices = coordinateScanner(line);
-        toReturn.push_back(vertices_.at(indices.at(0) - 1));
-        toReturn.push_back(vertices_.at(indices.at(1) - 1));
-        toReturn.push_back(vertices_.at(indices.at(2) - 1));
+
+    std::stringstream ss(line);
+    std::string keyword;
+    ss >> keyword; // 跳过 'f'
+
+    ZFace face;
+    int v_idx, vt_idx, vn_idx;
+
+    // 循环读取面片的所有顶点
+    while (ss >> v_idx) {
+        face.addVertexIndex(v_idx); // 假设ZFace有这个方法来添加顶点索引
+
+        // 尝试读取纹理和法线索引，如果它们存在的话
+        if (ss.peek() == ' ') {
+            ss.ignore(); // 跳过空格
+            if (ss.peek() != ' ') { // 检查是否有纹理坐标索引
+                ss >> vt_idx;
+                face.addTexCoordIndex(vt_idx); // 假设ZFace有这个方法
+            }
+            if (ss.peek() == ' ') {
+                ss.ignore();
+                ss >> vn_idx;
+                face.addNormalIndex(vn_idx); // 假设ZFace有这个方法
+            }
+        }
     }
-    return toReturn;
+    return face;
 }
+
 
 std::vector<double>ZObjModelLoader::coordinateScanner(std::string line)
 {

@@ -18,8 +18,8 @@ ZMATH_NS_BEGIN
 class ZMATH_API ZVertex
 {
 private:
-    gsl_vector* pos_;
-    gsl_vector* normal_;
+    gsl_vector* pos_=nullptr;
+    gsl_vector* normal_ = nullptr;
     bool isInitialized_{false};
 #define VX_PRESISION 1e-6 
 public:

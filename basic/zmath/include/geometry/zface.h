@@ -1,24 +1,30 @@
 #pragma once
-#include"zmath.h"
+#include "zmath.h"
+#include "geometry/zvertex.h"
+#include <vector>
 
-#include"zvertex.h"
-// 三角面 ZFace
 ZMATH_NS_BEGIN
 
-class ZMATH_API ZFace {
-private:
-    ZVertex* v1_, * v2_, * v3_;
-
+class ZMATH_API ZFace
+{
 public:
-    ZFace(ZVertex* v1, ZVertex* v2, ZVertex* v3) : v1_(v1), v2_(v2), v3_(v3) {}
+    ZFace() = default;
+    ~ZFace() = default;
 
-    bool operator==(const ZFace& other) const;
-    ZVertex* getVertex(unsigned number);
+    // 【新增】添加顶点、纹理坐标、法线的索引
+    void addVertexIndex(int index) { vertex_indices_.push_back(index); }
+    void addTexCoordIndex(int index) { texcoord_indices_.push_back(index); }
+    void addNormalIndex(int index) { normal_indices_.push_back(index); }
 
-    // 计算法向量
-    ZVertex normalVector() const;
+    // 【新增】获取索引列表的 const 引用
+    const std::vector<int>& getVertexIndices() const { return vertex_indices_; }
+    const std::vector<int>& getTexCoordIndices() const { return texcoord_indices_; }
+    const std::vector<int>& getNormalIndices() const { return normal_indices_; }
 
-    // 计算与其他几何体的相交
-    // ...
+private:
+    std::vector<int> vertex_indices_;
+    std::vector<int> texcoord_indices_;
+    std::vector<int> normal_indices_;
 };
+
 ZMATH_NS_END

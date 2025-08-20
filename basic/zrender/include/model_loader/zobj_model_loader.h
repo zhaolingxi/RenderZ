@@ -26,11 +26,14 @@ public:
     ~ZObjModelLoader();
 
     std::string getObjPath();
-    std::vector<zmath::ZVertex> getVertices();
-    std::vector<zmath::ZFace> getFacets();
+    const std::vector<zmath::ZVertex>& getVertices() const;
+
+    const std::vector<zmath::ZFace>& getFacets() const;
+
+    const std::vector<zmath::ZVertex>& getNormals() const;
 
     zmath::ZVertex parseVertex(std::string line);
-    std::vector<zmath::ZVertex> parseFace(std::string line);
+    ZFace parseFace(std::string line);
 
     std::vector<double> coordinateScanner(std::string line);
  };

@@ -4,6 +4,7 @@ ZMATH_NS_BEGIN
 
 ZVertex::ZVertex()
 {
+    pos_ = gsl_vector_alloc(3);
 	gsl_vector_set_all(pos_, 0);
 }
 
@@ -26,7 +27,7 @@ ZVertex::ZVertex(const std::string& input, char type)
 
 ZVertex::~ZVertex()
 {
-    gsl_vector_free(pos_);
+   //if(pos_) gsl_vector_free(pos_);
 }
 
 bool ZVertex::operator==(const ZVertex& other) const {

@@ -79,6 +79,8 @@ ZQt3DViewer::~ZQt3DViewer()
     doneCurrent();
 }
 
+
+
 void ZQt3DViewer::initializeGL() {
     // 【修改】在这里初始化/重新初始化OpenGL后端
     if (m_imguiInitialized) {
@@ -100,10 +102,6 @@ void ZQt3DViewer::initializeGL() {
         // 处理错误
     }
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0, (GLfloat)w0_ / (GLfloat)h0_, 0.1, 100.0);
-    glMatrixMode(GL_MODELVIEW);
 
     glShadeModel(GL_SMOOTH);
     glClearDepth(1.0f);
@@ -151,82 +149,127 @@ void ZQt3DViewer::initializeGL() {
 }
 void ZQt3DViewer::resizeGL(int w, int h)
 {
-    // 设置主视图的视口和投影矩阵
+    // 防止h为0，导致除以0的错误
+    if (h == 0) h = 1;
+
+    // 【核心修复】投影矩阵设置应该在这里！
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.0, (double)w / h, 0.1, 100.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    gluPerspective(45.0, (GLfloat)w / (GLfloat)h, 0.1, 100.0);
 
-    // 调整坐标系控件的位置和大小
-   
+    // 【重要】切换回模型视图矩阵，为 paintGL() 做准备
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity(); // 每次调整大小后重置模型视图矩阵
+
+    // 调整坐标系控件的位置和大小 (这部分保持不变)
     coordinateSystem_->resizeGL(coordinateSystemWidth_, coordinateSystemHeight_);
     coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
 }
 
-#if 0
-void ZQt3DViewer::paintGL() {
-    // 【新增】计算帧时间差并开始新的ImGui帧
+#if 1
+void ZQt3DViewer::paintGL()
+{
+    // --- 第1步: UI 构建 ---
     float deltaTime = m_elapsedTimer.restart() / 1000.0f;
-    // 防止deltaTime在调试断点等情况下变得过大
     if (deltaTime <= 0.0f) deltaTime = 1.0f / 60.0f;
-    ZImGui_NewFrame(width(), height(), deltaTime, &m_imguiInputState);
-    // 【新增】重置单次触发的输入（如滚轮），防止下一帧继续使用
+    const qreal retinaScale = devicePixelRatioF();
+    ZImGui_NewFrame(width() * retinaScale, height() * retinaScale, deltaTime, &m_imguiInputState);
     m_imguiInputState.mouse_wheel = 0.0f;
 
-    // 【新增】定义ImGui UI界面
-    ImGui::DockSpaceOverViewport();
-    ImGui::Begin("Performance");
+    // 【核心修复】使用 "宿主窗口" 模式来创建全屏Dockspace
+    {
+        const ImGuiViewport* viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(viewport->WorkPos);
+        ImGui::SetNextWindowSize(viewport->WorkSize);
+        ImGui::SetNextWindowViewport(viewport->ID);
+
+        ImGuiWindowFlags host_window_flags = 0;
+        host_window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDocking;
+        host_window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+        host_window_flags |= ImGuiWindowFlags_NoBackground; // 直接设置宿主窗口无背景
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+        ImGui::Begin("DockSpaceHost", nullptr, host_window_flags);
+
+        ImGui::PopStyleVar(3);
+
+        // 创建DockSpace
+        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
+
+        ImGui::End();
+    }
+
+    // 现在，我们可以创建我们自己的窗口，它们会自动停靠到上面创建的DockSpace中
+    ImGui::Begin("Controls");
+    ImGui::Text("Your 3D Viewer Controls");
     ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
+
     ImGui::ShowDemoWindow();
 
-    // 你也可以随时打开ImGui的Demo窗口来查看所有功能
-    //ImGui::ShowDemoWindow();
-
-    // 【重要修复】在绘制任何内容之前，清空颜色和深度缓冲区
-    glClearColor(red_, green_, blue_, 1.0f); // 使用你的背景色
+    // --- 第2步: 清空屏幕 ---
+    glViewport(0, 0, width(), height());
+    glClearColor(red_, green_, blue_, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // 渲染主视图
-    glViewport(0, 0, width(), height());
-    // 你的主视图渲染代码
+    // --- 第3步: 渲染我们自己的3D/2D场景 ---
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    {
+        // === A. 渲染3D主场景 ===
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(45.0f, (GLfloat)width() / (GLfloat)height(), 0.1f, 100.0f);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
+        if (objLoader_) {
+            glPushMatrix();
+            GLfloat mat_diffuse[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+            const auto& vertices = objLoader_->getVertices();
+            const auto& faces = objLoader_->getFacets();
+            glBegin(GL_TRIANGLES);
+            for (const auto& face : faces) {
+                const auto& indices = face.getVertexIndices();
+                if (indices.size() >= 3) {
+                    const zmath::ZVertex& v1 = vertices[indices[0] - 1];
+                    const zmath::ZVertex& v2 = vertices[indices[1] - 1];
+                    const zmath::ZVertex& v3 = vertices[indices[2] - 1];
+                    QVector3D edge1(v2.X() - v1.X(), v2.Y() - v1.Y(), v2.Z() - v1.Z());
+                    QVector3D edge2(v3.X() - v1.X(), v3.Y() - v1.Y(), v3.Z() - v1.Z());
+                    QVector3D normal = QVector3D::crossProduct(edge1, edge2).normalized();
+                    glNormal3f(normal.x(), normal.y(), normal.z());
+                    glVertex3f(v1.X(), v1.Y(), v1.Z());
+                    glVertex3f(v2.X(), v2.Y(), v2.Z());
+                    glVertex3f(v3.X(), v3.Y(), v3.Z());
+                }
+            }
+            glEnd();
+            glPopMatrix();
+        }
+        // === B. 渲染坐标系 ===
+        if (coordinateSystem_) {
+            glViewport(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
+            glEnable(GL_SCISSOR_TEST);
+            glScissor(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
+            glClear(GL_DEPTH_BUFFER_BIT);
+            coordinateSystem_->paintGL();
+            glDisable(GL_SCISSOR_TEST);
+        }
+    }
+    glPopAttrib();
 
-    // 保存当前矩阵状态
-    glPushMatrix(); 
-
-    // 启用剪裁区域
-    glEnable(GL_SCISSOR_TEST);
-
-    float ratio = devicePixelRatioF();
-    double scr_width = screen_->geometry().width();
-    int cur_width = width() ;
-  //  cur_width *= (scr_width / 1080);
-    int cur_height = height();
-    int cxScreen = GetSystemMetrics(SM_CXSCREEN);
-    int cyScreen = GetSystemMetrics(SM_CYSCREEN);
-
-    glScissor(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
-
-    // 渲染坐标系，将其放在右下角
-    glViewport(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
-    coordinateSystem_->paintGL();
-
-    // 禁用剪裁区域
-    glDisable(GL_SCISSOR_TEST);
-
-    // 恢复矩阵状态
-    glPopMatrix();
-
-    // 恢复主视图的视口设置
-    glViewport(0, 0,  width(),  height() );
-
-    // 【新增】在所有你自己的渲染结束后，渲染ImGui的绘制数据
+    // --- 第4步: 渲染ImGui ---
     ZImGui_Render();
 }
-#endif
-
+#else
 void ZQt3DViewer::paintGL() {
     // 1. 开始ImGui帧
     float deltaTime = m_elapsedTimer.restart() / 1000.0f;
@@ -261,6 +304,49 @@ void ZQt3DViewer::paintGL() {
     //  vvv 你自己的渲染代码 vvv
     // -----------------------------------------------------------------
     glViewport(0, 0, width(), height());
+    glDisable(GL_LIGHTING);
+    if (objLoader_) {
+        // 设置模型颜色
+        glColor3f(0.6f, 0.6f, 0.6f);
+
+        // 获取顶点和法线数据
+        const auto& vertices = objLoader_->getVertices();
+        const auto& normals = objLoader_->getNormals();
+        const auto& faces = objLoader_->getFacets();
+
+        // 遍历所有面片进行绘制
+        for (const auto& face : faces) {
+            // 根据面片顶点数量选择图元类型（通常是三角形）
+            // 为了简单起见，我们假设它们都是三角形
+            if (face.getVertexIndices().size() >= 3) {
+                glBegin(GL_TRIANGLES);
+
+                // 遍历面片的每个顶点
+                for (size_t i = 0; i < face.getVertexIndices().size(); ++i) {
+                    // OBJ 文件索引从 1 开始，C++ vector 从 0 开始，所以需要 -1
+                    int vertexIndex = face.getVertexIndices()[i] - 1;
+
+                    // 设置法线（如果法线数据可用）
+                    // 使用模型文件中提供的顶点法线以获得平滑效果
+                    if (face.getNormalIndices().size() > i) {
+                        int normalIndex = face.getNormalIndices()[i] - 1;
+                        if (normalIndex >= 0 && normalIndex < normals.size()) {
+                            const auto& normal = normals[normalIndex];
+                            glNormal3f(normal.X(), normal.Y(), normal.Z());
+                        }
+                    }
+
+                    // 设置顶点位置
+                    if (vertexIndex >= 0 && vertexIndex < vertices.size()) {
+                        const auto& vertex = vertices[vertexIndex];
+                        glVertex3f(vertex.X(), vertex.Y(), vertex.Z());
+                    }
+                }
+                glEnd();
+            }
+        }
+    }
+    glEnable(GL_LIGHTING);
 
     // 渲染坐标系
     glEnable(GL_SCISSOR_TEST);
@@ -283,6 +369,7 @@ void ZQt3DViewer::paintGL() {
     ZImGui_Render();
 
 }
+#endif
 
 void ZQt3DViewer::wheelEvent(QWheelEvent* event)
 {
@@ -360,7 +447,33 @@ void ZQt3DViewer::mouseReleaseEvent(QMouseEvent* event)
     //update();
 }
 
+bool ZQt3DViewer::loadModel(const QString& path)
+{
+    // 如果已经有一个模型，先释放它
+    if (objLoader_ != nullptr) {
+        delete objLoader_;
+        objLoader_ = nullptr;
+    }
 
+    // 创建加载器实例来加载文件
+    objLoader_ = new zrender::ZObjModelLoader(path.toStdString());
+
+    // 检查加载是否成功（例如，是否有顶点数据）
+    if (objLoader_ == nullptr || objLoader_->getVertices().empty()) {
+        qDebug() << "Failed to load model or model is empty:" << path;
+        delete objLoader_;
+        objLoader_ = nullptr;
+        return false;
+    }
+
+    qDebug() << "Model loaded successfully:" << path;
+    qDebug() << "Vertices:" << objLoader_->getVertices().size() << ", Faces:" << objLoader_->getFacets().size();
+
+
+    // 请求重绘以显示新加载的模型
+    update();
+    return true;
+}
 
 
 ZQtViewer::ZQtViewer(QWidget* parent, ViewerType iViewerType)
@@ -381,6 +494,7 @@ void ZQtViewer::createViewer()
         z3DViewer_->setMinimumSize(400, 400);
         mainLayout_->addWidget(z3DViewer_);
         setMinimumSize(600, 600);
+        z3DViewer_->loadModel("D:/Code/work/renderz/RenderZ/model/AfricanHead/african_head.obj");
     }
     show();
 }
