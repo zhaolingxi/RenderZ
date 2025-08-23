@@ -51,6 +51,7 @@ if(MSVC)
 endif()
 
 set(triLibraryPath ${CMAKE_CURRENT_SOURCE_DIR}/triLibrary)
+set(modelPath ${CMAKE_CURRENT_SOURCE_DIR}/model/)
 include_directories(${triLibraryPath})
 include_directories(${triLibraryPath}/plog/include/)
 

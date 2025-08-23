@@ -39,11 +39,6 @@ ZQtImageViewer::ZQtImageViewer(QWidget* parent)
     scrollArea->setVisible(true);
 
     mainLayout_->addWidget(scrollArea);
-    //setCentralWidget(scrollArea);
-
-   // createActions();
-
-  //  resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
     show();
 }
 
@@ -114,28 +109,29 @@ void ZQt3DViewer::initializeGL() {
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb_light);
     glEnable(GL_NORMALIZE);
 
-    zoomF_ = 1;
-    scale_ = 1;
-    radius_ = 0;
+    //zoomF_ = 1;
+    //scale_ = 1;
+    //radius_ = 0;
     red_ = 0.75;
     green_ = 0.75;
     blue_ = 0.75;
-    mag_ = 0;
-    mouseHeld_ = false;
-    rotationOK_ = false;
-    translateOK_ = false;
-    needsReset_ = false;
-    cullingOK_ = false;
+    //mag_ = 0;
+    //mouseHeld_ = false;
+    //rotationOK_ = false;
+    //translateOK_ = false;
+    //needsReset_ = false;
+    //cullingOK_ = false;
 
 
     int ratio = devicePixelRatio();
+    camera_.reset();
 
-    w0_ = ratio * width();
-    h0_ = ratio * height();
-    // cam_.setAspect(w0_, h0_);
-    axisOfRotation_.setX(0);
-    axisOfRotation_.setY(0);
-    axisOfRotation_.setZ(0);
+    //w0_ = ratio * width();
+    //h0_ = ratio * height();
+    //// cam_.setAspect(w0_, h0_);
+    //axisOfRotation_.setX(0);
+    //axisOfRotation_.setY(0);
+    //axisOfRotation_.setZ(0);
 
     glPushMatrix();
 
@@ -149,25 +145,43 @@ void ZQt3DViewer::initializeGL() {
 }
 void ZQt3DViewer::resizeGL(int w, int h)
 {
-    // 防止h为0，导致除以0的错误
+    //// 防止h为0，导致除以0的错误
+    //if (h == 0) h = 1;
+
+    //// 【核心修复】投影矩阵设置应该在这里！
+    //glViewport(0, 0, w, h);
+    //glMatrixMode(GL_PROJECTION);
+    //glLoadIdentity();
+    //gluPerspective(45.0, (GLfloat)w / (GLfloat)h, 0.1, 100.0);
+
+    //// 【重要】切换回模型视图矩阵，为 paintGL() 做准备
+    //glMatrixMode(GL_MODELVIEW);
+    //glLoadIdentity(); // 每次调整大小后重置模型视图矩阵
+
+
+    //// 调整坐标系控件的位置和大小 (这部分保持不变)
+    //coordinateSystem_->resizeGL(coordinateSystemWidth_, coordinateSystemHeight_);
+    //coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
+
+
     if (h == 0) h = 1;
 
-    // 【核心修复】投影矩阵设置应该在这里！
-    glViewport(0, 0, w, h);
+    // 【核心修改】使用相机来设置投影矩阵
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0, (GLfloat)w / (GLfloat)h, 0.1, 100.0);
+    Eigen::Matrix4f projectionMatrix = camera_.getProjectionMatrix(w, h);
+    // 使用 .data() 将 Eigen 矩阵加载到 OpenGL
+    glLoadMatrixf(projectionMatrix.data());
 
-    // 【重要】切换回模型视图矩阵，为 paintGL() 做准备
+    // 【重要】切换回模型视图矩阵
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity(); // 每次调整大小后重置模型视图矩阵
+    glLoadIdentity();
 
-    // 调整坐标系控件的位置和大小 (这部分保持不变)
+    // 坐标系和视口设置保持不变
+    glViewport(0, 0, w, h);
     coordinateSystem_->resizeGL(coordinateSystemWidth_, coordinateSystemHeight_);
     coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
 }
 
-#if 1
 void ZQt3DViewer::paintGL()
 {
     // --- 第1步: UI 构建 ---
@@ -221,12 +235,10 @@ void ZQt3DViewer::paintGL()
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     {
         // === A. 渲染3D主场景 ===
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45.0f, (GLfloat)width() / (GLfloat)height(), 0.1f, 100.0f);
         glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        Eigen::Matrix4f viewMatrix = camera_.getViewMatrix();
+        glLoadMatrixf(viewMatrix.data());
+
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_LIGHTING);
         if (objLoader_) {
@@ -269,121 +281,21 @@ void ZQt3DViewer::paintGL()
     // --- 第4步: 渲染ImGui ---
     ZImGui_Render();
 }
-#else
-void ZQt3DViewer::paintGL() {
-    // 1. 开始ImGui帧
-    float deltaTime = m_elapsedTimer.restart() / 1000.0f;
-    if (deltaTime <= 0.0f) deltaTime = 1.0f / 60.0f;
 
-    // 【核心修复】获取设备像素比
-    const qreal retinaScale = devicePixelRatioF();
-
-    // 【核心修复】将逻辑尺寸转换为物理尺寸传递给ImGui
-    ZImGui_NewFrame(width() * retinaScale, height() * retinaScale, deltaTime, &m_imguiInputState);
-    m_imguiInputState.mouse_wheel = 0.0f;
-
-    // 定义ImGui UI
-    ImGui::DockSpaceOverViewport();
-    ImGui::Begin("Performance");
-    ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::End();
-    ImGui::ShowDemoWindow();
-
-    // 2. 清空屏幕
-    glClearColor(red_, green_, blue_, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // 3. 【隔离】渲染你自己的旧版OpenGL场景
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-
-    // -----------------------------------------------------------------
-    //  vvv 你自己的渲染代码 vvv
-    // -----------------------------------------------------------------
-    glViewport(0, 0, width(), height());
-    glDisable(GL_LIGHTING);
-    if (objLoader_) {
-        // 设置模型颜色
-        glColor3f(0.6f, 0.6f, 0.6f);
-
-        // 获取顶点和法线数据
-        const auto& vertices = objLoader_->getVertices();
-        const auto& normals = objLoader_->getNormals();
-        const auto& faces = objLoader_->getFacets();
-
-        // 遍历所有面片进行绘制
-        for (const auto& face : faces) {
-            // 根据面片顶点数量选择图元类型（通常是三角形）
-            // 为了简单起见，我们假设它们都是三角形
-            if (face.getVertexIndices().size() >= 3) {
-                glBegin(GL_TRIANGLES);
-
-                // 遍历面片的每个顶点
-                for (size_t i = 0; i < face.getVertexIndices().size(); ++i) {
-                    // OBJ 文件索引从 1 开始，C++ vector 从 0 开始，所以需要 -1
-                    int vertexIndex = face.getVertexIndices()[i] - 1;
-
-                    // 设置法线（如果法线数据可用）
-                    // 使用模型文件中提供的顶点法线以获得平滑效果
-                    if (face.getNormalIndices().size() > i) {
-                        int normalIndex = face.getNormalIndices()[i] - 1;
-                        if (normalIndex >= 0 && normalIndex < normals.size()) {
-                            const auto& normal = normals[normalIndex];
-                            glNormal3f(normal.X(), normal.Y(), normal.Z());
-                        }
-                    }
-
-                    // 设置顶点位置
-                    if (vertexIndex >= 0 && vertexIndex < vertices.size()) {
-                        const auto& vertex = vertices[vertexIndex];
-                        glVertex3f(vertex.X(), vertex.Y(), vertex.Z());
-                    }
-                }
-                glEnd();
-            }
-        }
-    }
-    glEnable(GL_LIGHTING);
-
-    // 渲染坐标系
-    glEnable(GL_SCISSOR_TEST);
-    glScissor(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
-    glViewport(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
-    coordinateSystem_->paintGL();
-    glDisable(GL_SCISSOR_TEST);
-
-    // -----------------------------------------------------------------
-    //  ^^^ 你自己的渲染代码结束 ^^^
-    // -----------------------------------------------------------------
-
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glPopAttrib();
-
-    // 4. 渲染ImGui
-    ZImGui_Render();
-
-}
-#endif
 
 void ZQt3DViewer::wheelEvent(QWheelEvent* event)
 {
-    // 【新增】将事件传递给ImGui
+  
     m_imguiInputState.mouse_wheel = event->angleDelta().y() / 120.0f;
-
-    // 【新增】如果ImGui占用了鼠标，则不处理3D场景的事件
     if (ImGui::GetIO().WantCaptureMouse) {
-        //update(); // 请求重绘以更新ImGui
         return;
     }
 
+    // 【核心修改】将滚轮事件传递给相机
+    float delta = event->angleDelta().y() / 120.0f;
+    camera_.zoom(delta);
+
     coordinateSystem_->wheelEvent(event);
-    //update();
 }
 
 void ZQt3DViewer::mousePressEvent(QMouseEvent* event)
@@ -400,12 +312,13 @@ void ZQt3DViewer::mousePressEvent(QMouseEvent* event)
     if (event->button() == Qt::MiddleButton) m_imguiInputState.mouse_down[2] = true;
 
     if (ImGui::GetIO().WantCaptureMouse) {
-       // update();
-        return;
+       return;
     }
 
+    // 【核心修改】记录鼠标按下的起始位置
+    lastMousePos_ = event->pos();
+
     coordinateSystem_->mousePressEvent(event);
-    //update();
 }
 
 void ZQt3DViewer::mouseMoveEvent(QMouseEvent* event)
@@ -422,8 +335,22 @@ void ZQt3DViewer::mouseMoveEvent(QMouseEvent* event)
         return;
     }
 
+    // 【核心修改】相机交互逻辑
+    QPointF delta = QPointF(event->pos()) - lastMousePos_;
+
+    // 如果按下的是左键，则旋转
+    if (event->buttons() & Qt::LeftButton) {
+        camera_.rotate(delta.x(), delta.y());
+    }
+    // 如果按下的是右键 (或中键)，则平移
+    else if (event->buttons() & Qt::RightButton) {
+        camera_.pan(delta.x(), delta.y());
+    }
+
+    // 【重要】更新最后的位置以供下一帧计算
+    lastMousePos_ = event->pos();
+
     coordinateSystem_->mouseMoveEvent(event);
-    //update();
 }
 
 void ZQt3DViewer::mouseReleaseEvent(QMouseEvent* event)
@@ -439,12 +366,10 @@ void ZQt3DViewer::mouseReleaseEvent(QMouseEvent* event)
     if (event->button() == Qt::MiddleButton) m_imguiInputState.mouse_down[2] = false;
 
     if (ImGui::GetIO().WantCaptureMouse) {
-        //update();
-        // 此处不立即返回，允许3D场景处理鼠标释放事件
+
     }
 
     coordinateSystem_->mouseReleaseEvent(event);
-    //update();
 }
 
 bool ZQt3DViewer::loadModel(const QString& path)
@@ -482,6 +407,15 @@ ZQtViewer::ZQtViewer(QWidget* parent, ViewerType iViewerType)
     createViewer();
 }
 
+bool ZQtViewer::load3DModel(std::string model_path)
+{
+    if (z3DViewer_) {
+        z3DViewer_->loadModel(model_path.c_str());
+        return true;
+    }
+    return false;
+}
+
 void ZQtViewer::createViewer()
 {
     mainLayout_ = new QGridLayout(this);
@@ -494,7 +428,6 @@ void ZQtViewer::createViewer()
         z3DViewer_->setMinimumSize(400, 400);
         mainLayout_->addWidget(z3DViewer_);
         setMinimumSize(600, 600);
-        z3DViewer_->loadModel("D:/Code/work/renderz/RenderZ/model/AfricanHead/african_head.obj");
     }
     show();
 }

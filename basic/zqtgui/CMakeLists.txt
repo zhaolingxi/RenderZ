@@ -33,7 +33,7 @@ set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES})
 
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::OpenGL)
-target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zrender zcore zimgui)
+target_link_libraries(${PROJECT_NAME} PUBLIC zutils zmath zrender zcore zimgui)
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} PRIVATE opengl32 glu32)

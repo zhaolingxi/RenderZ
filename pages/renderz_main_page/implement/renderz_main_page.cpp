@@ -77,6 +77,10 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 	leftNavigView_ = new ZQtNavigatorView(nullptr, leftNavigModel_);
 
 	mianViewer_ = new ZQtViewer(this, ViewerType::EOpenGLType);
+	std::string modelPath = MODEL_PATH; modelPath += "AfricanHead/african_head.obj";
+	std::cout << modelPath << std::endl;
+	mianViewer_->load3DModel(modelPath);
+
 	mainSideBarRight_ = new SideSettingView(this);
 
 	pageViewLayoutMid->addWidget(leftNavigView_);

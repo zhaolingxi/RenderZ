@@ -1,6 +1,8 @@
 ﻿cmake_minimum_required(VERSION 3.5)
 project(renderz_main_page)
 
+
+
 # project的头文件包含目录
 include_directories(framework interface implement)
 if(MSVC)
@@ -31,6 +33,9 @@ add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 # 框架基础库
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui)
 target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zcore zrender zqtgui)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE MODEL_PATH="${modelPath}")
+
 if(GNUC)
 	target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt dl)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'")

@@ -13,6 +13,7 @@
 #include "../../../zimgui/include/zimgui_api.h"
 #include <QElapsedTimer>
 #include <QTimer> 
+#include "scene/zcamera.h" 
 
 ZQTGUI_NS_BEGIN
 class ZQt3DCoordinateSystem;
@@ -100,35 +101,38 @@ private:
     double rotate_x_ = 0;
     double rotate_z_ = 0;
 
-    QQuaternion currQ_;
-    /* Frustrum Things */
-    float radius_;
-    float fdist_;
-    double dNear_;
-    double dFar_;
-    double viewAngle_;
-    float w0_;
-    float h0_;
-    /* User Control */
-    // camera cam_;
-    /* Rotation */
-    bool mouseHeld_;
-    bool rotationOK_;
-    /* Culling */
-    bool cullingOK_;
-    bool translateOK_;
-    bool scaleOK_;
-    /* Zoom */
-    bool zoomOK_;
-    float zoomF_;
-    double scale_;
-    /* Color Pick */
+    ZCamera camera_;
+    QPoint lastMousePos_;
+
+    //QQuaternion currQ_;
+    ///* Frustrum Things */
+    //float radius_;
+    //float fdist_;
+    //double dNear_;
+    //double dFar_;
+    //double viewAngle_;
+    //float w0_;
+    //float h0_;
+    ///* User Control */
+    //// camera cam_;
+    ///* Rotation */
+    //bool mouseHeld_;
+    //bool rotationOK_;
+    ///* Culling */
+    //bool cullingOK_;
+    //bool translateOK_;
+    //bool scaleOK_;
+    ///* Zoom */
+    //bool zoomOK_;
+    //float zoomF_;
+    //double scale_;
+    ///* Color Pick */
     double red_, green_, blue_;
-    bool needsReset_;
-    QVector3D axisOfRotation_;
-    int x_, y_, dx_, dy_, x0_, y0_;
-    int prevPos_[2];
-    float mag_;
+    //bool needsReset_;
+    //QVector3D axisOfRotation_;
+    //int x_, y_, dx_, dy_, x0_, y0_;
+    //int prevPos_[2];
+    //float mag_;
 };
 
 
@@ -142,18 +146,17 @@ public:
 
     void setViewerType(ViewerType itype) { viewerType_=itype; };
     ViewerType getViewerType() { return viewerType_; };
+    bool load3DModel(std::string model_path);
+
 protected:
     void createViewer();
 
 private:
     QGridLayout* mainLayout_{ nullptr };
-
     ZQtImageViewer* zImageViewer_{ nullptr };
     ZQt3DViewer* z3DViewer_{ nullptr };
     ZQt3DCoordinateSystem * coordinateSystem_{nullptr};
     ViewerType viewerType_{ ViewerType::EImageType };
-
-
 
 };
 ZQTGUI_NS_END

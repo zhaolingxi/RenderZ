@@ -1,4 +1,4 @@
-#include"zobj_model_loader.h"
+#include"model_loader/zobj_model_loader.h"
 using namespace zmath;
 
 ZRENDER_NS_BEGIN
