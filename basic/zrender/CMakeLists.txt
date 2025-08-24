@@ -59,8 +59,7 @@ if(MSVC)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE _ZRENDER_EXPORTS)
 endif()
 
-target_link_libraries(${PROJECT_NAME} zutils zmath zcore)
-
+target_link_libraries(${PROJECT_NAME}  PUBLIC zutils zmath zcore)
 if(GNUC)
 	target_link_libraries(${PROJECT_NAME} pthread rt dl)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'")

@@ -3,4 +3,3 @@
 #pragma warning(disable:4819)
 #endif
 #include "zdatabase_sdk.h"
-using namespace ZDataBaseNS;

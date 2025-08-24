@@ -50,10 +50,8 @@ if(MSVC)
     add_compile_options(/MP)
 endif()
 
-#set(triLibraryPath ${CMAKE_CURRENT_SOURCE_DIR}/triLibrary)
 set(modelPath ${CMAKE_CURRENT_SOURCE_DIR}/model/)
 #include_directories(${triLibraryPath})
-#include_directories(${triLibraryPath}/plog/include/)
 
 
 #add_subdirectory ("triLibrary") # 三方库
@@ -70,8 +68,7 @@ include(FetchContent)
 # 2. 声明你的 triLibrary 仓库信息
 FetchContent_Declare(
     triLibrary_dep # 给这个依赖起一个唯一的内部名字
-    GIT_REPOSITORY "https://github.com/zhaolingxi/triLibrary.git" # 你的仓库地址，正确
-    GIT_TAG        "main" # 建议将来换成一个具体的版本标签, e.g., "v1.0.0"
+    GIT_REPOSITORY "git@github.com:zhaolingxi/triLibrary.git" # 你的仓库地址，正确
 )
 
 # 3. 让 CMake 下载并配置这个依赖
@@ -80,8 +77,10 @@ FetchContent_MakeAvailable(triLibrary_dep)
 # 4. (为了兼容旧的子模块) 重新定义 triLibraryPath 变量
 #    让它指向 FetchContent 下载下来的源代码目录
 set(triLibraryPath ${trilibrary_dep_SOURCE_DIR}) # <--- 关键修改！使用 FetchContent 提供的变量
+message("triLibraryPath ； "${triLibraryPath})
 # =================================================================================
 
+include_directories(${triLibraryPath}/plog/include/)
 
 
 add_subdirectory ("basic") # 基础库

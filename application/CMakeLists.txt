@@ -36,7 +36,7 @@ copy_depend_libs("${DEPEND_LIBRARY_PATHS}")
 
 
 # 设置包含预构建库的根目录
-set(TRILIBRARY_PATH ../triLibrary/prebuildlib)
+set(TRILIBRARY_PATH ${triLibraryPath}/prebuildlib)
 
 # 使用 GLOB_RECURSE 递归查找所有子目录中的动态库和静态库文件
 # 您可以根据需要调整文件扩展名

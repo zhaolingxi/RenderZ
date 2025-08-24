@@ -17,7 +17,6 @@
 #include"test_case.h"
 #include"zlib_loader.h"
 #include"zlib_plugin_info.h"
-#include"eventpp/callbacklist.h"
 #include <QSurfaceFormat> // 【新增】包含这个头文件
 
 int main(int argc, char* argv[])
