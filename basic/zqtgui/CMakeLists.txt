@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.8)
 project(zqtgui)
 
+
+
 include(qt_utils) 
 config_qt_compile(${PLATFORM_NAME})
 message("Info: Project ${PROJECT_NAME} config qt compile finished")
@@ -34,6 +36,9 @@ set(SOURCE_FILES ${SOURCE_FILES} ${CPP_SOURCE_FILES})
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui Qt5::OpenGL)
 target_link_libraries(${PROJECT_NAME} PUBLIC zutils zmath zrender zcore zimgui)
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE ASSERT_PATH="${assertPath}")
+
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} PRIVATE opengl32 glu32)

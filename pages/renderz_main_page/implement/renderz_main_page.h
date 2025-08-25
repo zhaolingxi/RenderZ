@@ -15,6 +15,7 @@
 #include"zqtnavigator/zqtnavigator_view.h"
 #include"zqtnavigator/zqtnavigator_model.h"
 #include"zqtsidesetting/zqtsidesetting_view.h"
+#include <QSplitter>
 
 class RenderZMainPage : public QFrame
 {
@@ -26,6 +27,7 @@ public:
 	bool createPage();
 	bool createLayoutTop(QHBoxLayout* &pageViewLayoutTop);
 	bool createLayoutMid(QHBoxLayout*& pageViewLayoutMid);
+	QSplitter* createMidSplitter();
 	bool createLayoutBtm(QHBoxLayout*& pageViewLayoutBtm);
 	void initUI();
 	void tempLoadTheme(QApplication* app=nullptr);

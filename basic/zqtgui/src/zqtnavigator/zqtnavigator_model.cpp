@@ -1,87 +1,47 @@
 #include"zqtnavigator/zqtnavigator_model.h"
+#include "zqtnavigator/treeitem.h"
 
 ZQTGUI_NS_BEGIN
 
-TreeItem::TreeItem(const QVariant& data, TreeItem* parentItem ) {
-    m_parentItem = parentItem;
-    m_itemData.push_back(data);
+
+
+ZQtNavigatorModel::ZQtNavigatorModel(QObject* parent)
+    : QAbstractItemModel(parent)
+{
+    QList<QVariant> rootData;
+    rootData << "Root"; // 根节点数据，通常是隐藏的
+    m_rootItem = new TreeItem(rootData);
 }
 
-TreeItem::~TreeItem() {
-    qDeleteAll(m_childItems);
-}
-
-void TreeItem::appendChild(TreeItem* child) {
-    m_childItems.push_back(child);
-}
-
-TreeItem* TreeItem::child(int row) {
-    if (row < 0 || row >= m_childItems.size())
-        return nullptr;
-    return m_childItems[row];
-}
-
-int TreeItem::childCount() const {
-    return m_childItems.size();
-}
-
-int TreeItem::columnCount() const {
-    return m_itemData.size();
-}
-
-QVariant TreeItem::data(int column) const {
-    if (column < 0 || column >= m_itemData.size())
-        return {};
-    return m_itemData[column];
-}
-
-int TreeItem::row() const {
-    if (m_parentItem) {
-        auto it = std::find(m_parentItem->m_childItems.begin(), m_parentItem->m_childItems.end(), this);
-        if (it != m_parentItem->m_childItems.end()) {
-            return std::distance(m_parentItem->m_childItems.begin(), it);
-        }
-    }
-    return 0;
-}
-
-TreeItem* TreeItem::parentItem() const {
-    return m_parentItem;
-}
-
-bool TreeItem::insertChildren(int position, int columns, const QVariant& data) {
-    if (position < 0 || position > m_childItems.size())
-        return false;
-
-    for (int i = 0; i < columns; ++i) {
-        TreeItem* newItem = new TreeItem(data, this);
-        m_childItems.insert(m_childItems.begin() + position + i, newItem);
-    }
-    return true;
-}
-
-bool TreeItem::removeChildren(int position, int count) {
-    if (position < 0 || position + count > m_childItems.size())
-        return false;
-
-    for (int i = 0; i < count; ++i) {
-        TreeItem* item = m_childItems.at(position + i);
-        delete item;
-    }
-    m_childItems.erase(m_childItems.begin() + position, m_childItems.begin() + position + count);
-    return true;
-}
-
-
-ZQtNavigatorModel::ZQtNavigatorModel(QObject* parent) : QAbstractItemModel(parent) {
-    m_rootItem = new TreeItem("RootNode");
-}
-
-ZQtNavigatorModel::~ZQtNavigatorModel() {
+ZQtNavigatorModel::~ZQtNavigatorModel()
+{
     delete m_rootItem;
 }
 
-QModelIndex ZQtNavigatorModel::index(int row, int column, const QModelIndex& parent) const  {
+int ZQtNavigatorModel::columnCount(const QModelIndex& parent) const
+{
+    return m_rootItem->columnCount();
+}
+
+QVariant ZQtNavigatorModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();
+
+    TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+    return item->data(index.column(), role);
+}
+
+Qt::ItemFlags ZQtNavigatorModel::flags(const QModelIndex& index) const
+{
+    if (!index.isValid())
+        return Qt::NoItemFlags;
+
+    return QAbstractItemModel::flags(index);
+}
+
+QModelIndex ZQtNavigatorModel::index(int row, int column, const QModelIndex& parent) const
+{
     if (!hasIndex(row, column, parent))
         return QModelIndex();
 
@@ -95,11 +55,11 @@ QModelIndex ZQtNavigatorModel::index(int row, int column, const QModelIndex& par
     TreeItem* childItem = parentItem->child(row);
     if (childItem)
         return createIndex(row, column, childItem);
-    else
-        return QModelIndex();
+    return QModelIndex();
 }
 
-QModelIndex ZQtNavigatorModel::parent(const QModelIndex& index) const {
+QModelIndex ZQtNavigatorModel::parent(const QModelIndex& index) const
+{
     if (!index.isValid())
         return QModelIndex();
 
@@ -112,7 +72,8 @@ QModelIndex ZQtNavigatorModel::parent(const QModelIndex& index) const {
     return createIndex(parentItem->row(), 0, parentItem);
 }
 
-int ZQtNavigatorModel::rowCount(const QModelIndex& parent) const {
+int ZQtNavigatorModel::rowCount(const QModelIndex& parent) const
+{
     TreeItem* parentItem;
     if (parent.column() > 0)
         return 0;
@@ -125,33 +86,109 @@ int ZQtNavigatorModel::rowCount(const QModelIndex& parent) const {
     return parentItem->childCount();
 }
 
-int ZQtNavigatorModel::columnCount(const QModelIndex& parent) const {
-    if (parent.isValid())
-        return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
-    return m_rootItem->columnCount();
+
+TreeItem* ZQtNavigatorModel::getItem(const QModelIndex& index) const
+{
+    if (index.isValid()) {
+        TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+        if (item) {
+            return item;
+        }
+    }
+    return m_rootItem;
 }
 
-QVariant ZQtNavigatorModel::data(const QModelIndex& index, int role) const {
-    if (!index.isValid())
-        return QVariant();
-    if (role != Qt::DisplayRole)
-        return QVariant();
-    TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
-    return item->data(index.column());
+void ZQtNavigatorModel::clear()
+{
+    // beginResetModel/endResetModel 是最高效的清空模型的信号
+    beginResetModel();
+    delete m_rootItem; // 删除所有旧的TreeItem
+
+    // 重新创建根节点
+    QList<QVariant> rootData;
+    rootData << "Root";
+    m_rootItem = new TreeItem(rootData);
+    endResetModel();
 }
 
-bool ZQtNavigatorModel::setData(const QModelIndex& index, const QVariant& value, int role) {
-    // Implement data change logic here
-    return true;
+QModelIndex ZQtNavigatorModel::addItem(const QModelIndex& parent, const QString& text, const QIcon& icon)
+{
+    TreeItem* parentItem = getItem(parent);
+    if (!parentItem) {
+        return QModelIndex(); // 如果父节点无效，则不添加
+    }
+
+    // beginInsertRows/endInsertRows 通知视图有新数据插入，这是必须的！
+    // 它们必须成对出现，中间是实际的数据修改操作。
+    int newRow = parentItem->childCount();
+    beginInsertRows(parent, newRow, newRow);
+
+    // 创建新的节点数据
+    QList<QVariant> itemData;
+    itemData << text;
+    TreeItem* newItem = new TreeItem(itemData, parentItem);
+
+    // 如果提供了图标，就设置它
+    if (!icon.isNull()) {
+        newItem->setData(0, QVariant::fromValue(icon), IconRole);
+    }
+
+    parentItem->appendChild(newItem);
+
+    endInsertRows();
+
+    // 返回新创建项的索引，方便继续添加子项
+    return index(newRow, 0, parent);
 }
 
-Qt::ItemFlags ZQtNavigatorModel::flags(const QModelIndex& index) const {
-    if (!index.isValid())
-        return Qt::NoItemFlags;
 
-    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+// 示例函数: 用一个带缩进的字符串列表来初始化模型数据
+void ZQtNavigatorModel::setupModelData(const QStringList& lines)
+{
+    beginResetModel();
+    // 清理旧数据
+    delete m_rootItem;
+    QList<QVariant> rootData;
+    rootData << "Root";
+    m_rootItem = new TreeItem(rootData);
+
+    // 解析新数据
+    QList<TreeItem*> parents;
+    QList<int> indentations;
+    parents << m_rootItem;
+    indentations << 0;
+
+    for (const QString& line : lines) {
+        int position = 0;
+        while (position < line.length() && line.at(position).isSpace())
+            position++;
+
+        QString lineData = line.mid(position).trimmed();
+
+        if (!lineData.isEmpty()) {
+            // 找到正确的父节点
+            if (position > indentations.last()) {
+                if (parents.last()->childCount() > 0) {
+                    parents << parents.last()->child(parents.last()->childCount() - 1);
+                    indentations << position;
+                }
+            }
+            else {
+                while (position < indentations.last() && parents.count() > 0) {
+                    parents.pop_back();
+                    indentations.pop_back();
+                }
+            }
+
+            // 添加新节点
+            QList<QVariant> columnData;
+            columnData << lineData;
+            TreeItem* parent = parents.last();
+            parent->appendChild(new TreeItem(columnData, parent));
+        }
+    }
+
+    endResetModel();
 }
-
-TreeItem* ZQtNavigatorModel::getRootItem() { return m_rootItem; };
 
 ZQTGUI_NS_END

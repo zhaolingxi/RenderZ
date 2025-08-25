@@ -51,14 +51,7 @@ if(MSVC)
 endif()
 
 set(modelPath ${CMAKE_CURRENT_SOURCE_DIR}/model/)
-#include_directories(${triLibraryPath})
-
-
-#add_subdirectory ("triLibrary") # 三方库
-#add_custom_target(triLibraryDependencies
-#    DEPENDS triLibraryDone
-#    COMMENT "Waiting for triLibrary dependencies..."
-#)
+set(assertPath ${CMAKE_CURRENT_SOURCE_DIR}/assert/)
 
 # ==================== 新的代码：使用 FetchContent 管理 triLibrary ====================
 

@@ -35,6 +35,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui)
 target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zcore zrender zqtgui)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE MODEL_PATH="${modelPath}")
+target_compile_definitions(${PROJECT_NAME} PRIVATE ASSERT_PATH="${assertPath}")
 
 if(GNUC)
 	target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt dl)
