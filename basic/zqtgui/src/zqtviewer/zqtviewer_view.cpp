@@ -109,29 +109,15 @@ void ZQt3DViewer::initializeGL() {
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb_light);
     glEnable(GL_NORMALIZE);
 
-    //zoomF_ = 1;
-    //scale_ = 1;
-    //radius_ = 0;
+
     red_ = 0.75;
     green_ = 0.75;
     blue_ = 0.75;
-    //mag_ = 0;
-    //mouseHeld_ = false;
-    //rotationOK_ = false;
-    //translateOK_ = false;
-    //needsReset_ = false;
-    //cullingOK_ = false;
 
 
     int ratio = devicePixelRatio();
     camera_.reset();
 
-    //w0_ = ratio * width();
-    //h0_ = ratio * height();
-    //// cam_.setAspect(w0_, h0_);
-    //axisOfRotation_.setX(0);
-    //axisOfRotation_.setY(0);
-    //axisOfRotation_.setZ(0);
 
     glPushMatrix();
 
@@ -145,25 +131,7 @@ void ZQt3DViewer::initializeGL() {
 }
 void ZQt3DViewer::resizeGL(int w, int h)
 {
-    //// 防止h为0，导致除以0的错误
-    //if (h == 0) h = 1;
-
-    //// 【核心修复】投影矩阵设置应该在这里！
-    //glViewport(0, 0, w, h);
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadIdentity();
-    //gluPerspective(45.0, (GLfloat)w / (GLfloat)h, 0.1, 100.0);
-
-    //// 【重要】切换回模型视图矩阵，为 paintGL() 做准备
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity(); // 每次调整大小后重置模型视图矩阵
-
-
-    //// 调整坐标系控件的位置和大小 (这部分保持不变)
-    //coordinateSystem_->resizeGL(coordinateSystemWidth_, coordinateSystemHeight_);
-    //coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
-
-
+ 
     if (h == 0) h = 1;
 
     // 【核心修改】使用相机来设置投影矩阵
@@ -224,7 +192,8 @@ void ZQt3DViewer::paintGL()
     ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
+    m_debugPanel.draw(u8"调试面板 (Debug Panel)", m_debugState);
 
     // --- 第2步: 清空屏幕 ---
     glViewport(0, 0, width(), height());

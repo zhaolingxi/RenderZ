@@ -5,4 +5,3 @@
 #include "zimgui_sdk.h"
 
 
-using namespace ZIMGuiNS;
