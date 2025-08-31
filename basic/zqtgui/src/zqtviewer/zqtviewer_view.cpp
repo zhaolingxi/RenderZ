@@ -119,7 +119,6 @@ void ZQt3DViewer::initializeGL() {
     camera_.reset();
 
 
-    glPushMatrix();
 
     // 【修改】将 coordinateSystem 的初始化放在你的GL设置之后
     if (coordinateSystem_ != nullptr) {
@@ -131,35 +130,49 @@ void ZQt3DViewer::initializeGL() {
 }
 void ZQt3DViewer::resizeGL(int w, int h)
 {
- 
     if (h == 0) h = 1;
 
-    // 【核心修改】使用相机来设置投影矩阵
+    // 【重要】获取设备像素比
+    const qreal dpr = devicePixelRatioF();
+
+    // 先处理子控件，同样需要考虑DPI
+    const int coord_physical_w = coordinateSystemWidth_ * dpr;
+    const int coord_physical_h = coordinateSystemHeight_ * dpr;
+    coordinateSystem_->resizeGL(coord_physical_w, coord_physical_h);
+    // move() 使用的是逻辑坐标，所以这里不用变
+    coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
+
+    // 使用相机来设置投影矩阵，相机逻辑一般与像素无关，所以 w 和 h 不用变
     glMatrixMode(GL_PROJECTION);
     Eigen::Matrix4f projectionMatrix = camera_.getProjectionMatrix(w, h);
-    // 使用 .data() 将 Eigen 矩阵加载到 OpenGL
     glLoadMatrixf(projectionMatrix.data());
 
-    // 【重要】切换回模型视图矩阵
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // 坐标系和视口设置保持不变
-    glViewport(0, 0, w, h);
-    coordinateSystem_->resizeGL(coordinateSystemWidth_, coordinateSystemHeight_);
-    coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
+    // 【核心修复】使用物理像素尺寸来设置主视口
+    const int physical_w = w * dpr;
+    const int physical_h = h * dpr;
+    std::cout << "Logical W/H: " << w << ", " << h << std::endl;
+    std::cout << "Physical W/H: " << physical_w << ", " << physical_h << " (DPR: " << dpr << ")" << std::endl;
+    glViewport(0, 0, physical_w, physical_h);
+
 }
+
+
 
 void ZQt3DViewer::paintGL()
 {
-    // --- 第1步: UI 构建 ---
+    // 【重要】获取DPI，因为ImGui需要它
+    const qreal dpr = devicePixelRatioF();
+
+    // --- 第1步: 恢复ImGui UI构建 ---
     float deltaTime = m_elapsedTimer.restart() / 1000.0f;
     if (deltaTime <= 0.0f) deltaTime = 1.0f / 60.0f;
-    const qreal retinaScale = devicePixelRatioF();
-    ZImGui_NewFrame(width() * retinaScale, height() * retinaScale, deltaTime, &m_imguiInputState);
+    ZImGui_NewFrame(width() * dpr, height() * dpr, deltaTime, &m_imguiInputState);
     m_imguiInputState.mouse_wheel = 0.0f;
 
-    // 【核心修复】使用 "宿主窗口" 模式来创建全屏Dockspace
+    // 【恢复 DockSpace 和窗口】
     {
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->WorkPos);
@@ -169,39 +182,36 @@ void ZQt3DViewer::paintGL()
         ImGuiWindowFlags host_window_flags = 0;
         host_window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDocking;
         host_window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-        host_window_flags |= ImGuiWindowFlags_NoBackground; // 直接设置宿主窗口无背景
+        host_window_flags |= ImGuiWindowFlags_NoBackground;
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
         ImGui::Begin("DockSpaceHost", nullptr, host_window_flags);
-
         ImGui::PopStyleVar(3);
 
-        // 创建DockSpace
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
 
         ImGui::End();
     }
-
-    // 现在，我们可以创建我们自己的窗口，它们会自动停靠到上面创建的DockSpace中
     ImGui::Begin("Controls");
     ImGui::Text("Your 3D Viewer Controls");
     ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
-
-    //ImGui::ShowDemoWindow();
     m_debugPanel.draw(u8"调试面板 (Debug Panel)", m_debugState);
 
+
     // --- 第2步: 清空屏幕 ---
-    glViewport(0, 0, width(), height());
+    // 【强制校正】确保视口是物理全屏
+    glViewport(0, 0, width() * dpr, height() * dpr);
     glClearColor(red_, green_, blue_, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
     // --- 第3步: 渲染我们自己的3D/2D场景 ---
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    // glPushAttrib(GL_ALL_ATTRIB_BITS); // 暂时可以不用
     {
         // === A. 渲染3D主场景 ===
         glMatrixMode(GL_MODELVIEW);
@@ -211,6 +221,7 @@ void ZQt3DViewer::paintGL()
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_LIGHTING);
         if (objLoader_) {
+            // ... (你绘制模型的代码) ...
             glPushMatrix();
             GLfloat mat_diffuse[] = { 0.8f, 0.8f, 0.8f, 1.0f };
             glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
@@ -235,22 +246,32 @@ void ZQt3DViewer::paintGL()
             glEnd();
             glPopMatrix();
         }
-        // === B. 渲染坐标系 ===
+
+        // === B. 渲染坐标系 === 
         if (coordinateSystem_) {
-            glViewport(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
+            const qreal dpr = devicePixelRatioF(); // 再次获取，确保安全
+            const int coord_physical_w = coordinateSystemWidth_ * dpr;
+            const int coord_physical_h = coordinateSystemHeight_ * dpr;
+
+            glViewport(0, 0, coord_physical_w, coord_physical_h);
             glEnable(GL_SCISSOR_TEST);
-            glScissor(0, 0, coordinateSystemWidth_, coordinateSystemHeight_);
-            glClear(GL_DEPTH_BUFFER_BIT);
+            glScissor(0, 0, coord_physical_w, coord_physical_h);
+
+            glClear(GL_DEPTH_BUFFER_BIT); // 只清除深度，不清除颜色
             coordinateSystem_->paintGL();
             glDisable(GL_SCISSOR_TEST);
-        }
-    }
-    glPopAttrib();
 
-    // --- 第4步: 渲染ImGui ---
+            // 【关键】立刻恢复主视口到物理全屏
+            glViewport(0, 0, width() * dpr, height() * dpr);
+        }
+
+    }
+    // glPopAttrib(); // 暂时可以不用
+
+
+    // --- 第4步: 恢复ImGui渲染 ---
     ZImGui_Render();
 }
-
 
 void ZQt3DViewer::wheelEvent(QWheelEvent* event)
 {
