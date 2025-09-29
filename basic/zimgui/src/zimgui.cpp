@@ -14,6 +14,8 @@ extern "C" {
     {
         if (g_ImGuiContext) return;
 
+        std::string fontsPath = ASSERT_PATH;
+        fontsPath += "fonts/SourceHanSansSC-VF.ttf";
         // 1. 创建 ImGui 上下文
         g_ImGuiContext = ImGui::CreateContext();
         ImGui::SetCurrentContext(g_ImGuiContext);
@@ -23,6 +25,15 @@ extern "C" {
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // 启用键盘控制
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // 启用 Docking
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // 启用多视口
+        float font_size = 18.0f;
+        ImFont* font = io.Fonts->AddFontFromFileTTF(fontsPath.c_str(), font_size, nullptr, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+        // 检查字体是否加载成功
+        if (font == nullptr) {
+            // 如果失败，可以尝试加载默认字体，以防程序崩溃
+            io.Fonts->AddFontDefault();
+            // 并且输出错误信息
+            std::cerr << "Error: Failed to load font: " << fontsPath << std::endl;
+        }
 
         // 3. 设置样式
         ImGui::StyleColorsDark();

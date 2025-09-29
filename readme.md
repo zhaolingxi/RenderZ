@@ -15,9 +15,11 @@
 
 # 软件界面：
 
+![./md_res/v0_1_test.png](./md_res/v0_1_test.png)
 
 # 开源协议：
-GPL
+
+LGPL
 
 # 特别鸣谢：
 

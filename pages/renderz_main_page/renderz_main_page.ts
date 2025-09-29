@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="implement/renderz_main_page.cpp" line="143"/>
+        <location filename="implement/renderz_main_page.cpp" line="131"/>
         <source>tips:</source>
         <translation type="unfinished"></translation>
     </message>

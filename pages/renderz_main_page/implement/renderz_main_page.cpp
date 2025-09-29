@@ -62,45 +62,33 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 	mainSideBarLeft_ = new QWidget(this);
 	leftNavigModel_ = new ZQtNavigatorModel();
 	leftNavigView_ = new ZQtNavigatorView(nullptr);
-	// 3. 准备数据 (使用带缩进的字符串列表作为示例)
 
-	// --- 示例：为特定项设置图标 ---
-	// 1. 获取根索引 (一个无效的QModelIndex代表根)
-	std::string assertPath = ASSERT_PATH;
-	std::string icon_path = assertPath + "image/buttons/sharp_fullscreen_exit_black_20.png";
+	// --- 新代码：从文件系统动态构建导航树 ---
+
+	// 1. 定义要扫描的根目录
+	std::string modelPathStr = MODEL_PATH;
+	QString modelPath = QString::fromStdString(modelPathStr);
+
+	// 2. 获取模型的根索引
 	QModelIndex rootIndex = QModelIndex();
 
-	// 2. 在根下添加顶级项，并保存它们的索引
-	QModelIndex projectA = leftNavigModel_->addItem(rootIndex, "Project A", QIcon(icon_path.c_str()));
-	QModelIndex projectB = leftNavigModel_->addItem(rootIndex, "Project B", QIcon(icon_path.c_str()));
+	// 3. 调用递归函数开始填充模型
+	populateModelFromPath(leftNavigModel_, modelPath, rootIndex);
 
-	// 3. 在 "Project A" 下添加子项
-	QModelIndex sourceFiles = leftNavigModel_->addItem(projectA, "Source Files", QIcon(icon_path.c_str()));
-	QModelIndex headerFiles = leftNavigModel_->addItem(projectA, "Header Files", QIcon(icon_path.c_str()));
-
-	// 4. 在 "Source Files" 下添加孙子项
-	leftNavigModel_->addItem(sourceFiles, "main.cpp", QIcon(icon_path.c_str()));
-	leftNavigModel_->addItem(sourceFiles, "widget.cpp", QIcon(icon_path.c_str()));
-
-	// 5. 在 "Header Files" 下添加孙子项
-	leftNavigModel_->addItem(headerFiles, "widget.h", QIcon(icon_path.c_str()));
-
-	// 6. 在 "Project B" 下添加子项
-	QModelIndex documents = leftNavigModel_->addItem(projectB, "Documents", QIcon(icon_path.c_str()));
-	leftNavigModel_->addItem(documents, "readme.txt", QIcon(icon_path.c_str()));
+	// --- 手动添加项目的旧代码已被移除 ---
 
 	leftNavigView_->setModel(leftNavigModel_);
 
 	mianViewer_ = new ZQtViewer(this, ViewerType::EOpenGLType);
-	std::string modelPath = MODEL_PATH; modelPath += "AfricanHead/african_head.obj";
-	std::cout << modelPath << std::endl;
-	mianViewer_->load3DModel(modelPath);
+	std::string modelToLoadPath = modelPathStr + "AfricanHead/african_head.obj";
+	std::cout << modelToLoadPath << std::endl;
+	mianViewer_->load3DModel(modelToLoadPath);
 
 	mainSideBarRight_ = new SideSettingView(this);
 
-	pageViewLayoutMid->addWidget(leftNavigView_,0);
-	pageViewLayoutMid->addWidget(mianViewer_,1);
-	pageViewLayoutMid->addWidget(mainSideBarRight_,0);
+	pageViewLayoutMid->addWidget(leftNavigView_, 0);
+	pageViewLayoutMid->addWidget(mianViewer_, 1);
+	pageViewLayoutMid->addWidget(mainSideBarRight_, 0);
 	return true;
 }
 
@@ -235,3 +223,30 @@ std::shared_ptr<QString> RenderZMainPage::readQssFiles(const QString& dirPath)
 	return allQssStr;
 }
 
+void RenderZMainPage::populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent)
+{
+	QDir dir(path);
+	// 设置过滤器，获取所有文件和目录，但不包括 "." 和 ".."
+	dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+	// 按名称排序，目录优先
+	dir.setSorting(QDir::DirsFirst | QDir::Name);
+
+	QFileInfoList list = dir.entryInfoList();
+	for (const QFileInfo& fileInfo : list)
+	{
+		if (fileInfo.isDir())
+		{
+			// 如果是目录，添加一个目录节点，然后递归进入该目录
+			QIcon dirIcon = this->style()->standardIcon(QStyle::SP_DirIcon);
+			QModelIndex dirIndex = model->addItem(parent, fileInfo.fileName(), dirIcon);
+			// 递归调用
+			populateModelFromPath(model, fileInfo.filePath(), dirIndex);
+		}
+		else
+		{
+			// 如果是文件，直接添加文件节点
+			QIcon fileIcon = this->style()->standardIcon(QStyle::SP_FileIcon);
+			model->addItem(parent, fileInfo.fileName(), fileIcon);
+		}
+	}
+}

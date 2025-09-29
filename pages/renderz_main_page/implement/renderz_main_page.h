@@ -35,7 +35,7 @@ public:
 
 protected:
 	std::shared_ptr<QString> readQssFiles(const QString& dirPath);
-
+	void populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent);
 private:
 	QGridLayout* mainLayout_{ nullptr }; /**< 页面主布局 */
 	QWidget* mainSideBarLeft_{ nullptr }; /**< 侧边栏 */

@@ -4,7 +4,6 @@
 #include "backends/imgui_impl_opengl3.h"
 
 ZIMGUI_NS_BEGIN
-
 // 【新增】一个本地的、不依赖任何框架的矢量归一化辅助函数
 static void normalize_vec3(float v[3]) {
     float len = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);

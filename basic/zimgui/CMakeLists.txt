@@ -80,6 +80,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     zutils zmath zrender zcore
 )
 
+target_compile_definitions(${PROJECT_NAME} PRIVATE ASSERT_PATH="${assertPath}")
+
 # -----------------------------------------
 # OpenGL ÏµÍ³¿â
 # -----------------------------------------
