@@ -141,6 +141,23 @@ QModelIndex ZQtNavigatorModel::addItem(const QModelIndex& parent, const QString&
     return index(newRow, 0, parent);
 }
 
+QString ZQtNavigatorModel::getPath(const QModelIndex& index) const
+{
+    if (!index.isValid()) {
+        return QString();
+    }
+
+    QStringList pathParts;
+    QModelIndex currentIndex = index;
+
+    while (currentIndex.isValid()) {
+        pathParts.prepend(currentIndex.data(Qt::DisplayRole).toString());
+
+        currentIndex = this->parent(currentIndex);
+    }
+
+    return pathParts.join('/');
+}
 
 // 示例函数: 用一个带缩进的字符串列表来初始化模型数据
 void ZQtNavigatorModel::setupModelData(const QStringList& lines)

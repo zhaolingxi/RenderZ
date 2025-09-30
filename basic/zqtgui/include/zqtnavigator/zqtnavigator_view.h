@@ -16,7 +16,7 @@ public:
 
 signals:
     void button1Clicked(const QModelIndex& index);
-    void button2Clicked(const QModelIndex& index);
+    void button2Clicked(const QModelIndex& index, const QString& path);
     void button3Clicked(const QModelIndex& index);
 
 protected:

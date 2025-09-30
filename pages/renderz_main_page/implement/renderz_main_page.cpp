@@ -6,7 +6,10 @@
 #include<QLineEdit>
 #include<QPushButton>
 #include<QStandardItem>
+#include <QMessageBox> 
 #include<plog/Log.h>
+#include<filesystem>
+namespace fs = std::filesystem;
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
 	setObjectName(viewName);
@@ -60,11 +63,6 @@ bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 
 bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 {
-	mainSideBarLeft_ = new QWidget(this);
-	leftNavigModel_ = new ZQtNavigatorModel();
-	leftNavigView_ = new ZQtNavigatorView(nullptr);
-
-	// --- 新代码：从文件系统动态构建导航树 ---
 
 	// 1. 定义要扫描的根目录
 	std::string modelPathStr = MODEL_PATH;
@@ -79,9 +77,6 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 	leftNavigView_->setModel(leftNavigModel_);
 
 	mianViewer_ = new ZQtViewer(this, ViewerType::EOpenGLType);
-	std::string modelToLoadPath = modelPathStr + "AfricanHead/african_head.obj";
-	std::cout << modelToLoadPath << std::endl;
-	mianViewer_->load3DModel(modelToLoadPath);
 
 	mainSideBarRight_ = new SideSettingView(this);
 
@@ -100,7 +95,6 @@ QSplitter* RenderZMainPage::createMidSplitter()
 	leftNavigView_->setModel(leftNavigModel_);
 
 	mianViewer_ = new ZQtViewer(this, ViewerType::EOpenGLType);
-	// ... (Viewer设置) ...
 
 	mainSideBarRight_ = new SideSettingView(this);
 
@@ -138,8 +132,11 @@ bool RenderZMainPage::createLayoutBtm(QHBoxLayout*& pageViewLayoutBtm)
 
 void RenderZMainPage::initUI()
 {
-	mainLayout_ = new QGridLayout(this);
 	mainSideBarLeft_ = new QWidget(this);
+	leftNavigModel_ = new ZQtNavigatorModel();
+	leftNavigView_ = new ZQtNavigatorView(nullptr);
+
+	mainLayout_ = new QGridLayout(this);
 	pageViewLayout_ = new QVBoxLayout();
 	pageViewLayoutTop_ = new QHBoxLayout();
 	pageViewLayoutMid_ = new QHBoxLayout();
@@ -252,11 +249,85 @@ void RenderZMainPage::connectSlots()
 {
 	QObject::connect(mainSideBarRight_, &SideSettingView::backgroundColorChanged,
 		this, &RenderZMainPage::onSideViewBackgroundColorChanged);
+
+	QObject::connect(leftNavigView_, &ZQtNavigatorView::button1Clicked,
+		this, &RenderZMainPage::onMenuClick);
+
+	QObject::connect(leftNavigView_, &ZQtNavigatorView::button2Clicked,
+		this, &RenderZMainPage::onLoadModel);
+
+	QObject::connect(leftNavigView_, &ZQtNavigatorView::button3Clicked,
+		this, &RenderZMainPage::onMoreFunction);
 }
+
 
 
 void RenderZMainPage::onSideViewBackgroundColorChanged(const QColor& newColor)
 {
 	mianViewer_->get3DViewer()->setBackColor(newColor.red(),newColor.green(),newColor.blue());
 	return;
+}
+
+
+void RenderZMainPage::onLoadModel(const QModelIndex& slotindex, const QString& path)
+{
+	std::string modelPathStr = MODEL_PATH;
+	std::string modelToLoadPathStr = modelPathStr + path.toStdString();
+	fs::path filePath(modelToLoadPathStr);
+	bool fileIsValid = false;
+	try {
+		if (fs::exists(filePath) && fs::is_regular_file(filePath)) {
+			// 检查后缀是否为 .obj (忽略大小写)
+			std::string extension = filePath.extension().string();
+			std::transform(extension.begin(), extension.end(), extension.begin(),
+				[](unsigned char c) { return std::tolower(c); });
+
+			if (extension == ".obj") {
+				fileIsValid = true;
+			}
+		}
+	}
+	catch (const fs::filesystem_error& e) {
+		qDebug() << "Filesystem error:" << e.what();
+		fileIsValid = false;
+	}
+
+	if (fileIsValid) {
+		qDebug() << "File is valid. Loading:" << QString::fromStdString(modelToLoadPathStr);
+		mianViewer_->load3DModel(modelToLoadPathStr);
+	}
+	else {
+		qDebug() << "File is not valid or does not exist:" << QString::fromStdString(modelToLoadPathStr);
+		QMessageBox::warning(
+			this, 
+			tr("load model fail!!"), // 弹窗标题
+			tr("please check out file exsits, it must be .obj!")
+			.arg(QString::fromStdString(modelToLoadPathStr))
+		);
+	}
+}
+
+
+void RenderZMainPage::onMenuClick(const QModelIndex& index)
+{
+	// 1. 检查 index 是否有效
+	if (!index.isValid()) {
+		return;
+	}
+
+	// 2. 获取显示出来的文本
+	QString displayText = index.data(Qt::DisplayRole).toString();
+	qDebug() << "Button was clicked on item at row" << index.row() << "with text:" << displayText;
+}
+
+void RenderZMainPage::onMoreFunction(const QModelIndex& index)
+{
+	// 1. 检查 index 是否有效
+	if (!index.isValid()) {
+		return;
+	}
+
+	// 2. 获取显示出来的文本
+	QString displayText = index.data(Qt::DisplayRole).toString();
+	qDebug() << "Button was clicked on item at row" << index.row() << "with text:" << displayText;
 }

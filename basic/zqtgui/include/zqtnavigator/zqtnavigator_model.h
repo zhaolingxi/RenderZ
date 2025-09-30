@@ -30,7 +30,7 @@ public:
     void clear();
     QModelIndex addItem(const QModelIndex& parent, const QString& text, const QIcon& icon = QIcon());
     TreeItem* getItem(const QModelIndex& index) const;
-
+    QString getPath(const QModelIndex& index) const;
 private:
     void setupTree(const QStringList& lines, TreeItem* parent);
     void setupModelData(const QStringList& lines);

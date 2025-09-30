@@ -33,8 +33,10 @@ public:
 	void tempLoadTheme(QApplication* app=nullptr);
 	void connectSlots();
 public slots:
-	// 这个槽函数用来接收并处理背景色变化的信号
 	void onSideViewBackgroundColorChanged(const QColor& newColor);
+	void onLoadModel(const QModelIndex& slotindex, const QString& path);
+	void onMenuClick(const QModelIndex& slotindex);
+	void onMoreFunction(const QModelIndex& slotindex);
 protected:
 	std::shared_ptr<QString> readQssFiles(const QString& dirPath);
 	void populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent);

@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 #include "zqtnavigator/zqtnavigatordefs.h"
 #include "zqtnavigator/zqtnavigator_view.h" // forward declaration won't work with signals
-
+#include "zqtnavigator/zqtnavigator_model.h"
 ZQTGUI_NS_BEGIN
 
 
@@ -115,8 +115,10 @@ bool ZQtNavigatorDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
             return true;
         }
         if (getButtonRect(option.rect, 2).contains(mouseEvent->pos())) {
+            const ZQtNavigatorModel* nvg_model = static_cast<const ZQtNavigatorModel*>(model);
+            QString path = nvg_model->getPath(index);
             ZQtNavigatorView* view = qobject_cast<ZQtNavigatorView*>(this->parent());
-            if (view) emit view->button2Clicked(index);
+            if (view) emit view->button2Clicked(index, path);
             return true;
         }
         if (getButtonRect(option.rect, 3).contains(mouseEvent->pos())) {
