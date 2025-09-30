@@ -31,8 +31,10 @@ public:
 	bool createLayoutBtm(QHBoxLayout*& pageViewLayoutBtm);
 	void initUI();
 	void tempLoadTheme(QApplication* app=nullptr);
-
-
+	void connectSlots();
+public slots:
+	// 这个槽函数用来接收并处理背景色变化的信号
+	void onSideViewBackgroundColorChanged(const QColor& newColor);
 protected:
 	std::shared_ptr<QString> readQssFiles(const QString& dirPath);
 	void populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent);
@@ -42,7 +44,7 @@ private:
 	ZQtNavigatorView* leftNavigView_{nullptr};
 	ZQtNavigatorModel* leftNavigModel_{nullptr};
 	ZQtViewer* mianViewer_{ nullptr };   /*主viewer*/
-	QWidget* mainSideBarRight_{ nullptr }; /**< 侧边栏 */
+	SideSettingView* mainSideBarRight_{ nullptr }; /**< 侧边栏 */
 	QVBoxLayout* pageViewLayout_{ nullptr }; /**< 显示页面视图的布局(top|mid|btm) */
 
 

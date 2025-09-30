@@ -110,15 +110,8 @@ void ZQt3DViewer::initializeGL() {
     glEnable(GL_NORMALIZE);
 
 
-    red_ = 0.75;
-    green_ = 0.75;
-    blue_ = 0.75;
-
-
     int ratio = devicePixelRatio();
     camera_.reset();
-
-
 
     // 【修改】将 coordinateSystem 的初始化放在你的GL设置之后
     if (coordinateSystem_ != nullptr) {
@@ -390,6 +383,15 @@ bool ZQt3DViewer::loadModel(const QString& path)
     return true;
 }
 
+void ZQt3DViewer::setBackColor(double red, double green, double blue)
+{
+    // 1. 更新内部状态变量
+    red_ = red;
+    green_ = green;
+    blue_ = blue;
+
+    update();
+}
 
 ZQtViewer::ZQtViewer(QWidget* parent, ViewerType iViewerType)
 {
@@ -404,6 +406,10 @@ bool ZQtViewer::load3DModel(std::string model_path)
         return true;
     }
     return false;
+}
+
+ZQt3DViewer* ZQtViewer::get3DViewer() {
+    return z3DViewer_;
 }
 
 void ZQtViewer::createViewer()

@@ -6,7 +6,7 @@
 #include<QLineEdit>
 #include<QPushButton>
 #include<QStandardItem>
-
+#include<plog/Log.h>
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
 	setObjectName(viewName);
@@ -20,6 +20,7 @@ bool RenderZMainPage::createPage()
 {
 	bool ret = true;
 	initUI();
+	connectSlots();
 	show();
 	return ret;
 }
@@ -74,8 +75,6 @@ bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 
 	// 3. 调用递归函数开始填充模型
 	populateModelFromPath(leftNavigModel_, modelPath, rootIndex);
-
-	// --- 手动添加项目的旧代码已被移除 ---
 
 	leftNavigView_->setModel(leftNavigModel_);
 
@@ -141,11 +140,9 @@ void RenderZMainPage::initUI()
 {
 	mainLayout_ = new QGridLayout(this);
 	mainSideBarLeft_ = new QWidget(this);
-	mainSideBarRight_ = new QWidget(this);
 	pageViewLayout_ = new QVBoxLayout();
 	pageViewLayoutTop_ = new QHBoxLayout();
 	pageViewLayoutMid_ = new QHBoxLayout();
-	//QSplitter* midSplitter = createMidSplitter();
 	pageViewLayoutBtm_ = new QHBoxLayout();
 
 	createLayoutTop(pageViewLayoutTop_);
@@ -154,7 +151,6 @@ void RenderZMainPage::initUI()
 
 	pageViewLayout_->addLayout(pageViewLayoutTop_);
 	pageViewLayout_->addLayout(pageViewLayoutMid_);
-	//pageViewLayout_->addWidget(midSplitter);
 	pageViewLayout_->addLayout(pageViewLayoutBtm_);
 
 
@@ -249,4 +245,18 @@ void RenderZMainPage::populateModelFromPath(ZQtNavigatorModel* model, const QStr
 			model->addItem(parent, fileInfo.fileName(), fileIcon);
 		}
 	}
+}
+
+
+void RenderZMainPage::connectSlots()
+{
+	QObject::connect(mainSideBarRight_, &SideSettingView::backgroundColorChanged,
+		this, &RenderZMainPage::onSideViewBackgroundColorChanged);
+}
+
+
+void RenderZMainPage::onSideViewBackgroundColorChanged(const QColor& newColor)
+{
+	mianViewer_->get3DViewer()->setBackColor(newColor.red(),newColor.green(),newColor.blue());
+	return;
 }

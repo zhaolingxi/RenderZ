@@ -75,7 +75,7 @@ public:
     ~ZQt3DViewer();
     bool loadModel(const QString& path);
 
-
+    void setBackColor(double red, double green,double blue);
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -108,8 +108,9 @@ private:
     // 【新增】 ImGui调试面板相关的成员
     zimgui::ZIMGUIViewportDebugPanel m_debugPanel;
     zimgui::ViewerDebugState m_debugState;
-    double red_, green_, blue_;
-
+    double red_ = 0.75;
+    double green_ = 0.75;
+    double blue_ = 0.75;
 };
 
 
@@ -124,7 +125,7 @@ public:
     void setViewerType(ViewerType itype) { viewerType_=itype; };
     ViewerType getViewerType() { return viewerType_; };
     bool load3DModel(std::string model_path);
-
+    ZQt3DViewer* get3DViewer();
 protected:
     void createViewer();
 

@@ -23,6 +23,7 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void leaveEvent(QEvent* event) override;
 
+
 private:
     ZQtNavigatorDelegate* m_delegate;
 };
