@@ -61,7 +61,7 @@ include(FetchContent)
 # 2. 声明你的 triLibrary 仓库信息
 FetchContent_Declare(
     triLibrary_dep # 给这个依赖起一个唯一的内部名字
-    GIT_REPOSITORY "git@github.com:zhaolingxi/triLibrary.git" # 你的仓库地址，正确
+    GIT_REPOSITORY "git@github.com:zhaolingxi/triLibrary.git" # 仓库地址
 )
 
 # 3. 让 CMake 下载并配置这个依赖

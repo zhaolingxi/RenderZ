@@ -26,26 +26,36 @@ void ZQtNavigatorDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
+    // 1. 绘制基础背景（例如选中、悬停状态）
     QStyle* style = opt.widget ? opt.widget->style() : QApplication::style();
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
 
+    // 2. 计算内容区域：从总区域中减去右侧按钮的宽度
     int totalButtonWidth = (BUTTON_WIDTH + BUTTON_MARGIN) * 3;
     QRect contentRect = opt.rect;
-    contentRect.setWidth(contentRect.width() - totalButtonWidth);
+   // contentRect.adjust(0, 0, -totalButtonWidth, 0);
 
+    // 3. 定义一个动态的起始X坐标和一个左边距
+    int leftMargin = BUTTON_MARGIN;
+    int currentX = contentRect.left() + leftMargin;
+
+    // 4. 如果有图标，绘制它并更新 currentX
     QIcon icon = qvariant_cast<QIcon>(index.data(IconRole));
     if (!icon.isNull()) {
-        QRect iconRect = style->subElementRect(QStyle::SE_ItemViewItemDecoration, &opt, opt.widget);
-        iconRect.moveLeft(contentRect.left() + BUTTON_MARGIN);
+        // 计算图标的绘制区域 (垂直居中)
+        QSize iconSize = opt.decorationSize;
+        int y_icon = contentRect.top() + (contentRect.height() - iconSize.height()) / 2;
+        QRect iconRect(currentX, y_icon, iconSize.width(), iconSize.height());
+
+        // 绘制图标
         icon.paint(painter, iconRect, opt.decorationAlignment);
+
+        // 更新下一个元素（文本）的起始X坐标
+        currentX += iconRect.width() + leftMargin; // 在图标和文本之间也留一个间距
     }
 
-    QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &opt, opt.widget);
-    textRect.moveLeft(contentRect.left() + BUTTON_MARGIN * 2 + opt.decorationSize.width());
-    textRect.setWidth(contentRect.width() - (textRect.left() - contentRect.left()));
+    // 5. 计算并绘制
 
-    QString text = index.data(Qt::DisplayRole).toString();
-    style->drawItemText(painter, textRect, opt.displayAlignment, opt.palette, true, text);
 
     if (option.state & QStyle::State_MouseOver)
     {
@@ -70,6 +80,19 @@ void ZQtNavigatorDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
         if (m_hoveredIndex == index && m_hoveredButton == 3) btnOpt.state |= QStyle::State_MouseOver;
         m_button3Icon.paint(painter, btn3Rect);
     }
+    else {
+        totalButtonWidth = 0;
+    }
+
+
+    QRect textRect = contentRect;
+    textRect.setLeft(currentX);
+    textRect.setRight(contentRect.right() - leftMargin - totalButtonWidth); // 给右边也留一点空间，更美观
+
+    QString text = index.data(Qt::DisplayRole).toString();
+
+    // 正确的绘制方式：让样式自动处理文本过长时的省略号 ("...")
+    style->drawItemText(painter, textRect, opt.displayAlignment, opt.palette, true, text);
 }
 
 QSize ZQtNavigatorDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const

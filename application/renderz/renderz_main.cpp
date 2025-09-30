@@ -9,7 +9,6 @@
 #include "zutils.h"
 #include "zcore.h"
 #include "renderz_main_page.h"
-#include "test_case.h"
 
 #include "zutils_sdk.h"
 #include"zthread.h"

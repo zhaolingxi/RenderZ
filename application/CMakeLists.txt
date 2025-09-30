@@ -56,4 +56,5 @@ endforeach()
 
 # 需要编译的页面插件
 add_subdirectory ("renderz")
+add_subdirectory ("renderz_test")
 
