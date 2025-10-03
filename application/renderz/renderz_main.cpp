@@ -16,6 +16,7 @@
 #include"test_case.h"
 #include"zlib_loader.h"
 #include"zlib_plugin_info.h"
+#include"qtpage_manager.h"
 #include <QSurfaceFormat> // 【新增】包含这个头文件
 
 int main(int argc, char* argv[])
@@ -38,6 +39,11 @@ int main(int argc, char* argv[])
 	QString appDir = QApplication::applicationDirPath();
 	QDir::setCurrent(appDir);
 	qDebug() << "appDir: " << appDir;
+	QTPageManager* page_manager = QTPageManager::instance();
+
+	QString pagesThemeDir = appDir+ "/resources/theme/default";
+	QString pagesLangDir = appDir + "/resources/language/default";
+	page_manager->loadTheme(pagesThemeDir,"renderz_app");
 
 	std::vector<std::string> pluginPages{ "renderz_main_page", };
 	for (auto& pluginPage : pluginPages) {
@@ -55,7 +61,7 @@ int main(int argc, char* argv[])
 		func_InstallPluginView();
 	}
 
-
+	page_manager->changeTheme("renderz_app");
 	ret = app->exec();
 
 	return ret;

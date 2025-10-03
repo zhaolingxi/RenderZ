@@ -37,27 +37,27 @@ bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 	titleIconbtn->setIcon(titleIcon);
 	QLabel *titleNameLab=new QLabel(tr("RenderZ_v0.1"), this);
 	QLineEdit* serachLine = new QLineEdit(this);
-	QPushButton* personalPage = new QPushButton(this);
-	QPushButton* globalSetting=new QPushButton(this);
-	QPushButton* minBtn = new QPushButton(this);
-	minBtn->setObjectName("minBtn");
-	QPushButton* maxBtn = new QPushButton(this);
-	minBtn->setObjectName("maxBtn");
-	QPushButton* closeBtn=new QPushButton(this);
-	minBtn->setObjectName("closeBtn");
+	QPushButton* fileBtn = new QPushButton(this);
+	QPushButton* saveBtn=new QPushButton(this);
+	QPushButton* settingBtn = new QPushButton(this);
+	settingBtn->setObjectName("settingBtn");
+	QPushButton* extBtn = new QPushButton(this);
+	extBtn->setObjectName("maxBtn");
+	QPushButton* aboutBtn=new QPushButton(this);
+	aboutBtn->setObjectName("aboutBtn");
 
 
 	pageViewLayoutTop->addWidget(titleIconbtn);
 	pageViewLayoutTop->addWidget(titleNameLab);
 	pageViewLayoutTop->addStretch();
+	pageViewLayoutTop->addWidget(fileBtn);
+	pageViewLayoutTop->addWidget(saveBtn);
+	pageViewLayoutTop->addStretch();
 	pageViewLayoutTop->addWidget(serachLine);
 	pageViewLayoutTop->addStretch();
-	pageViewLayoutTop->addWidget(personalPage);
-	pageViewLayoutTop->addWidget(globalSetting);
-	pageViewLayoutTop->addStretch();
-	pageViewLayoutTop->addWidget(minBtn);
-	pageViewLayoutTop->addWidget(maxBtn);
-	pageViewLayoutTop->addWidget(closeBtn);
+	pageViewLayoutTop->addWidget(settingBtn);
+	pageViewLayoutTop->addWidget(extBtn);
+	pageViewLayoutTop->addWidget(aboutBtn);
 	return true;
 }
 

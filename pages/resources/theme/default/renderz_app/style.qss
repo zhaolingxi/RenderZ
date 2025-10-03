@@ -6,10 +6,10 @@ QWidget#RenderZMainPage {
     border: 1px solid rgba(24,24,24,0.15);
 }
 
-QWidget#RenderZMainPage QPushButton#minBtn {
+QWidget#RenderZMainPage QPushButton#extBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
     padding: 5px;
-    background-color: #ed0f0f;
-    background-image:url('/../assert/image/icon/login.bmp')
+    background-color: #FFFFFF;
+    background-image:url('/../image/bun_open.png')
 }

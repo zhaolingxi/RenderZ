@@ -30,6 +30,17 @@ update_qtpro_qm("${PRO_TS_FILE_PATH}" "${PRO_QM_FILE_PATH}")
 
 # 特别提醒: 需要添加 ${HEADER_FILES},因为moc生成的文件会保存到 ${HEADER_FILES}
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
+
+set(RESOURCES_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../resources")
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${RESOURCES_SOURCE_DIR}"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources"
+    COMMENT "Copying page resources to DLL output directory..."
+)
+message("zhaolkx")
 # 框架基础库
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui)
 target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zcore zrender zqtgui)
@@ -41,3 +52,5 @@ if(GNUC)
 	target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt dl)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'")
 endif()
+
+

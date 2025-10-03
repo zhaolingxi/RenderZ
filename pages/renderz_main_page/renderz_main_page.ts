@@ -4,13 +4,23 @@
 <context>
     <name>RenderZMainPage</name>
     <message>
-        <location filename="implement/renderz_main_page.cpp" line="35"/>
+        <location filename="implement/renderz_main_page.cpp" line="38"/>
         <source>RenderZ_v0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="implement/renderz_main_page.cpp" line="130"/>
+        <location filename="implement/renderz_main_page.cpp" line="124"/>
         <source>tips:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="implement/renderz_main_page.cpp" line="303"/>
+        <source>load model fail!!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="implement/renderz_main_page.cpp" line="304"/>
+        <source>please check out file exsits, it must be .obj!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
