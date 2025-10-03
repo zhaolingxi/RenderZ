@@ -44,6 +44,7 @@ namespace ZQTGuiNS {
             const QString& themeName,
             const bool isUpdateResPath = false);
 
+        bool loadInternalTheme(const QString& themeName);
         /**
          * @brief 切换主题样式
          * @param[in] themeName 样式主题名称

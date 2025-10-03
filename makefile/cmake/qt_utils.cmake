@@ -24,7 +24,7 @@ macro(config_qt_compile _platform_name)
         set(ENV{QT_QPA_PLATFORM_PLUGIN_PATH} ${QT_LIBRARY_PLATFORM_DIR})
         message("Info: Qt Config: Compiling Qt for ${_platform_name}, qtpath: ${CMAKE_PREFIX_PATH}")
         # Qt基础依赖库
-        find_package(Qt5 COMPONENTS Widgets Core Gui WebEngineWidgets WebSockets OpenGL PrintSupport REQUIRED)
+        find_package(Qt5 COMPONENTS Widgets Core Gui WebEngineWidgets WebSockets OpenGL PrintSupport Svg REQUIRED)
         if(Qt5_FOUND)
             message(STATUS "Qt5 found.")
         else()

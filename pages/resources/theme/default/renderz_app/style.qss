@@ -6,10 +6,52 @@ QWidget#RenderZMainPage {
     border: 1px solid rgba(24,24,24,0.15);
 }
 
+QWidget#RenderZMainPage QPushButton#fileBtn {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    background-image:url(:/assert/image/buttons/folder.svg);
+    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
+    background-position: center;    /* 将图标居中显示 */
+}
+
+QWidget#RenderZMainPage QPushButton#saveBtn {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    background-image:url(:/assert/image/buttons/save.svg);
+    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
+    background-position: center;    /* 将图标居中显示 */
+}
+
 QWidget#RenderZMainPage QPushButton#extBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
     padding: 5px;
     background-color: #FFFFFF;
-    background-image:url('/../image/bun_open.png')
+    background-image:url(:/assert/image/buttons/extension.svg);
+    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
+    background-position: center;    /* 将图标居中显示 */
+}
+ 
+QWidget#RenderZMainPage QPushButton#settingBtn {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    background-image:url(:/assert/image/buttons/setting.svg);
+    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
+    background-position: center;    /* 将图标居中显示 */
+}
+
+QWidget#RenderZMainPage QPushButton#aboutBtn {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    background-image:url(:/assert/image/buttons/about.svg);
+    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
+    background-position: center;    /* 将图标居中显示 */
 }

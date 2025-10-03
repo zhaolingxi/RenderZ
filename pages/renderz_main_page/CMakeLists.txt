@@ -1,7 +1,16 @@
 ﻿cmake_minimum_required(VERSION 3.5)
 project(renderz_main_page)
 
+# =============== 新增: Qt 集成三件套 ===============
+# 明确查找 Qt5 包
+find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
 
+# 开启 AUTOMOC, AUTOUIC, 和 AUTORCC
+# AUTORCC 是这里的关键，它会自动调用 rcc 处理 .qrc 文件
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+# ================================================
 
 # project的头文件包含目录
 include_directories(framework interface implement)
@@ -28,19 +37,13 @@ set(PRO_QM_FILE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../resources/language/zh/${PRO
 update_qtpro_ts("${PRO_TS_FILE_PATH}" "${SOURCE_FILES}")
 update_qtpro_qm("${PRO_TS_FILE_PATH}" "${PRO_QM_FILE_PATH}")
 
-# 特别提醒: 需要添加 ${HEADER_FILES},因为moc生成的文件会保存到 ${HEADER_FILES}
-add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
-
-set(RESOURCES_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../resources")
-
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${RESOURCES_SOURCE_DIR}"
-            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources"
-    COMMENT "Copying page resources to DLL output directory..."
+add_library(${PROJECT_NAME} SHARED 
+    ${HEADER_FILES} 
+    ${SOURCE_FILES}
+    renderz_main_page.qrc  # <-- 新增：将qrc文件本身作为源文件添加
 )
-message("zhaolkx")
+
+
 # 框架基础库
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core Qt5::Gui)
 target_link_libraries(${PROJECT_NAME} PRIVATE zutils zmath zcore zrender zqtgui)

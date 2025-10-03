@@ -1,0 +1,35 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <!-- 
+        prefix="/" 定义了资源路径在代码中被引用时的前缀。
+        例如，代码中使用 ":/theme/default/style.qss"
+    -->
+    <qresource prefix="/">
+        <!--
+            alias 是资源在代码中的别名。通常保持和物理路径一致即可。
+            而 file 标签里的内容是该资源文件相对于这个 .qrc 文件的真实路径。
+            因为 resources 目录在上一级，所以我们使用 ../
+        -->
+        <file alias="theme/default/renderz_app/style.qss">../resources/theme/default/renderz_app/style.qss</file>
+        
+        <!-- 添加图片资源 -->
+		<file alias="assert/image/buttons/refresh.svg">../../assert/image/buttons/refresh_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/menu.svg">../../assert/image/buttons/menu_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/more.svg">../../assert/image/buttons/more_vert_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/folder.svg">../../assert/image/buttons/folder_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/extension.svg">../../assert/image/buttons/extension_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/about.svg">../../assert/image/buttons/info_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/setting.svg">../../assert/image/buttons/settings_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		<file alias="assert/image/buttons/save.svg">../../assert/image/buttons/system_update_alt_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg</file>
+		
+		<file alias="assert/image/buttons/renderz.png">../../assert/image/icon/login.bmp</file>
+       
+        <!-- 添加 QM 翻译文件 -->
+        <!-- qm文件我们之前生成到了 ../resources/language/zh/ 目录下 -->
+        <file alias="language/zh/renderz_main_page_zh.qm">../resources/language/zh/renderz_main_page_zh.qm</file>
+        
+        <!-- 如果一个目录下文件很多，可以用这种方式递归添加整个目录 -->
+        <!-- 注意：这种方式可能不被所有 CMake/Qt 版本很好地支持，明确列出文件更可靠 -->
+        <!-- <file>../resources</file> -->
+    </qresource>
+</RCC>

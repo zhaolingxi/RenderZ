@@ -11,14 +11,9 @@ ZQTGUI_NS_BEGIN
 ZQtNavigatorDelegate::ZQtNavigatorDelegate(QObject* parent)
     : QStyledItemDelegate(parent), m_hoveredButton(0)
 {
-    // 在这里加载您的自定义按钮图标
-    std::string modelPath = ASSERT_PATH;
-    std::string icon1_path = modelPath + "image/buttons/sharp_menu_black_20.png"; 
-    std::string icon2_path = modelPath + "image/buttons/sharp_refresh_black_20.png";
-    std::string icon3_path = modelPath + "image/buttons/sharp_more_vert_black_20.png";
-    m_button1Icon.addFile(icon1_path.c_str());   // 示例路径
-    m_button2Icon.addFile(icon2_path.c_str());  // 示例路径
-    m_button3Icon.addFile(icon3_path.c_str()); // 示例路径
+    m_button1Icon.addFile(":/assert/image/buttons/menu.svg");   
+    m_button2Icon.addFile(":/assert/image/buttons/refresh.svg");
+    m_button3Icon.addFile(":/assert/image/buttons/more.svg");
 }
 
 void ZQtNavigatorDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const

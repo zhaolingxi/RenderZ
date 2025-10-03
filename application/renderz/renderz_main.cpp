@@ -21,6 +21,7 @@
 
 int main(int argc, char* argv[])
 {
+
 	// 【核心修复】在创建任何窗口之前，设置全局默认的OpenGL格式
 	QSurfaceFormat format;
 	// 请求一个兼容模式的上下文，以支持旧的OpenGL函数
@@ -41,9 +42,6 @@ int main(int argc, char* argv[])
 	qDebug() << "appDir: " << appDir;
 	QTPageManager* page_manager = QTPageManager::instance();
 
-	QString pagesThemeDir = appDir+ "/resources/theme/default";
-	QString pagesLangDir = appDir + "/resources/language/default";
-	page_manager->loadTheme(pagesThemeDir,"renderz_app");
 
 	std::vector<std::string> pluginPages{ "renderz_main_page", };
 	for (auto& pluginPage : pluginPages) {
@@ -60,7 +58,7 @@ int main(int argc, char* argv[])
 		InstallPluginViewFunc func_InstallPluginView =reinterpret_cast<InstallPluginViewFunc>(ZLibLoader::getProcAddress(ret, "InstallPluginView"));
 		func_InstallPluginView();
 	}
-
+	page_manager->loadInternalTheme("renderz_app");
 	page_manager->changeTheme("renderz_app");
 	ret = app->exec();
 

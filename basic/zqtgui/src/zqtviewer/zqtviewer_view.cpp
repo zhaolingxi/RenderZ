@@ -189,10 +189,10 @@ void ZQt3DViewer::paintGL()
 
         ImGui::End();
     }
-    ImGui::Begin("Controls");
-    ImGui::Text("Your 3D Viewer Controls");
-    ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::End();
+    //ImGui::Begin("Controls");
+    //ImGui::Text("Your 3D Viewer Controls");
+    //ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    //ImGui::End();
     m_debugPanel.draw(u8"µ÷ÊÔÃæ°å (Debug Panel)", m_debugState);
 
 

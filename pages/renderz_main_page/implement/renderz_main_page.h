@@ -38,7 +38,6 @@ public slots:
 	void onMenuClick(const QModelIndex& slotindex);
 	void onMoreFunction(const QModelIndex& slotindex);
 protected:
-	std::shared_ptr<QString> readQssFiles(const QString& dirPath);
 	void populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent);
 private:
 	QGridLayout* mainLayout_{ nullptr }; /**< 页面主布局 */
@@ -48,8 +47,6 @@ private:
 	ZQtViewer* mianViewer_{ nullptr };   /*主viewer*/
 	SideSettingView* mainSideBarRight_{ nullptr }; /**< 侧边栏 */
 	QVBoxLayout* pageViewLayout_{ nullptr }; /**< 显示页面视图的布局(top|mid|btm) */
-
-
 
 	QHBoxLayout* pageViewLayoutTop_{ nullptr };
 	QHBoxLayout* pageViewLayoutMid_{ nullptr };

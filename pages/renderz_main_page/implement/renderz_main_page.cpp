@@ -9,6 +9,7 @@
 #include <QMessageBox> 
 #include<plog/Log.h>
 #include<filesystem>
+#include<QAction>
 namespace fs = std::filesystem;
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
@@ -30,19 +31,26 @@ bool RenderZMainPage::createPage()
 
 bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 {
-	std::string appSourceDir = _APP_SOURCE_DIR;
-	std::string pagesThemeDir = appSourceDir + "/../assert/image/icon/login.bmp";
-	QIcon titleIcon(pagesThemeDir.c_str());
+	QString appDir = QApplication::applicationDirPath();
+	QIcon titleIcon(":/assert/image/buttons/renderz.png");
 	QPushButton* titleIconbtn = new QPushButton();
 	titleIconbtn->setIcon(titleIcon);
 	QLabel *titleNameLab=new QLabel(tr("RenderZ_v0.1"), this);
 	QLineEdit* serachLine = new QLineEdit(this);
+	serachLine->setObjectName("serachLine");
+	serachLine->setClearButtonEnabled(true);
+	//QIcon searchIcon("assert/image/buttons/search.svg"); 
+	//QAction* searchAction = new QAction(serachLine);
+	//searchAction->setIcon(searchIcon);
+
 	QPushButton* fileBtn = new QPushButton(this);
+	fileBtn->setObjectName("fileBtn");
 	QPushButton* saveBtn=new QPushButton(this);
+	saveBtn->setObjectName("saveBtn");
 	QPushButton* settingBtn = new QPushButton(this);
 	settingBtn->setObjectName("settingBtn");
 	QPushButton* extBtn = new QPushButton(this);
-	extBtn->setObjectName("maxBtn");
+	extBtn->setObjectName("extBtn");
 	QPushButton* aboutBtn=new QPushButton(this);
 	aboutBtn->setObjectName("aboutBtn");
 
@@ -155,66 +163,7 @@ void RenderZMainPage::initUI()
 }
 
 
-void RenderZMainPage::tempLoadTheme(QApplication* app)
-{
-	std::string appSourceDir = _APP_SOURCE_DIR;
-	std::string pagesThemeDir = appSourceDir + "/../pages/resources/theme/default/renderz_app";
-	std::shared_ptr<QString> qstrptr=readQssFiles(pagesThemeDir.c_str());
-	if (qstrptr) {
-		if (!app) {
-			((QApplication*)QApplication::instance())->setStyleSheet((*qstrptr));
-		}
-		else {
-			app->setStyleSheet((*qstrptr));
-		}
-	}
 
-}
-
-std::shared_ptr<QString> RenderZMainPage::readQssFiles(const QString& dirPath)
-{
-	auto allQssStr = std::make_shared<QString>("");
-	QDir dir(dirPath);
-	if (!dir.exists()) {
-		return allQssStr;
-	}
-
-	QStringList qssFileFilters;
-	qssFileFilters << QString("*.qss");
-	// 遍历文件夹中的qss文件
-	QDirIterator dirIterator(dirPath, qssFileFilters,
-		QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
-	QStringList fileDirList;
-	while (dirIterator.hasNext()) {
-		dirIterator.next();
-		QFileInfo fileInfo = dirIterator.fileInfo();
-		// 忽略路径和文件名称中包含'~'的样式
-		QString qssFilePath = fileInfo.filePath();
-		if (qssFilePath.indexOf('~') >= 0) {
-			continue;
-		}
-		QString fileDir = fileInfo.absoluteFilePath();
-		fileDirList.append(fileDir);
-	}
-
-	// 文件夹中不包含qss文件
-	if (fileDirList.isEmpty()) {
-		return allQssStr;
-	}
-
-	for (int i = 0; i < fileDirList.size(); i++)
-	{
-		QString strPath = fileDirList.at(i);
-		QFile qssfile(strPath);
-		if (qssfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QByteArray fileData = qssfile.readAll();
-			QString strStyle = fileData.data();
-			*allQssStr += strStyle;
-			qssfile.close();
-		}
-	}
-	return allQssStr;
-}
 
 void RenderZMainPage::populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent)
 {

@@ -7,6 +7,8 @@
 #include <QDebug>
 #include <QObject>
 #include <QWidget>  
+#include <QResource> 
+#include<QDirIterator>
 ZQTGUI_NS_BEGIN
 
 // 初始化静态实例指针
@@ -89,6 +91,42 @@ bool QTPageManager::loadTheme(const QString& themeDir, const QString& themeName,
 
     m_themeStyleSheets.insert(themeName, styleSheet);
     qInfo() << "Theme" << themeName << "loaded successfully from" << qssPath;
+    return true;
+}
+
+/**
+ * @brief 从Qt资源系统加载一个内嵌的主题。
+ * @param themeName 主题名称，例如 "default"
+ * @return true 如果加载成功，否则 false
+ */
+bool QTPageManager::loadInternalTheme(const QString& themeName)
+{
+    // 根据.qrc文件中定义的alias构建资源路径
+    // e.g., ":/theme/default/style.qss"
+    QString resourcePath = QString(":/theme/default/%1/style.qss").arg(themeName);
+    qDebug() << "============ Dumping All Known Resources ============";
+    QDirIterator it(":", QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        qDebug() << it.next();
+    }
+    qDebug() << "=====================================================";
+    qDebug() << "Attempting to load:" << resourcePath;
+    QFile file(resourcePath);
+    // 使用资源路径打开文件，这几乎不可能失败（除非内存问题）
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "QTPageManager::loadInternalTheme - Could not open internal resource:" << resourcePath;
+        return false;
+    }
+
+    QString styleSheet = file.readAll();
+    file.close();
+
+    // === 关键点: 不需要任何路径替换！ ===
+    // QSS中的 "url(:/icons/home.png)" 已经是正确的、可直接使用的资源路径。
+    // Qt会自动处理它们。任何替换都是有害的。
+
+    m_themeStyleSheets.insert(themeName, styleSheet);
+    qInfo() << "Internal theme" << themeName << "loaded successfully from" << resourcePath;
     return true;
 }
 
