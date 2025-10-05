@@ -37,8 +37,11 @@ public slots:
 	void onLoadModel(const QModelIndex& slotindex, const QString& path);
 	void onMenuClick(const QModelIndex& slotindex);
 	void onMoreFunction(const QModelIndex& slotindex);
+	void onFileDirCheck();
 protected:
 	void populateModelFromPath(ZQtNavigatorModel* model, const QString& path, const QModelIndex& parent);
+
+	std::string modelPathStr_{};
 private:
 	QGridLayout* mainLayout_{ nullptr }; /**< 页面主布局 */
 	QWidget* mainSideBarLeft_{ nullptr }; /**< 侧边栏 */
@@ -51,5 +54,11 @@ private:
 	QHBoxLayout* pageViewLayoutTop_{ nullptr };
 	QHBoxLayout* pageViewLayoutMid_{ nullptr };
 	QHBoxLayout* pageViewLayoutBtm_{ nullptr };
+
+	QPushButton* fileBtn_{ nullptr };
+	QPushButton* saveBtn_{ nullptr };
+	QPushButton* settingBtn_{ nullptr };
+	QPushButton* extBtn_{ nullptr };
+	QPushButton* aboutBtn_{ nullptr };
 
 };

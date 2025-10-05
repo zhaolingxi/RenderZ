@@ -10,6 +10,7 @@
 #include<plog/Log.h>
 #include<filesystem>
 #include<QAction>
+#include<QFileDialog>
 namespace fs = std::filesystem;
 RenderZMainPage::RenderZMainPage(QWidget* parent, const QString& viewName)
 {
@@ -43,44 +44,44 @@ bool RenderZMainPage::createLayoutTop(QHBoxLayout*& pageViewLayoutTop)
 	//QAction* searchAction = new QAction(serachLine);
 	//searchAction->setIcon(searchIcon);
 
-	QPushButton* fileBtn = new QPushButton(this);
-	fileBtn->setObjectName("fileBtn");
-	QPushButton* saveBtn=new QPushButton(this);
-	saveBtn->setObjectName("saveBtn");
-	QPushButton* settingBtn = new QPushButton(this);
-	settingBtn->setObjectName("settingBtn");
-	QPushButton* extBtn = new QPushButton(this);
-	extBtn->setObjectName("extBtn");
-	QPushButton* aboutBtn=new QPushButton(this);
-	aboutBtn->setObjectName("aboutBtn");
+	fileBtn_ = new QPushButton(this);
+	fileBtn_->setObjectName("fileBtn");
+	saveBtn_=new QPushButton(this);
+	saveBtn_->setObjectName("saveBtn");
+	settingBtn_ = new QPushButton(this);
+	settingBtn_->setObjectName("settingBtn");
+	extBtn_ = new QPushButton(this);
+	extBtn_->setObjectName("extBtn");
+	aboutBtn_=new QPushButton(this);
+	aboutBtn_->setObjectName("aboutBtn");
 
 
 	pageViewLayoutTop->addWidget(titleIconbtn);
 	pageViewLayoutTop->addWidget(titleNameLab);
-	pageViewLayoutTop->addStretch();
-	pageViewLayoutTop->addWidget(fileBtn);
-	pageViewLayoutTop->addWidget(saveBtn);
+	//pageViewLayoutTop->addStretch();
+	pageViewLayoutTop->addWidget(fileBtn_);
+	pageViewLayoutTop->addWidget(saveBtn_);
 	pageViewLayoutTop->addStretch();
 	pageViewLayoutTop->addWidget(serachLine);
 	pageViewLayoutTop->addStretch();
-	pageViewLayoutTop->addWidget(settingBtn);
-	pageViewLayoutTop->addWidget(extBtn);
-	pageViewLayoutTop->addWidget(aboutBtn);
+	pageViewLayoutTop->addWidget(settingBtn_);
+	pageViewLayoutTop->addWidget(extBtn_);
+	pageViewLayoutTop->addWidget(aboutBtn_);
 	return true;
 }
 
 bool RenderZMainPage::createLayoutMid(QHBoxLayout*& pageViewLayoutMid)
 {
 
-	// 1. 定义要扫描的根目录
-	std::string modelPathStr = MODEL_PATH;
-	QString modelPath = QString::fromStdString(modelPathStr);
+	//// 1. 定义要扫描的根目录
+	//std::string modelPathStr = MODEL_PATH;
+	//QString modelPath = QString::fromStdString(modelPathStr);
 
-	// 2. 获取模型的根索引
-	QModelIndex rootIndex = QModelIndex();
+	//// 2. 获取模型的根索引
+	//QModelIndex rootIndex = QModelIndex();
 
-	// 3. 调用递归函数开始填充模型
-	populateModelFromPath(leftNavigModel_, modelPath, rootIndex);
+	//// 3. 调用递归函数开始填充模型
+	//populateModelFromPath(leftNavigModel_, modelPath, rootIndex);
 
 	leftNavigView_->setModel(leftNavigModel_);
 
@@ -207,9 +208,20 @@ void RenderZMainPage::connectSlots()
 
 	QObject::connect(leftNavigView_, &ZQtNavigatorView::button3Clicked,
 		this, &RenderZMainPage::onMoreFunction);
+
+	QObject::connect(fileBtn_, &QPushButton::clicked, this, &RenderZMainPage::onFileDirCheck);
 }
 
-
+void RenderZMainPage::onFileDirCheck()
+{
+	QString dir = QFileDialog::getExistingDirectory(this, tr("select model dir"));
+	if (!dir.isEmpty()) {
+		modelPathStr_ = dir.toStdString();
+		leftNavigModel_->clear();
+		QModelIndex rootIndex = QModelIndex();
+		populateModelFromPath(leftNavigModel_, dir, rootIndex);
+	}
+}
 
 void RenderZMainPage::onSideViewBackgroundColorChanged(const QColor& newColor)
 {
@@ -220,8 +232,10 @@ void RenderZMainPage::onSideViewBackgroundColorChanged(const QColor& newColor)
 
 void RenderZMainPage::onLoadModel(const QModelIndex& slotindex, const QString& path)
 {
-	std::string modelPathStr = MODEL_PATH;
-	std::string modelToLoadPathStr = modelPathStr + path.toStdString();
+	if (modelPathStr_.empty()) {
+		modelPathStr_ = MODEL_PATH;
+	}
+	std::string modelToLoadPathStr = modelPathStr_ +"/"+ path.toStdString();
 	fs::path filePath(modelToLoadPathStr);
 	bool fileIsValid = false;
 	try {

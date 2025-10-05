@@ -68,7 +68,7 @@ namespace ZQTGuiNS {
          * @return true/false
          */
         bool loadLanguage(const QString& langDir, const QString& langName);
-
+        bool loadInternalLanguage(const QString& langName);
         /**
          * @brief 切换语言
          * @param[in] languageName 语言名称, 示例: "zh_CN"

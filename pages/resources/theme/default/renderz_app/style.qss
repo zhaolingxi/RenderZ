@@ -9,49 +9,109 @@ QWidget#RenderZMainPage {
 QWidget#RenderZMainPage QPushButton#fileBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px; /* padding会挤占空间，留给图标的空间变小 */
     background-color: #FFFFFF;
-    background-image:url(:/assert/image/buttons/folder.svg);
-    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
-    background-position: center;    /* 将图标居中显示 */
+    
+    /* --- 背景图相关属性 --- */
+    background-image: url(:/assert/image/buttons/folder.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    /* --- 新增：控制图标大小 --- */
+    background-size: 20px 20px; /* 强制图标渲染为 20x20 像素 */
+    /* 或者使用 contain 关键字，它会自动缩放图标以完整地显示在内容区域内 */
+    /* background-size: contain; */
+}
+
+QWidget#RenderZMainPage QPushButton#fileBtn:hover {
+    background-color: #E8F0FE;
+    border: 1px solid #4A90E2;
 }
 
 QWidget#RenderZMainPage QPushButton#saveBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px; /* padding会挤占空间，留给图标的空间变小 */
     background-color: #FFFFFF;
-    background-image:url(:/assert/image/buttons/save.svg);
-    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
-    background-position: center;    /* 将图标居中显示 */
+    
+    /* --- 背景图相关属性 --- */
+    background-image: url(:/assert/image/buttons/save.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    /* --- 新增：控制图标大小 --- */
+    background-size: 20px 20px; /* 强制图标渲染为 20x20 像素 */
+    /* 或者使用 contain 关键字，它会自动缩放图标以完整地显示在内容区域内 */
+    /* background-size: contain; */
+}
+
+QWidget#RenderZMainPage QPushButton#saveBtn:hover {
+    background-color: #E8F0FE;
+    border: 1px solid #4A90E2;
 }
 
 QWidget#RenderZMainPage QPushButton#extBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px; /* padding会挤占空间，留给图标的空间变小 */
     background-color: #FFFFFF;
-    background-image:url(:/assert/image/buttons/extension.svg);
-    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
-    background-position: center;    /* 将图标居中显示 */
+    
+    /* --- 背景图相关属性 --- */
+    background-image: url(:/assert/image/buttons/extension.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    /* --- 新增：控制图标大小 --- */
+    background-size: 20px 20px; /* 强制图标渲染为 20x20 像素 */
+    /* 或者使用 contain 关键字，它会自动缩放图标以完整地显示在内容区域内 */
+    /* background-size: contain; */
 }
- 
+
+QWidget#RenderZMainPage QPushButton#extBtn:hover {
+    background-color: #E8F0FE;
+    border: 1px solid #4A90E2;
+}
+
 QWidget#RenderZMainPage QPushButton#settingBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px; /* padding会挤占空间，留给图标的空间变小 */
     background-color: #FFFFFF;
-    background-image:url(:/assert/image/buttons/setting.svg);
-    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
-    background-position: center;    /* 将图标居中显示 */
+    
+    /* --- 背景图相关属性 --- */
+    background-image: url(:/assert/image/buttons/setting.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    /* --- 新增：控制图标大小 --- */
+    background-size: 20px 20px; /* 强制图标渲染为 20x20 像素 */
+    /* 或者使用 contain 关键字，它会自动缩放图标以完整地显示在内容区域内 */
+    /* background-size: contain; */
 }
 
-QWidget#RenderZMainPage QPushButton#aboutBtn {
+QWidget#RenderZMainPage QPushButton#settingBtn:hover {
+    background-color: #E8F0FE;
+    border: 1px solid #4A90E2;
+}
+ 
+ QWidget#RenderZMainPage QPushButton#aboutBtn {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px; /* padding会挤占空间，留给图标的空间变小 */
     background-color: #FFFFFF;
-    background-image:url(:/assert/image/buttons/about.svg);
-    background-repeat: no-repeat;   /* 禁止图标平铺/重复 */
-    background-position: center;    /* 将图标居中显示 */
+    
+    /* --- 背景图相关属性 --- */
+    background-image: url(:/assert/image/buttons/about.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    /* --- 新增：控制图标大小 --- */
+    background-size: 20px 20px; /* 强制图标渲染为 20x20 像素 */
+    /* 或者使用 contain 关键字，它会自动缩放图标以完整地显示在内容区域内 */
+    /* background-size: contain; */
+}
+
+QWidget#RenderZMainPage QPushButton#aboutBtn:hover {
+    background-color: #E8F0FE;
+    border: 1px solid #4A90E2;
 }

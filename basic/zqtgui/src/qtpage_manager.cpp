@@ -156,8 +156,34 @@ bool QTPageManager::getStyleSheet(const QString& themeName, QString& styleSheet)
 bool QTPageManager::loadLanguage(const QString& langDir, const QString& langName)
 {
     // 推荐的语言文件路径结构： langDir/app_langName.qm
-    QString langFilePath = QDir(langDir).filePath(QString("app_%1.qm").arg(langName));
+    QString langFilePath = QDir(langDir).filePath(QString("%1.qm").arg(langName));
 
+    if (!QFile::exists(langFilePath)) {
+        qWarning() << "QTPageManager::loadLanguage - Language file not found:" << langFilePath;
+        return false;
+    }
+
+    if (m_translators.contains(langName)) {
+        qInfo() << "Language" << langName << "is already loaded.";
+        return true;
+    }
+
+    QTranslator* translator = new QTranslator(this); // 设置parent，由manager管理内存
+    if (translator->load(langFilePath)) {
+        m_translators.insert(langName, translator);
+        qInfo() << "Language" << langName << "loaded successfully from" << langFilePath;
+        return true;
+    }
+    else {
+        qWarning() << "QTPageManager::loadLanguage - Failed to load language file:" << langFilePath;
+        delete translator; // 加载失败，清理内存
+        return false;
+    }
+}
+
+bool QTPageManager::loadInternalLanguage(const QString& langName) 
+{
+    QString langFilePath = QString(":language/zh/%1.qm").arg(langName);
     if (!QFile::exists(langFilePath)) {
         qWarning() << "QTPageManager::loadLanguage - Language file not found:" << langFilePath;
         return false;

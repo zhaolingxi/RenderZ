@@ -60,6 +60,9 @@ int main(int argc, char* argv[])
 	}
 	page_manager->loadInternalTheme("renderz_app");
 	page_manager->changeTheme("renderz_app");
+
+	page_manager->loadInternalLanguage("renderz_main_page_zh");
+	page_manager->changeLanguage("renderz_main_page_zh");
 	ret = app->exec();
 
 	return ret;
