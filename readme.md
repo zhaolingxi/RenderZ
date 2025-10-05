@@ -15,7 +15,9 @@
 
 # 软件界面：
 
-![./md_res/v0_1_test.png](./md_res/v0_1_test.png)
+![./md_res/v0_1_test.png](./md_res/2025-10-05_172752.png)
+
+见md_res中视频
 
 # 开源协议：
 
