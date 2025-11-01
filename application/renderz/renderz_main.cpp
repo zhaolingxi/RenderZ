@@ -19,6 +19,15 @@
 #include"qtpage_manager.h"
 #include <QSurfaceFormat> // 【新增】包含这个头文件
 
+#ifdef _WIN32
+    const char* suffix = ".dll";
+#elif defined(__APPLE__)
+    const char* suffix = ".dylib";
+#else
+    const char* suffix = ".so";
+#endif
+
+
 int main(int argc, char* argv[])
 {
 
@@ -45,17 +54,39 @@ int main(int argc, char* argv[])
 
 	std::vector<std::string> pluginPages{ "renderz_main_page", };
 	for (auto& pluginPage : pluginPages) {
-		std::string strdll = appDir.toUtf8().data();
-		strdll=strdll + "/" + pluginPage.c_str() + ".dll";
+
+		std::string strdll;
+
+#ifdef _WIN32
+    	strdll=(QDir(appDir).filePath(pluginPage.c_str()) + suffix).toStdString();
+#elif defined(__APPLE__)
+    	strdll=(QDir(appDir).filePath(pluginPage.c_str()) + suffix).toStdString();
+#else
+    	strdll = QDir(appDir).filePath(QString("lib%1%2")
+						.arg(QString::fromStdString(pluginPage))
+                        .arg(suffix))
+                        .toStdString();
+#endif
+
 		auto ret = ZLibLoader::loadLib(strdll.c_str());
+		if (!ret) {
+    		qFatal("dlopen %s failed: %s", strdll.c_str(), dlerror());
+		}
 		typedef void(* ModuleInfo)(ZLibPluginInfo*);
 
 		auto func_GetPluginViewInfo = (ModuleInfo)ZLibLoader::getProcAddress(ret,"GetPluginViewInfo");
+		if (!func_GetPluginViewInfo) {
+    		qFatal("GetPluginViewInfo not found in %s", strdll.c_str());
+		}
 		auto pluginModuleInfo = std::make_shared<ZLibPluginInfo*>();
+
 		func_GetPluginViewInfo(*pluginModuleInfo);
 
 		typedef void(*InstallPluginViewFunc)();
 		InstallPluginViewFunc func_InstallPluginView =reinterpret_cast<InstallPluginViewFunc>(ZLibLoader::getProcAddress(ret, "InstallPluginView"));
+		if (!func_InstallPluginView) {
+    		qFatal("InstallPluginView not found in %s", strdll.c_str());
+		}
 		func_InstallPluginView();
 	}
 	page_manager->loadInternalTheme("renderz_app");
