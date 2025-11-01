@@ -27,7 +27,7 @@ else()
 endif()
 
 if(GNUC)
-	target_link_libraries(${PROJECT_NAME} pthread rt dl)
+	target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt dl)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'")
 endif()
 

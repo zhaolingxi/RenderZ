@@ -12,7 +12,20 @@
 
 # 三方库编译
 三方库使用FetchContent在另一个仓库中下载，请注意网络可以访问github，并且配置了ssl
+in linux, we need some pkg dev, please install it frist:
 
+sudo apt install \
+  pkg-config \
+  libxrandr-dev \
+  libxinerama-dev \
+  libxcursor-dev \
+  libxi-dev \
+  libwayland-dev \
+  wayland-protocols \
+  libxkbcommon-dev \
+
+sudo apt install uuid-dev
+sudo apt install libglu1-mesa-dev
 # 软件界面：
 
 ![./md_res/v0_1_test.png](./md_res/2025-10-05_172752.png)

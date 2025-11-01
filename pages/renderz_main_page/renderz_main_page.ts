@@ -13,10 +13,10 @@
         <source>tips:</source>
         <translation type="unfinished">提示：</translation>
     </message>
-    < message >
+    <message>
         <location filename="implement/renderz_main_page.cpp" line = "217" />
-        <source>select model dir < /source>
-        < translation type = "unfinished" >选择模型文件路径</translation>
+        <source>select model dir </source>
+        <translation type = "unfinished" >选择模型文件路径</translation>
     </message>
     <message>
         <location filename="implement/renderz_main_page.cpp" line="244"/>

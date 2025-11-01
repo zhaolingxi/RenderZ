@@ -6,13 +6,13 @@
 #include<QScreen>
 #include"zqt3dcoordinatesystem/zqt3dcoordinatesystem_view.h"
 
-// ¡¾ĞÂÔö¡¿°üº¬ ImGui C++ Í·ÎÄ¼şºÍ Qt ÊÂ¼şÍ·ÎÄ¼ş
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ImGui C++ Í·ï¿½Ä¼ï¿½ï¿½ï¿½ Qt ï¿½Â¼ï¿½Í·ï¿½Ä¼ï¿½
 #include "imgui.h"
 #include <QMouseEvent>
 #include <QWheelEvent>
 
 #ifdef WIN32
-// ¡¾ĞÂÔö¡¿½â¾ö Windows.h Óë C++ ±ê×¼¿âµÄ min/max ºê³åÍ»
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Windows.h ï¿½ï¿½ C++ ï¿½ï¿½×¼ï¿½ï¿½ï¿½ min/max ï¿½ï¿½ï¿½Í»
 #define NOMINMAX
 #include <Windows.h>
 #else
@@ -46,30 +46,29 @@ ZQt3DViewer::ZQt3DViewer(QWidget* parent)
 {
     coordinateSystem_ = new ZQt3DCoordinateSystem(this);
     screen_ = QGuiApplication::primaryScreen();
-    // ¡¾ĞÂÔö¡¿ÆôÓÃÊó±ê¸ú×Ù£¬ÒÔ±ãImGui¿ÉÒÔÏìÓ¦ĞüÍ£ÊÂ¼ş
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù£ï¿½ï¿½Ô±ï¿½ImGuiï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Í£ï¿½Â¼ï¿½
     setMouseTracking(true);
-    // ¡¾ĞÂÔö¡¿³õÊ¼»¯ImGuiÊäÈë×´Ì¬£¬·ÀÖ¹Î´¶¨ÒåĞĞÎª
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ImGuiï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½Ö¹Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª
     memset(&m_imguiInputState, 0, sizeof(ZImGui_InputState));
 
-    // ¡¾ĞÂÔö¡¿´´½¨²¢ÅäÖÃ¼ÆÊ±Æ÷
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½Ê±ï¿½ï¿½
     m_animationTimer = new QTimer(this);
-    // ½«¼ÆÊ±Æ÷µÄ timeout ĞÅºÅÁ¬½Óµ½ widget µÄ update ²Û
-    connect(m_animationTimer, &QTimer::timeout, this, QOverload<void>::of(&ZQt3DViewer::update));
-    // Æô¶¯¼ÆÊ±Æ÷¡£¼ä¸ôÎª0ÒâÎ¶×Å¡°¾¡¿ì¡±£¬´Ó¶ø´´½¨Ò»¸ö¸ßÖ¡ÂÊµÄÑ­»·
+    //connect(m_animationTimer, &QTimer::timeout, this, QOverload<void>::of(&ZQt3DViewer::update));
+    connect(m_animationTimer, &QTimer::timeout, this, qOverload<>(&ZQt3DViewer::update));
     m_animationTimer->start(0);
 
-    // ¡¾ÖØÒª¡¿ÔÚÕâÀïÖ»½øĞĞÒ»´ÎImGuiÖ÷ÉÏÏÂÎÄµÄ³õÊ¼»¯
+    // ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ImGuiï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄ³ï¿½Ê¼ï¿½ï¿½
     ZImGui_Init();
 }
 
 ZQt3DViewer::~ZQt3DViewer()
 {
     makeCurrent();
-    // ÏÈ¹Ø±ÕÒÀÀµÓÚOpenGLÉÏÏÂÎÄµÄºó¶Ë
+    // ï¿½È¹Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½OpenGLï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½ï¿½
     if (m_imguiInitialized) {
         ZImGui_Shutdown_OpenGL();
     }
-    // È»ºó¹Ø±ÕÓëOpenGLÎŞ¹ØµÄºËĞÄÉÏÏÂÎÄ
+    // È»ï¿½ï¿½Ø±ï¿½ï¿½ï¿½OpenGLï¿½Ş¹ØµÄºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     ZImGui_Shutdown();
     doneCurrent();
 }
@@ -77,24 +76,24 @@ ZQt3DViewer::~ZQt3DViewer()
 
 
 void ZQt3DViewer::initializeGL() {
-    // ¡¾ĞŞ¸Ä¡¿ÔÚÕâÀï³õÊ¼»¯/ÖØĞÂ³õÊ¼»¯OpenGLºó¶Ë
+    // ï¿½ï¿½ï¿½Ş¸Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½/ï¿½ï¿½ï¿½Â³ï¿½Ê¼ï¿½ï¿½OpenGLï¿½ï¿½ï¿½
     if (m_imguiInitialized) {
         ZImGui_Shutdown_OpenGL();
     }
     ZImGui_Init_OpenGL();
-    m_imguiInitialized = true; // ±ê¼Çºó¶ËÒÑ³õÊ¼»¯
+    m_imguiInitialized = true; // ï¿½ï¿½Çºï¿½ï¿½ï¿½Ñ³ï¿½Ê¼ï¿½ï¿½
 
 
     glEnable(GL_COLOR_MATERIAL);
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
-        // ´¦Àí´íÎó
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
     glEnable(GL_DEPTH_TEST);
     error = glGetError();
     if (error != GL_NO_ERROR) {
-        // ´¦Àí´íÎó
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
 
@@ -113,29 +112,29 @@ void ZQt3DViewer::initializeGL() {
     int ratio = devicePixelRatio();
     camera_.reset();
 
-    // ¡¾ĞŞ¸Ä¡¿½« coordinateSystem µÄ³õÊ¼»¯·ÅÔÚÄãµÄGLÉèÖÃÖ®ºó
+    // ï¿½ï¿½ï¿½Ş¸Ä¡ï¿½ï¿½ï¿½ coordinateSystem ï¿½Ä³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GLï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½
     if (coordinateSystem_ != nullptr) {
         coordinateSystem_->initializeGL();
     }
 
-    // ¡¾ĞÂÔö¡¿ÔÚËùÓĞGLÉèÖÃÍê³Éºó£¬³õÊ¼»¯ImGui
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éºó£¬³ï¿½Ê¼ï¿½ï¿½ImGui
     m_elapsedTimer.start();
 }
 void ZQt3DViewer::resizeGL(int w, int h)
 {
     if (h == 0) h = 1;
 
-    // ¡¾ÖØÒª¡¿»ñÈ¡Éè±¸ÏñËØ±È
+    // ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½È¡ï¿½è±¸ï¿½ï¿½ï¿½Ø±ï¿½
     const qreal dpr = devicePixelRatioF();
 
-    // ÏÈ´¦Àí×Ó¿Ø¼ş£¬Í¬ÑùĞèÒª¿¼ÂÇDPI
+    // ï¿½È´ï¿½ï¿½ï¿½ï¿½Ó¿Ø¼ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½DPI
     const int coord_physical_w = coordinateSystemWidth_ * dpr;
     const int coord_physical_h = coordinateSystemHeight_ * dpr;
     coordinateSystem_->resizeGL(coord_physical_w, coord_physical_h);
-    // move() Ê¹ÓÃµÄÊÇÂß¼­×ø±ê£¬ËùÒÔÕâÀï²»ÓÃ±ä
+    // move() Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½Ã±ï¿½
     coordinateSystem_->move(width() - coordinateSystemWidth_, 0);
 
-    // Ê¹ÓÃÏà»úÀ´ÉèÖÃÍ¶Ó°¾ØÕó£¬Ïà»úÂß¼­Ò»°ãÓëÏñËØÎŞ¹Ø£¬ËùÒÔ w ºÍ h ²»ÓÃ±ä
+    // Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¶Ó°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¹Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ w ï¿½ï¿½ h ï¿½ï¿½ï¿½Ã±ï¿½
     glMatrixMode(GL_PROJECTION);
     Eigen::Matrix4f projectionMatrix = camera_.getProjectionMatrix(w, h);
     glLoadMatrixf(projectionMatrix.data());
@@ -143,7 +142,7 @@ void ZQt3DViewer::resizeGL(int w, int h)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // ¡¾ºËĞÄĞŞ¸´¡¿Ê¹ÓÃÎïÀíÏñËØ³ß´çÀ´ÉèÖÃÖ÷ÊÓ¿Ú
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø³ß´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½
     const int physical_w = w * dpr;
     const int physical_h = h * dpr;
     std::cout << "Logical W/H: " << w << ", " << h << std::endl;
@@ -156,16 +155,16 @@ void ZQt3DViewer::resizeGL(int w, int h)
 
 void ZQt3DViewer::paintGL()
 {
-    // ¡¾ÖØÒª¡¿»ñÈ¡DPI£¬ÒòÎªImGuiĞèÒªËü
+    // ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½È¡DPIï¿½ï¿½ï¿½ï¿½ÎªImGuiï¿½ï¿½Òªï¿½ï¿½
     const qreal dpr = devicePixelRatioF();
 
-    // --- µÚ1²½: »Ö¸´ImGui UI¹¹½¨ ---
+    // --- ï¿½ï¿½1ï¿½ï¿½: ï¿½Ö¸ï¿½ImGui UIï¿½ï¿½ï¿½ï¿½ ---
     float deltaTime = m_elapsedTimer.restart() / 1000.0f;
     if (deltaTime <= 0.0f) deltaTime = 1.0f / 60.0f;
     ZImGui_NewFrame(width() * dpr, height() * dpr, deltaTime, &m_imguiInputState);
     m_imguiInputState.mouse_wheel = 0.0f;
 
-    // ¡¾»Ö¸´ DockSpace ºÍ´°¿Ú¡¿
+    // ï¿½ï¿½ï¿½Ö¸ï¿½ DockSpace ï¿½Í´ï¿½ï¿½Ú¡ï¿½
     {
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->WorkPos);
@@ -193,20 +192,20 @@ void ZQt3DViewer::paintGL()
     //ImGui::Text("Your 3D Viewer Controls");
     //ImGui::Text("Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     //ImGui::End();
-    m_debugPanel.draw(u8"µ÷ÊÔÃæ°å (Debug Panel)", m_debugState);
+    m_debugPanel.draw(u8"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Debug Panel)", m_debugState);
 
 
-    // --- µÚ2²½: Çå¿ÕÆÁÄ» ---
-    // ¡¾Ç¿ÖÆĞ£Õı¡¿È·±£ÊÓ¿ÚÊÇÎïÀíÈ«ÆÁ
+    // --- ï¿½ï¿½2ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½Ä» ---
+    // ï¿½ï¿½Ç¿ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½
     glViewport(0, 0, width() * dpr, height() * dpr);
     glClearColor(red_, green_, blue_, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    // --- µÚ3²½: äÖÈ¾ÎÒÃÇ×Ô¼ºµÄ3D/2D³¡¾° ---
-    // glPushAttrib(GL_ALL_ATTRIB_BITS); // ÔİÊ±¿ÉÒÔ²»ÓÃ
+    // --- ï¿½ï¿½3ï¿½ï¿½: ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½3D/2Dï¿½ï¿½ï¿½ï¿½ ---
+    // glPushAttrib(GL_ALL_ATTRIB_BITS); // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½
     {
-        // === A. äÖÈ¾3DÖ÷³¡¾° ===
+        // === A. ï¿½ï¿½È¾3Dï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ===
         glMatrixMode(GL_MODELVIEW);
         Eigen::Matrix4f viewMatrix = camera_.getViewMatrix();
         glLoadMatrixf(viewMatrix.data());
@@ -214,7 +213,7 @@ void ZQt3DViewer::paintGL()
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_LIGHTING);
         if (objLoader_) {
-            // ... (Äã»æÖÆÄ£ĞÍµÄ´úÂë) ...
+            // ... (ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ÍµÄ´ï¿½ï¿½ï¿½) ...
             glPushMatrix();
             GLfloat mat_diffuse[] = { 0.8f, 0.8f, 0.8f, 1.0f };
             glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
@@ -240,9 +239,9 @@ void ZQt3DViewer::paintGL()
             glPopMatrix();
         }
 
-        // === B. äÖÈ¾×ø±êÏµ === 
+        // === B. ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½Ïµ === 
         if (coordinateSystem_) {
-            const qreal dpr = devicePixelRatioF(); // ÔÙ´Î»ñÈ¡£¬È·±£°²È«
+            const qreal dpr = devicePixelRatioF(); // ï¿½Ù´Î»ï¿½È¡ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½È«
             const int coord_physical_w = coordinateSystemWidth_ * dpr;
             const int coord_physical_h = coordinateSystemHeight_ * dpr;
 
@@ -250,19 +249,19 @@ void ZQt3DViewer::paintGL()
             glEnable(GL_SCISSOR_TEST);
             glScissor(0, 0, coord_physical_w, coord_physical_h);
 
-            glClear(GL_DEPTH_BUFFER_BIT); // Ö»Çå³ıÉî¶È£¬²»Çå³ıÑÕÉ«
+            glClear(GL_DEPTH_BUFFER_BIT); // Ö»ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
             coordinateSystem_->paintGL();
             glDisable(GL_SCISSOR_TEST);
 
-            // ¡¾¹Ø¼ü¡¿Á¢¿Ì»Ö¸´Ö÷ÊÓ¿Úµ½ÎïÀíÈ«ÆÁ
+            // ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì»Ö¸ï¿½ï¿½ï¿½ï¿½Ó¿Úµï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½
             glViewport(0, 0, width() * dpr, height() * dpr);
         }
 
     }
-    // glPopAttrib(); // ÔİÊ±¿ÉÒÔ²»ÓÃ
+    // glPopAttrib(); // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½
 
 
-    // --- µÚ4²½: »Ö¸´ImGuiäÖÈ¾ ---
+    // --- ï¿½ï¿½4ï¿½ï¿½: ï¿½Ö¸ï¿½ImGuiï¿½ï¿½È¾ ---
     ZImGui_Render();
 }
 
@@ -274,7 +273,7 @@ void ZQt3DViewer::wheelEvent(QWheelEvent* event)
         return;
     }
 
-    // ¡¾ºËĞÄĞŞ¸Ä¡¿½«¹öÂÖÊÂ¼ş´«µİ¸øÏà»ú
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½İ¸ï¿½ï¿½ï¿½ï¿½
     float delta = event->angleDelta().y() / 120.0f;
     camera_.zoom(delta);
 
@@ -283,13 +282,13 @@ void ZQt3DViewer::wheelEvent(QWheelEvent* event)
 
 void ZQt3DViewer::mousePressEvent(QMouseEvent* event)
 {
-    // ¡¾ºËĞÄĞŞ¸´¡¿»ñÈ¡Éè±¸ÏñËØ±È
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½è±¸ï¿½ï¿½ï¿½Ø±ï¿½
     const qreal retinaScale = devicePixelRatioF();
-    // ¡¾ºËĞÄĞŞ¸´¡¿½«Âß¼­Êó±ê×ø±ê×ª»»ÎªÎïÀí×ø±ê
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     m_imguiInputState.mouse_x = event->x() * retinaScale;
     m_imguiInputState.mouse_y = event->y() * retinaScale;
 
-    // ¡¾ĞÂÔö¡¿¸üĞÂImGuiÊäÈë×´Ì¬
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ImGuiï¿½ï¿½ï¿½ï¿½×´Ì¬
     if (event->button() == Qt::LeftButton) m_imguiInputState.mouse_down[0] = true;
     if (event->button() == Qt::RightButton) m_imguiInputState.mouse_down[1] = true;
     if (event->button() == Qt::MiddleButton) m_imguiInputState.mouse_down[2] = true;
@@ -298,7 +297,7 @@ void ZQt3DViewer::mousePressEvent(QMouseEvent* event)
        return;
     }
 
-    // ¡¾ºËĞÄĞŞ¸Ä¡¿¼ÇÂ¼Êó±ê°´ÏÂµÄÆğÊ¼Î»ÖÃ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸Ä¡ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ê°´ï¿½Âµï¿½ï¿½ï¿½Ê¼Î»ï¿½ï¿½
     lastMousePos_ = event->pos();
 
     coordinateSystem_->mousePressEvent(event);
@@ -306,9 +305,9 @@ void ZQt3DViewer::mousePressEvent(QMouseEvent* event)
 
 void ZQt3DViewer::mouseMoveEvent(QMouseEvent* event)
 {
-    // ¡¾ºËĞÄĞŞ¸´¡¿»ñÈ¡Éè±¸ÏñËØ±È
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½è±¸ï¿½ï¿½ï¿½Ø±ï¿½
     const qreal retinaScale = devicePixelRatioF();
-    // ¡¾ºËĞÄĞŞ¸´¡¿½«Âß¼­Êó±ê×ø±ê×ª»»ÎªÎïÀí×ø±ê
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     m_imguiInputState.mouse_x = event->x() * retinaScale;
     m_imguiInputState.mouse_y = event->y() * retinaScale;
 
@@ -318,19 +317,19 @@ void ZQt3DViewer::mouseMoveEvent(QMouseEvent* event)
         return;
     }
 
-    // ¡¾ºËĞÄĞŞ¸Ä¡¿Ïà»ú½»»¥Âß¼­
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
     QPointF delta = QPointF(event->pos()) - lastMousePos_;
 
-    // Èç¹û°´ÏÂµÄÊÇ×ó¼ü£¬ÔòĞı×ª
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª
     if (event->buttons() & Qt::LeftButton) {
         camera_.rotate(delta.x(), delta.y());
     }
-    // Èç¹û°´ÏÂµÄÊÇÓÒ¼ü (»òÖĞ¼ü)£¬ÔòÆ½ÒÆ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ (ï¿½ï¿½ï¿½Ğ¼ï¿½)ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½
     else if (event->buttons() & Qt::RightButton) {
         camera_.pan(delta.x(), delta.y());
     }
 
-    // ¡¾ÖØÒª¡¿¸üĞÂ×îºóµÄÎ»ÖÃÒÔ¹©ÏÂÒ»Ö¡¼ÆËã
+    // ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½
     lastMousePos_ = event->pos();
 
     coordinateSystem_->mouseMoveEvent(event);
@@ -338,12 +337,12 @@ void ZQt3DViewer::mouseMoveEvent(QMouseEvent* event)
 
 void ZQt3DViewer::mouseReleaseEvent(QMouseEvent* event)
 {
-    // ¡¾ºËĞÄĞŞ¸´¡¿»ñÈ¡Éè±¸ÏñËØ±È
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½è±¸ï¿½ï¿½ï¿½Ø±ï¿½
     const qreal retinaScale = devicePixelRatioF();
-    // ¡¾ºËĞÄĞŞ¸´¡¿½«Âß¼­Êó±ê×ø±ê×ª»»ÎªÎïÀí×ø±ê
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     m_imguiInputState.mouse_x = event->x() * retinaScale;
     m_imguiInputState.mouse_y = event->y() * retinaScale;
-    // ¡¾ĞÂÔö¡¿¸üĞÂImGuiÊäÈë×´Ì¬
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ImGuiï¿½ï¿½ï¿½ï¿½×´Ì¬
     if (event->button() == Qt::LeftButton) m_imguiInputState.mouse_down[0] = false;
     if (event->button() == Qt::RightButton) m_imguiInputState.mouse_down[1] = false;
     if (event->button() == Qt::MiddleButton) m_imguiInputState.mouse_down[2] = false;
@@ -357,16 +356,16 @@ void ZQt3DViewer::mouseReleaseEvent(QMouseEvent* event)
 
 bool ZQt3DViewer::loadModel(const QString& path)
 {
-    // Èç¹ûÒÑ¾­ÓĞÒ»¸öÄ£ĞÍ£¬ÏÈÊÍ·ÅËü
+    // ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ä£ï¿½Í£ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½
     if (objLoader_ != nullptr) {
         delete objLoader_;
         objLoader_ = nullptr;
     }
 
-    // ´´½¨¼ÓÔØÆ÷ÊµÀıÀ´¼ÓÔØÎÄ¼ş
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
     objLoader_ = new zrender::ZObjModelLoader(path.toStdString());
 
-    // ¼ì²é¼ÓÔØÊÇ·ñ³É¹¦£¨ÀıÈç£¬ÊÇ·ñÓĞ¶¥µãÊı¾İ£©
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç£¬ï¿½Ç·ï¿½ï¿½Ğ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ£ï¿½
     if (objLoader_ == nullptr || objLoader_->getVertices().empty()) {
         qDebug() << "Failed to load model or model is empty:" << path;
         delete objLoader_;
@@ -378,14 +377,14 @@ bool ZQt3DViewer::loadModel(const QString& path)
     qDebug() << "Vertices:" << objLoader_->getVertices().size() << ", Faces:" << objLoader_->getFacets().size();
 
 
-    // ÇëÇóÖØ»æÒÔÏÔÊ¾ĞÂ¼ÓÔØµÄÄ£ĞÍ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ø»ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Â¼ï¿½ï¿½Øµï¿½Ä£ï¿½ï¿½
     update();
     return true;
 }
 
 void ZQt3DViewer::setBackColor(double red, double green, double blue)
 {
-    // 1. ¸üĞÂÄÚ²¿×´Ì¬±äÁ¿
+    // 1. ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
     red_ = red;
     green_ = green;
     blue_ = blue;

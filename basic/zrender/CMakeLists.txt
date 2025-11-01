@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.8)
 project(zrender)
 
 # -----------------------------------------
-# ÊÕ¼¯±¾ÏîÄ¿×Ô¼ºµÄÍ·ÎÄ¼þ / Ô´ÎÄ¼þ (Õâ²¿·Ö²»±ä)
+# ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Ô¼ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½ / Ô´ï¿½Ä¼ï¿½ (ï¿½â²¿ï¿½Ö²ï¿½ï¿½ï¿½)
 # -----------------------------------------
 file(GLOB_RECURSE H_IN_INCLUDE   "include/*.h")
 file(GLOB_RECURSE H_IN_SRC       "src/*.h")
@@ -21,46 +21,46 @@ set(SOURCE_FILES
 )
 
 # -----------------------------------------
-# ´´½¨¿â
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 # -----------------------------------------
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 
 # -----------------------------------------
-# ¡¾ºËÐÄÐÞ¸Ä¡¿Îª¿âÄ¿±êÌí¼Ó°üº¬Ä¿Â¼
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸Ä¡ï¿½Îªï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½Ä¿Â¼
 # -----------------------------------------
 
-# Eigen ÊÇ¹«¿ªÒÀÀµ£¬ÒòÎªËüµÄÍ·ÎÄ¼þÔÚÎÒÃÇµÄ¹«¿ªÍ·ÎÄ¼þÖÐ±»°üº¬ÁË
+# Eigen ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÇµÄ¹ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${triLibraryPath}/eigen-3.4.0
 )
 
-# ÕâÐ©ÊÇ zrender ÄÚ²¿ÊµÏÖÐèÒªµÄ£¬»òÕßÊÇÆäËû¹«¿ªµÄÒÀÀµ
-# ¼ÙÉè zutils, zcore, zmath µÄÍ·ÎÄ¼þÒ²¿ÉÄÜ±» zrender µÄ¹«¿ªÍ·ÎÄ¼þ°üº¬£¬Ò²ÉèÎª PUBLIC
+# ï¿½ï¿½Ð©ï¿½ï¿½ zrender ï¿½Ú²ï¿½Êµï¿½ï¿½ï¿½ï¿½Òªï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+# ï¿½ï¿½ï¿½ï¿½ zutils, zcore, zmath ï¿½ï¿½Í·ï¿½Ä¼ï¿½Ò²ï¿½ï¿½ï¿½Ü±ï¿½ zrender ï¿½Ä¹ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Îª PUBLIC
 target_include_directories(${PROJECT_NAME} PUBLIC
     ../zutils/include
     ../zcore/include
     ../zmath/include
-    ../zimgui/include # Èç¹û zimgui ÊÇ¹«¿ªÒÀÀµµÄ»°
+    ../zimgui/include # ï¿½ï¿½ï¿½ zimgui ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½
 )
 
-# ÕâÐ©ÊÇ zrender ×Ô¼ºµÄÄ¿Â¼£¬Ò²ÐèÒª±©Â¶¸øÊ¹ÓÃÕß
+# ï¿½ï¿½Ð©ï¿½ï¿½ zrender ï¿½Ô¼ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½Ò²ï¿½ï¿½Òªï¿½ï¿½Â¶ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½
 target_include_directories(${PROJECT_NAME} PUBLIC
     include
 )
 
-# ÕâÐ©ÊÇ zrender ×Ô¼ºµÄË½ÓÐÊµÏÖÄ¿Â¼£¬ÉèÎª PRIVATE ¼´¿É
+# ï¿½ï¿½Ð©ï¿½ï¿½ zrender ï¿½Ô¼ï¿½ï¿½ï¿½Ë½ï¿½ï¿½Êµï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½Îª PRIVATE ï¿½ï¿½ï¿½ï¿½
 target_include_directories(${PROJECT_NAME} PRIVATE
     src
 )
 
 
 if(MSVC)
-	# ÕâÓ¦¸ÃÓÃ target_compile_definitions
+	# ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ target_compile_definitions
 	target_compile_definitions(${PROJECT_NAME} PRIVATE _ZRENDER_EXPORTS)
 endif()
 
 target_link_libraries(${PROJECT_NAME}  PUBLIC zutils zmath zcore)
 if(GNUC)
-	target_link_libraries(${PROJECT_NAME} pthread rt dl)
+	target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt dl)
 	set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath='$ORIGIN:$ORIGIN/lib'")
 endif()
