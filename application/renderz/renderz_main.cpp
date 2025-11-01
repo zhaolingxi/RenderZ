@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 
 		auto ret = ZLibLoader::loadLib(strdll.c_str());
 		if (!ret) {
-    		qFatal("dlopen %s failed: %s", strdll.c_str(), dlerror());
+    		qFatal("dlopen %s failed: %s", strdll.c_str());
 		}
 		typedef void(* ModuleInfo)(ZLibPluginInfo*);
 

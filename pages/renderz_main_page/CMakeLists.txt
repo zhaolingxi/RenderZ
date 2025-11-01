@@ -67,8 +67,13 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+
+
 # ---------- 文件搜集 ----------
 include_directories(framework interface implement)
+if(MSVC)
+    add_compile_definitions(${PROJECT_NAME} PRIVATE _RENDERZ_MAIN_PAGE_EXPORTS)
+endif()
 file(GLOB_RECURSE H_FILES framework/*.h interface/*.h implement/*.h)
 file(GLOB_RECURSE CPP_FILES framework/*.cpp implement/*.cpp)
 
